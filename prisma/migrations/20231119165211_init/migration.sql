@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `ninaFile` VARCHAR(191) NULL DEFAULT '';

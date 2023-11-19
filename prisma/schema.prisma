@@ -1,0 +1,130 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  authorId          String
+  author            User    @relation(fields: [authorId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@index([authorId], map: "Account_authorId_fkey")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  authorId     String
+  author       User     @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "Session_authorId_fkey")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  firstName     String
+  image        String?        @default("")
+  lastName      String
+  number        String
+  birthDate     DateTime?     @db.Date
+  placeBirthDate     String?       @default("")  
+  ninaFile          String?       @default("")
+  sexe          String
+  password      String
+  createdAt     DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime?     @db.Date
+  emailVerified Boolean       @default(false)
+  role          UserRole      @default(USER)
+  accounts      Account[]
+  candidatures  Candidature[]
+  sessions      Session[]
+}
+
+model Competition {
+  id           String        @id @default(cuid())
+  image        String?
+  title        String
+  content      String?       @db.LongText
+  statut       String
+  ageMin       Int?
+  ageMax       Int?
+  letterNumber      String?      @default("")  
+   filesRequired      String?       @db.LongText
+  createdAt    DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime?     @db.Date
+  startDateAt  DateTime      @db.Date
+  endDateAt    DateTime      @db.Date
+ candidatures Candidature[]
+}
+
+ 
+model Candidature {
+  id                  Int      @id @default(autoincrement())
+  idString           String   @default(cuid())
+ 
+  
+email         String?        
+  
+  image        String?        @default("")
+  
+  number        String?
+  
+  address          String?       @default("")
+
+   message          String?       @db.LongText
+  title               String
+  content             String?     @db.LongText
+   admin         String?
+   numeroRef         String?      @unique
+ 
+  filesRequired      String?       @db.LongText
+   
+  canEdit      Boolean?      @default(false)
+   
+  endDateAt           DateTime?   @db.Date
+  createdAt           DateTime?   @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime?   @db.Date
+  authorId            String
+  competitionId       String
+  birthDate           DateTime    @db.Date
+  placeBirthDate     String?       @default("")
+  firstName           String
+  lastName            String
+  sexe                String
+  author              User        @relation(fields: [authorId], references: [id])
+  competition         Competition @relation(fields: [competitionId], references: [id])
+
+  @@index([authorId], map: "Candidature_authorId_fkey")
+  @@index([competitionId], map: "Candidature_competitionId_fkey")
+}
+
+
+
+
+
+
+enum UserRole {
+  SUPERADMIN
+  ADMIN
+  USER
+}
