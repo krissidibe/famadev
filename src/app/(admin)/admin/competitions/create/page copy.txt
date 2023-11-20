@@ -79,7 +79,7 @@ function CompetitionCreatePage() {
   const [startDateAt, setStartDateAt] = useState(null);
   const [endDateAt, setEndDateAt] = useState(null);
   const [date, setDate] = React.useState<Date>();
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(EditorState?.createEmpty());
   const statutData = [
     { name: "Brouillon", code: "0" },
     { name: "Ouvert", code: "1" },
@@ -129,7 +129,7 @@ function CompetitionCreatePage() {
     handleChange,
   }: {
     value: EditorState;
-    handleChange: EditorProps;
+    handleChange: (e:any)=> void;
   }) {
     return (
       <div className="bg-[#F8F9FA] min-h-[500px]  mb-6 p-2 shadow-lg">
@@ -144,7 +144,6 @@ function CompetitionCreatePage() {
   }
 
   const handleAddElementRequired = (e: elementProps) => {
-    e.id = uuidv4();
     setFilesRequired((prev) => [...prev, e]);
    
   };
@@ -280,35 +279,17 @@ function CompetitionCreatePage() {
         </div>
 
         <p className="text-[14px] text-gray-500 mt-8">
-          {/*    <EditorComponent value={content} handleChange={(v) => setContent(v)} /> */}
+         <EditorComponent value={content} handleChange={(v) => setContent(v)} />  
         </p>
 
         <div className="border-t pt-8 pb-[350px] mt-10">
-          <div className="w-full flex justify-between">
+          <div className="w-full flex justify-between items-center">
             <h3 className="font-semibold">
               Les element a fournir pour le concours
             </h3>
 
 
-            <DropdownMenu  >
-              <DropdownMenuTrigger asChild>
-                <Button size={"sm"}>
-                  Ajouter
-                  <PlusCircleIcon className="w-4 h-4 ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent onClick={()=>{
-               
-              }} className="w-56 mr-10">
-             
-            
-                    
-                   <InputModal handleSave={handleAddElementRequired} />
-                 
-                  
-                
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <InputModal handleSave={handleAddElementRequired} />
           </div>
           {/* Files required */}
           <div className="mt-10 grid xl:grid-cols-2 grid-cols-1 gap-5">
@@ -362,14 +343,13 @@ current.filter((fruit) => fruit.id !== item.id)
                           <Button
                             variant={"destructive"}
                             onClick={() => {
- 
                               setFilesRequired((current) =>
                                 current.filter(
                                   (tabItem) => tabItem.id !== item.id
                                 )
                               );
                             }}
-                            
+                            type="submit"
                           >
                             Supprimer
                           </Button>
