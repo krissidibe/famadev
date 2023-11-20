@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE `Candidature` ADD COLUMN `admin` VARCHAR(191) NULL,
+    ADD COLUMN `numeroRef` VARCHAR(191) NULL;
+
+-- AlterTable
+ALTER TABLE `User` MODIFY `role` ENUM('SUPERADMIN', 'ADMIN', 'USER') NOT NULL DEFAULT 'USER';

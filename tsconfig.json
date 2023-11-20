@@ -9,10 +9,11 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -33,9 +34,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.tsold",
-    "out/types/**/*.ts"
-  ],
+    "out/types/**/*.ts",
+    "src/app/(admin)/admin/competitions/page.jsx",
+    "build/types/**/*.ts"
+, "src/app/(user)/user/competitions/[competitionId]/apply/pageItem.jsx", "src/app/signin/page.jsx", "src/components/InputDateComponent.jsx", "src/app/(admin)/admin/apply/[applyId]/CandidatureItem.jsx", "src/components/PDF/UserPdf.jsx", "src/app/page.jsx", "src/app/(user)/user/candidatures/[candidatureId]/CandidatureItem.jsx"  ],
   "exclude": [
     "node_modules"
   ]

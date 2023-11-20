@@ -47,7 +47,9 @@ model User {
   lastName      String
   number        String
   birthDate     DateTime?     @db.Date
-  placeBirthDate     String?       @default("")  
+  placeBirthDate     String?       @default("")
+  nina          String?       @default("")
+  address          String?       @default("")
   ninaFile          String?       @default("")
   sexe          String
   password      String
@@ -65,19 +67,25 @@ model Competition {
   image        String?
   title        String
   content      String?       @db.LongText
+  letterNumber      String?      @default("")
   statut       String
   ageMin       Int?
   ageMax       Int?
-  letterNumber      String?      @default("")  
-   filesRequired      String?       @db.LongText
+  orderOfMagistrates          Boolean?      @default(false)
+  def          Boolean?      @default(false)
+  bac          Boolean?      @default(false)
+  licence      Boolean?      @default(false)
+  maitrise      Boolean?      @default(false)
+  master1      Boolean?      @default(false)
+  master2      Boolean?      @default(false)
   createdAt    DateTime?     @default(now()) @db.Timestamp(0)
   updatedAt    DateTime?     @db.Date
   startDateAt  DateTime      @db.Date
   endDateAt    DateTime      @db.Date
- candidatures Candidature[]
+   filesRequired      String?       @db.LongText
+  candidatures Candidature[]
 }
 
- 
 model Candidature {
   id                  Int      @id @default(autoincrement())
   idString           String   @default(cuid())
@@ -96,11 +104,36 @@ email         String?
   content             String?     @db.LongText
    admin         String?
    numeroRef         String?      @unique
- 
+  statut              String
+  nina                String
+  certificat          String?
+  diplome             String
+  diplomeNumber       String
+  placeOfGraduation   String
+  countryOfGraduation String
+  study               String
+  speciality          String
   filesRequired      String?       @db.LongText
-   
+  certificate         String?
+
+  ninaFile            String?
+  requestLetter            String?
+  birthDateFile       String?
+  infoCardFile       String?    @default("")
+  demandeFile       String?    @default("")
+  cassierFile         String?    @default("") 
+  certificatVie       String?    @default("")
+  certificatVisite    String?    @default("")
+  diplomeFile         String?    @default("")
+  equivalenceFile         String?    @default("")
+  orderOfMagistrates                 String?    @default("")
   canEdit      Boolean?      @default(false)
-   
+  def                 String?    @default("")
+  bac                 String?    @default("")
+  licence             String?    @default("")
+  maitrise             String?    @default("")
+  master1              String?   @default("")
+  master2             String?    @default("")
   endDateAt           DateTime?   @db.Date
   createdAt           DateTime?   @default(now()) @db.Timestamp(0)
   updatedAt           DateTime?   @db.Date
@@ -117,11 +150,6 @@ email         String?
   @@index([authorId], map: "Candidature_authorId_fkey")
   @@index([competitionId], map: "Candidature_competitionId_fkey")
 }
-
-
-
-
-
 
 enum UserRole {
   SUPERADMIN

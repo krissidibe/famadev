@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `address` VARCHAR(191) NULL DEFAULT '',
+    ADD COLUMN `certificate` VARCHAR(191) NULL DEFAULT '';

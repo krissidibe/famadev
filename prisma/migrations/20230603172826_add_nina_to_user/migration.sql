@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `nina` VARCHAR(191) NULL;
