@@ -221,7 +221,12 @@ export default function RegisterPage() {
           Retour
           </Link>
         </Button>
-        <Button type="submit">Créer le compte</Button>
+       {/*  <Button asChild type="submit">Créer le compte</Button> */}
+  <Button asChild type="submit">
+  <Link href="/admin">
+         Créer le compte
+          </Link>
+    </Button>  
       </CardFooter>
     </Card>
     </form>

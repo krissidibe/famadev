@@ -136,7 +136,12 @@ export default function LoginPage() {
               <Button variant="outline" asChild>
                 <Link href="/">Retour</Link>
               </Button>
-              <Button type="submit">Se connecter</Button>
+            {/*   <Button type="submit">Se connecter</Button> */}
+            <Button asChild type="submit">
+  <Link href="/admin">
+  Se connecter
+          </Link>
+    </Button>  
             </CardFooter>
           </Card>
         <p className="pt-10 text-sm ">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error eius totam quasi hic illo expedita neque est assumenda consequuntur rem, saepe nisi quam, nesciunt nam consequatur inventore tempore dolorem debitis.</p>
