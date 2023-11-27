@@ -60,9 +60,12 @@ function CreateCompetition() {
   const [orderOfMagistrates, setOrderOfMagistrates] = useState(false);
   const [def, setDef] = useState(false);
   const [bac, setBac] = useState(false);
-  const [fileNameRequired, setFileNameRequired] = useState("");
-  const [curentFileItem, setCurentFileItem] = useState();
   const [filesRequired, setFilesRequired] = useState([]);
+  const [inputsRequired, setInputsRequired] = useState([]);
+  const [fileNameRequired, setFileNameRequired] = useState("");
+  const [inputNameRequired, setInputNameRequired] = useState("");
+  const [curentFileItem, setCurentFileItem] = useState();
+  const [curentInputItem, setCurentInputItem] = useState();
   const [licence, setLicence] = useState(false);
   const [maitrise, setMaitrise] = useState(false);
   const [master1, setMaster1] = useState(false);
@@ -88,6 +91,7 @@ function CreateCompetition() {
 
     formData.append("orderOfMagistrates", orderOfMagistrates);
     formData.append("filesRequired", JSON.stringify(filesRequired));
+    formData.append("inputsRequired", JSON.stringify(inputsRequired));
     formData.append("def", def);
     formData.append("bac", bac);
     formData.append("licence", licence);
@@ -297,9 +301,94 @@ function CreateCompetition() {
       <p className="text-[14px] text-gray-500 mt-8">
         <EditorComponent value={content} handleChange={(v) => setContent(v)} />
       </p>
+      <hr />
+     
+      <p className="mt-4 font-bold ">Les champs</p>
+      <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
+      <div className="flex items-end justify-between mb-4 font-bold text-md">
+        
+        
+        <InputComponent
+            key={129}
+            label={"Nom du champ"}
+            value={inputNameRequired}
+            inputType="text"
+            handleChange={(e) => {
+              setInputNameRequired(x=> x= e.target.value);
+            }}
+          />
+
+<div className="flex flex-row items-end justify-end flex-1 mb-1">
+<div onClick={(e)=>{
+
+if(curentInputItem){
+  const nextShapes = inputsRequired.map(shape => {
+    if (shape.id != curentInputItem.id) {
+      // No change
+      return shape;
+    } else {
+      // Return a new circle 50px below
+      return {
+        ...shape,
+        name:   inputNameRequired,
+      };
+    }
+  });
+  // Re-render with the new array
+  setInputsRequired(nextShapes);
+  setInputNameRequired(x => x ="")
+  setCurentInputItem(x => x =null)
+  return;
+}
+
+
+
+            setInputsRequired( prev => [...prev,{
+              id:uuidv4(),
+              value:"",
+              name:inputNameRequired,type:"input"}])
+            setInputNameRequired(x => x ="")
+          }} className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm">{curentInputItem ? "Modifier" :"Ajouter"}  </div>
+   {curentInputItem &&       <div onClick={()=>{
+   
+   setInputNameRequired(x => x ="")
+   setCurentInputItem(x => x =null)
+ }} className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm">X</div>}
+
+</div>
+
+
+       </div>
       
+   {inputsRequired.map(item=>(
+   <div className="flex items-center justify-center p-2 border"> <p className="flex-1">{item.name}</p> <div className="flex"><div onClick={()=>{
+   
+    setInputNameRequired(x => x =item.name)
+    setCurentInputItem(x => x =item)
+  }} className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm">Modifier</div>
+  
+  <div onClick={()=>{
+
+setInputsRequired((current) =>
+current.filter((fruit) => fruit.id !== item.id)
+);
+
+setInputNameRequired(x => x ="")
+setCurentInputItem(x => x =null)
+
+ 
+ }} className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm">X</div>
+   </div>  </div>
+   ))}
+
+       
+    
+      </div>
+
       {/* Piece */}
-      <div className="flex self-end flex-col w-[580px] mt-4 space-y-2 border-2 p-4">
+      <hr />
+      <p className="mt-4 font-bold ">Les pièces à fournir</p>
+      <div className="flex flex-col self-end w-full p-4 mt-4 space-y-2 border-2">
       <div className="flex items-end justify-between mb-4 font-bold text-md">
         
         
