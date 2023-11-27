@@ -72,7 +72,7 @@ const MyDocument = ({ data }) => (
           width: "100%",
           flexDirection: "row",
           paddingHorizontal: 10,
-          marginTop: 10,
+          marginTop: 2,
         }}
       >
         <Image
@@ -105,7 +105,7 @@ const MyDocument = ({ data }) => (
           marginBottom:0,
           marginHorizontal:"auto",
           color:"#FFFFFF",
-          backgroundColor:"#00000067",
+          backgroundColor:"#000000",
           borderRadius:5
           
         }}
@@ -125,7 +125,7 @@ const MyDocument = ({ data }) => (
           marginBottom:12,
           marginHorizontal:"auto",
           color:"#FFFFFF",
-          backgroundColor:"#00000057",
+          backgroundColor:"#000000",
           borderRadius:5,
           maxLines:1,
           
@@ -189,7 +189,7 @@ const MyDocument = ({ data }) => (
               justifyContent: "space-between",
               width: "100%",
               flexDirection: "row",
-              marginTop: 10,
+              marginTop: 2,
               
             }}
           >
@@ -204,7 +204,7 @@ const MyDocument = ({ data }) => (
               justifyContent: "space-between",
               width: "100%",
               flexDirection: "row",
-              marginTop: 10,
+              marginTop: 2,
               
             }}
           >
@@ -221,7 +221,7 @@ const MyDocument = ({ data }) => (
               justifyContent: "space-between",
               width: "100%",
               flexDirection: "row",
-              marginTop: 10,
+              marginTop: 2,
               
             }}
           >
@@ -243,7 +243,7 @@ const MyDocument = ({ data }) => (
               justifyContent: "space-between",
               width: "100%",
               flexDirection: "row",
-              marginTop: 10,
+              marginTop: 2,
               
             }}
           >
@@ -261,7 +261,7 @@ const MyDocument = ({ data }) => (
               justifyContent: "space-between",
               width: "100%",
               flexDirection: "row",
-              marginTop: 10,
+              marginTop: 2,
               
             }}
           >
@@ -295,23 +295,34 @@ const MyDocument = ({ data }) => (
             borderWidth: "1px",
             padding:10,
             borderRadius:5,
-            height:"160px",
+           flexDirection:"row",
             display:"flex",
-            justifyContent:'space-between'
+            flexWrap:"wrap"
+        
           }}
         >
-          {InfoInput("Diplôme de nationalité", data?.diplome)}
-          {InfoInput("Filiere", data?.study)}
-          {InfoInput("Spécialité", data?.speciality)}
-          {InfoInput("Lieu d’optention du diplôme", data?.placeOfGraduation)}
-          {InfoInput("Pays d’optention du diplôme", data?.countryOfGraduation)}
-          {InfoInput("Numero du diplôme", data?.diplomeNumber)}
-          { data?.orderOfMagistrates !=""
-                && ( 
-                  InfoInput("Ordre Judiciaire / Ordre Administratif", data?.orderOfMagistrates == "0" ? "Ordre admnistratif" : "Ordre judiciaire")
-                  
-                 )
-                }
+
+{ 
+
+JSON.parse(data?.inputsRequired).map(item=>(
+
+   <View
+   style={{
+  minWidth:"48%"
+
+  }}
+   
+   >
+   {  InfoInput(item?.name, item?.value)}
+   </View>
+
+))
+          
+          
+          }
+
+         
+  
         </View>
         <View
           style={{
@@ -335,7 +346,7 @@ const MyDocument = ({ data }) => (
             borderWidth: "1px",
             padding:10,
             borderRadius:5,
-            height:"240px",
+           
             display:"flex",
             
           }}
@@ -354,21 +365,7 @@ JSON.parse(data?.filesRequired).map(item=>(
           
           
         </View>
-
-       {/*  <View style={{}}>
-          {data?.def.toString().includes("files/") &&
-            InfoInputFile("DEF", data?.def)}
-          {data?.bac.toString().includes("files/") &&
-            InfoInputFile("BAC", data?.bac)}
-          {data?.licence.toString().includes("files/") &&
-            InfoInputFile("LICENCE", data?.licence)}
-          {data?.maitrise.toString().includes("files/") &&
-            InfoInputFile("MAITRISE", data?.maitrise)}
-          {data?.master1.toString().includes("files/") &&
-            InfoInputFile("MASTER1", data?.master1)}
-          {data?.master2.toString().includes("files/") &&
-            InfoInputFile("MASTER2", data?.master2)}
-        </View> */}
+ 
       </View>
     </Page>
   </Document>
@@ -379,15 +376,17 @@ function InfoInput(label, value) {
     <View
       style={{
        
-        fontSize: "12px",
+        fontSize: "10px",
         display: "flex",
         flexDirection: "row",
-        justifyContent: "",
-        alignItems:"flex-center"
+        
+        alignItems:"flex-end",
+        marginBottom:2,
+        
       }}
     >
-      <Text style={{fontWeight:"black" ,fontSize:12}} >{label} :    </Text>
-      <Text style={{fontWeight:"thin" ,fontSize:12,color:"#1b1b1b"}} >{value}</Text>
+      <Text style={{fontWeight:"extrabold" ,fontSize:14}} >{label} :    </Text>
+      <Text style={{fontWeight:"normal" ,fontSize:12,color:"#1B1B1BD9"}} >{value}</Text>
     </View>
   );
 }
@@ -453,6 +452,7 @@ function UserPdfNew({ data, className = "" }) {
             onClick={(e) => 
               {
                 e.stopPropagation()
+                e.preventDefault()
                 generatePdfDocument(data)}
               }
               

@@ -100,8 +100,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
  
 
   const dataFilesArray = formData.get("dataFilesArray")!.toString();
+  const dataInputsArray = formData.get("dataInputsArray")!.toString();
   let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
   let dataFilesArrayUser:any[] =  [];
+  let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
  const val = await storeImage( formData.get("l")  as Blob | null)
 
 
@@ -154,7 +156,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
       certificate: certificateName,
      
       orderOfMagistrates: formData.get("orderOfMagistratesType")?.toString() ?? "",
-      filesRequired: JSON.stringify(dataFilesArrayUser)
+      filesRequired: JSON.stringify(dataFilesArrayUser),
+      inputsRequired: JSON.stringify(dataInputsArrayUser)
      
     },
   });

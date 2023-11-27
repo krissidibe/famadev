@@ -11,7 +11,7 @@ import { FaDownload } from "react-icons/fa";
 import { RiAlertLine, RiDeleteBin6Line } from "react-icons/ri";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AlertModalResponse from "@/components/Modals/AlertModalResponse";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef, useState,useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -120,7 +120,42 @@ function CandidatureItem({ data }) {
   const [equivalenceFile, setEquivalenceFile] = useState("");
 
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.filesRequired))));
+  const [dataInputs, setDataInputs] = useState(JSON.parse(JSON.parse(JSON.stringify(data.inputsRequired))));
 
+  const inputs = data.inputsRequired;
+useEffect(() => {
+  
+ 
+ setDataInputs(JSON.parse(inputs))
+
+  return () => {
+    
+  }
+}, [])
+
+
+const handleChangeInputRequired = (item,e) => {
+   
+    
+  const nextShapes = dataInputs.map(shape => {
+    if (shape.id != item.id) {
+      // No change
+      return shape;
+    } else {
+      // Return a new circle 50px below
+      return {
+        ...shape,
+        type:"input",
+        value: e,
+      };
+    }
+  });
+  // Re-render with the new array
+  setDataInputs(nextShapes); 
+
+  return;
+  
+};
 
   const handleChangeFileRequired = (item,e) => {
     
@@ -310,8 +345,8 @@ if (
    <div className="flex">
    
    
-  {data.filesRequired ==null && <UserPdf data={data} className="p-4 text-white bg-green-500" />}
-  {data.filesRequired !=null &&  <UserPdfNew data={data} className="p-4 text-white bg-green-500" />}
+ 
+  {<UserPdfNew data={data} className="p-4 text-white bg-green-500" />}
   
  {(data.canEdit  || (data.statut == 0 && new Date(data.competition.endDateAt) > new Date(Date.now()))) &&   <div onClick={()=>{
    setEditFile(x=> x =!x)
@@ -558,13 +593,28 @@ if (
               <CardTitle className="mt-4 mb-2">
                 Informations à propos du concours
               </CardTitle>
-              {/*   <CardDescription>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                at tincidunt neque. Pellentesque vitae commodo justo. Integer
-                tempor Pellentesque vitae Integer tempor
-              </CardDescription> */}
+              
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
-                <InputComponent
+              {dataInputs.length > 0 && dataInputs.map(item => ( 
+    
+    <InputComponent
+                    
+    value={item.value}
+    name={item}
+                    key={item.name}
+                    label={item.name}
+                    required={`${checkEdit ? "*" : ""}`}
+                    
+                    handleChange={(e) => {
+                      if(!checkEdit){
+                        return;
+                      }
+                      handleChangeInputRequired(item,e.target.value);
+                    }}
+                  />
+ 
+ ))}
+               {/*  <InputComponent
                     value={dataUser.diplome}
                   handleChange={(e) =>
                     setDataUser({ ...dataUser, diplome: e.target.value })
@@ -572,93 +622,9 @@ if (
                   readonly={!checkEdit}
                   key={47}
                   label="Diplôme"
-                    required={`${checkEdit ? "*" : ""}`}
+                   
                 />
-                <InputComponent
-                    value={dataUser.study}
-                  handleChange={(e) =>
-                    setDataUser({ ...dataUser, study: e.target.value })
-                  }
-                  readonly={!checkEdit}
-                  key={48}
-                  label="Filiere"
-                    required={`${checkEdit ? "*" : ""}`}
-                />
-                <InputComponent
-                    value={dataUser.speciality}
-                  handleChange={(e) =>
-                    setDataUser({ ...dataUser, speciality: e.target.value })
-                  }
-                  readonly={!checkEdit}
-                  key={49}
-                  label="Spécialité"
-                    required={`${checkEdit ? "*" : ""}`}
-                />
-                <InputComponent
-                  value={dataUser.placeOfGraduation}
-                  handleChange={(e) =>
-                    setDataUser({ ...dataUser, placeOfGraduation: e.target.value })
-                  }
-                  readonly={!checkEdit}
-                  key={50}
-                  label="Lieu d’optention du diplôme"
-                />
-                <InputComponent
-                  value={dataUser.countryOfGraduation}
-                  handleChange={(e) =>
-                    setDataUser({ ...dataUser, countryOfGraduation: e.target.value })
-                  }
-                  readonly={!checkEdit}
-                  key={51}
-                  label="Pays d’optention du diplôme"
-                />
-                <InputComponent
-                  value={dataUser.diplomeNumber}
-                  handleChange={(e) =>
-                    setDataUser({ ...dataUser, diplomeNumber: e.target.value })
-                  }
-                  readonly={!checkEdit}
-                  key={52}
-                  label="Numero du diplôme"
-                />
- 
-{data.competition.orderOfMagistrates == true   && (checkEdit ? (
-                     <div className="flex flex-col space-y-1.5">
-                     <Label htmlFor="name">
-                       <div className="flex space-x-2">
-                       <p>Ordre Judiciaire / Ordre Administratif </p> <p className="text-red-500">*</p>
-                       </div>
-                        </Label>
-                       <Select
-                         defaultValue={dataUser.orderOfMagistrates}
-                         onValueChange={(e) =>  setDataUser({ ...dataUser, orderOfMagistrates: e })}
-                       >
-                         <SelectTrigger>
-                           <SelectValue placeholder="--------" />
-                           <SelectContent position="popper">
-                            
-                             <SelectItem value="0">Ordre admnistratif</SelectItem>
-                             <SelectItem value="1">Ordre judiciaire</SelectItem>
-                           </SelectContent>
-                         </SelectTrigger>
-                       </Select>
-                       
-                     </div>
-                    ) : (
-                      <InputComponent
-                      value={
-                        user.orderOfMagistrates == "0"
-                          ? "Ordre admnistratif"
-                          : "Ordre judiciaire"
-                      }
-                      key={53}
-                      label="Ordre Judiciaire / Ordre Administratif"
-                    />
-                    ))}
-
-
-
- 
+               */}
               </div>
               <CardTitle className="mt-4 mb-2 text-blue-500">
                 Les pieces jointes
@@ -680,7 +646,7 @@ if (
                 handleChange={(e) => {
                   handleChangeFileRequired(item,e.target);
                 }}
-                key={21}
+                key={item.name}
                 inputType="file"
                 required="*"
                 label={item.name}

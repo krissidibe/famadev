@@ -51,7 +51,7 @@ async function Home({
   {
   
   new Date(file.data.endDateAt) > new Date(Date.now()) && 
-  file.data.statut == "1" ?  <ApplyItem data={{data:user,competitionId:params.competitionId,fileAttach:fileAttach,filesRequired: file.data.filesRequired}} />   : <div>
+  file.data.statut == "1" ?  <ApplyItem data={{data:user,competitionId:params.competitionId,fileAttach:fileAttach,filesRequired: file.data.filesRequired,inputsRequired: file.data.inputsRequired}} />   : <div>
     Non disponible
   </div>
 

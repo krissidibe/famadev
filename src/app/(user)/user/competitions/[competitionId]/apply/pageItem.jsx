@@ -50,7 +50,7 @@ import {
 import BackComponent from "@/components/BackComponent";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
-export default function ApplyItem(data, competitionId, fileAttach,filesRequired) {
+export default function ApplyItem(data, competitionId, fileAttach,filesRequired,inputsRequired) {
   const { data: session, status } = useSession();
   const [lastName, setLastName] = useState(data.data.data.lastName);
   const [firstName, setFirstName] = useState(data.data.data.firstName);
@@ -119,9 +119,41 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
 
 
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired))));
+  const [dataInputs, setDataInputs] = useState([]);
+const inputs = data.data.inputsRequired;
+useEffect(() => {
+  
+ 
+ setDataInputs(JSON.parse(inputs))
+
+  return () => {
+    
+  }
+}, [])
 
 
+  const handleChangeInputRequired = (item,e) => {
+   
+    
+    const nextShapes = dataInputs.map(shape => {
+      if (shape.id != item.id) {
+        // No change
+        return shape;
+      } else {
+        // Return a new circle 50px below
+        return {
+          ...shape,
+          type:"input",
+          value: e,
+        };
+      }
+    });
+    // Re-render with the new array
+    setDataInputs(nextShapes); 
 
+    return;
+    
+  };
   const handleChangeFileRequired = (item,e) => {
     
     
@@ -184,20 +216,8 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
 
     setIsLoading((x) => (x = false));
 
-   
-    if (orderOfMagistratesCheck == true) {
-      if (orderOfMagistratesType == "") {
-        clearInterval(interval);
-
-        showDialogClick.current.click();
-        setTitleModal((x) => (x = "Impossible"));
-        setModalData(
-          (x) => (x = "Veuillez renseigner les champs obligatoires (*)")
-        );
-      }
-    }
-
-    if (diplome == "" || study == "" || speciality == "") {
+ 
+  /*   if (diplome == "" || study == "" || speciality == "") {
       showDialogClick.current.click();
       clearInterval(interval);
 
@@ -207,7 +227,7 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
       );
 
       return;
-    }
+    } */
 
     const formData = new FormData();
 
@@ -220,6 +240,7 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
 
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
+      formData.append("dataInputsArray", JSON.stringify(dataInputs));
     formData.append("sexe", sexe);
     formData.append("nina", nina);
     formData.append("certificate", certificate);
@@ -249,34 +270,10 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
 
 
    
-  //  formData.append("dataFiles",  new File([dataFiles[0].value], "filename",{type:"image/jpg"}));
-  //  formData.append("dataFiles", JSON.stringify(dataFiles));
-
-    //Diplome
-    /* formData.append("defFile", defFile);
-    formData.append("bacFile", bacFile);
-    formData.append("licenceFile", licenceFile);
-    formData.append("maitriseFile", maitriseFile);
-    formData.append("master1File", master1File);
-    formData.append("master2File", master2File); */
-
-    /* 
-    body: JSON.stringify({
-        sexe,
-        nina,
-        certificate,
-        diplome,
-        diplomeNumber,
-        placeOfGraduation,
-        countryOfGraduation,
-        study,
-        speciality,
-        uid: session?.user?.email,
-        competitionId: data.data.competitionId,
-      }), */
+ 
 
       const url = data.filesRequired != null ? "candidature" : "candidatureold"
-    const res = await fetch(`/api/user/${url}`, {
+    const res = await fetch(`/api/user/candidature`, {
       body: formData,
       method: "POST",
     });
@@ -482,87 +479,49 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
             </CardHeader>
             <CardContent>
               <div className="grid items-center w-full gap-4">
-                <div className="grid gap-6 min-[1720px]:grid-cols-2">
-                  <InputComponent
-                    value={diplome}
-                    handleChange={(e) =>
-                      setDiplome((x) => (x = e.target.value))
-                    }
-                    key={10}
-                    label="Diplôme"
-                    required="*"
-                  />
-                  <InputComponent
-                    value={study}
-                    handleChange={(e) => setStudy((x) => (x = e.target.value))}
-                    key={11}
-                    label="Filiere"
-                    required="*"
-                  />
-                </div>
-                <div className="grid gap-6 min-[1720px]:grid-cols-2">
-                  <InputComponent
-                    value={speciality}
-                    handleChange={(e) =>
-                      setSpeciality((x) => (x = e.target.value))
-                    }
-                    key={12}
-                    label="Spécialité"
-                    required="*"
-                  />
-                  <InputComponent
-                    value={placeOfGraduation}
-                    handleChange={(e) =>
-                      setPlaceOfGraduation((x) => (x = e.target.value))
-                    }
-                    key={10}
-                    label="Lieu d’optention du diplôme"
-                  />
-                </div>
-                <div className="grid gap-6 min-[1720px]:grid-cols-2">
-                  <InputComponent
-                    value={countryOfGraduation}
-                    handleChange={(e) =>
-                      setCountryOfGraduation((x) => (x = e.target.value))
-                    }
-                    key={13}
-                    label="Pays d’optention du diplôme"
-                  />
-                  <InputComponent
-                    value={diplomeNumber}
-                    handleChange={(e) =>
-                      setDiplomeNumber((x) => (x = e.target.value))
-                    }
-                    key={14}
-                    label="Numero du diplôme"
-                  />
+               
 
-                  {orderOfMagistratesCheck && (
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="name">
-                        <div className="flex space-x-2">
-                          <p>Ordre Judiciaire / Ordre Administratif </p>{" "}
-                          <p className="text-red-500">*</p>
-                        </div>
-                      </Label>
-                      <Select
-                        // defaultValue={orderOfMagistratesType}
-                        onValueChange={(e) => setOrderOfMagistratesType(e)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="--------" />
-                          <SelectContent position="popper">
-                            <SelectItem value="">--------</SelectItem>
-                            <SelectItem value="0">
-                              Ordre admnistratif
-                            </SelectItem>
-                            <SelectItem value="1">Ordre judiciaire</SelectItem>
-                          </SelectContent>
-                        </SelectTrigger>
-                      </Select>
+
+              {dataInputs.length !=0 &&  <div className="grid gap-6 ">
+                
+                <div className="grid grid-cols-1 gap-6">
+ 
+                {dataInputs.map(item => ( 
+    
+    <InputComponent
+                    
+    value={item.value}
+    name={item}
+                    key={item.name}
+                    label={item.name}
+                    required="*"
+                    
+                    handleChange={(e) => {
+                      handleChangeInputRequired(item,e.target.value);
+                    }}
+                  />
+/*     <InputComponent
+    checkFileIcon={item.type != "file"}
+    name = {item.name}
+    handleChange={(e) => {
+      handleChangeFileRequired(item,e.target);
+    }}
+    key={21}
+    inputType="file"
+    required="*"
+    label={item.name}
+   // subLabel="Une copie d'acte de naissance ou  jugement supplétif en tenant lieu"
+  /> */
+ ))}
+                
                     </div>
-                  )}
-                </div>
+                 </div>}
+               
+               
+               
+               
+               
+               
                 <div className="py-4 mt-4 mb-4 border-t-2 border-black">
                   <CardTitle className="mb-2 text-blue-500">
                     Les pieces jointes
@@ -581,9 +540,9 @@ data.data.filesRequired
  
   
 
-               {data.data.filesRequired.length !=0 &&  <div className="grid gap-6 min-[1720px]:grid-cols-2">
+               {data.data.filesRequired.length !=0 &&  <div className="grid gap-6 ">
                 
-               <div className="grid gap-6 min-[1720px]:grid-cols-2">
+               <div className="grid grid-cols-1 gap-6">
 
                {JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired))).map(item => ( 
    
@@ -593,7 +552,7 @@ data.data.filesRequired
    handleChange={(e) => {
      handleChangeFileRequired(item,e.target);
    }}
-   key={21}
+   key={item.name}
    inputType="file"
    required="*"
    label={item.name}
@@ -603,195 +562,9 @@ data.data.filesRequired
                
                    </div>
                 </div>}
-               {data.data.filesRequired.length ==0 &&  <div className="grid gap-6 min-[1720px]:grid-cols-2">
-                  <InputComponent
-                    checkFileIcon={birthDateFile != ""}
-                    handleChange={(e) => {
-                      setBirthDateFile(e.target.files[0]);
-                    }}
-                    key={21}
-                    inputType="file"
-                    required="*"
-                    label="Une copie d'acte de naissance"
-                    subLabel="Une copie d'acte de naissance ou  jugement supplétif en tenant lieu"
-                  />
+             
 
-                  <InputComponent
-                    checkFileIcon={cassierFile != ""}
-                    handleChange={(e) => {
-                      setCassierFile(e.target.files[0]);
-                    }}
-                    key={22}
-                    inputType="file"
-                    required="*"
-                    label=" Un extrait du casier judiciaire"
-                    subLabel="Datant d'au moins de trois(3) mois"
-                  />
-
-                  <InputComponent
-                    checkFileIcon={certificatVie != ""}
-                    handleChange={(e) => {
-                      setCertificatVie(e.target.files[0]);
-                    }}
-                    key={23}
-                    inputType="file"
-                    required="*"
-                    label="Un certificat de bonne vie et moeurs"
-                    subLabel="Un certificat de bonne vie et moeurs valide"
-                  />
-
-                  <InputComponent
-                    checkFileIcon={certificate != ""}
-                    handleChange={(e) => {
-                      setCertificate(e.target.files[0]);
-                    }}
-                    key={24}
-                    inputType="file"
-                    required="*"
-                    label="Un certificat de nationalité malienne"
-                    subLabel="Un certificat valide"
-                  />
-
-                  <InputComponent
-                    checkFileIcon={diplomeFile != ""}
-                    handleChange={(e) => {
-                      setDiplomeFile(e.target.files[0]);
-                    }}
-                    key={25}
-                    inputType="file"
-                    required="*"
-                    label="Une copie certifiée conforme du diplome requis"
-                    subLabel="-"
-                  />
-                  <InputComponent
-                    checkFileIcon={certificatVisite != ""}
-                    handleChange={(e) => {
-                      setCertificatVisite(e.target.files[0]);
-                    }}
-                    key={26}
-                    inputType="file"
-                    required="*"
-                    label="Un certificat de visite et contre visite "
-                    subLabel="Délivré par une  autorité médicale agréée"
-                  />
-
-                  <InputComponent
-                    checkFileIcon={equivalenceFile != ""}
-                    handleChange={(e) => {
-                      setEquivalenceFile(e.target.files[0]);
-                    }}
-                    key={27}
-                    inputType="file"
-                    label="L'équivalence du diplômes requis pour les diplômes étrangers"
-                    subLabel=""
-                  />
-
-                  <InputComponent
-                    checkFileIcon={infoCardFile != ""}
-                    handleChange={(e) => {
-                      setInfoCardFile(e.target.files[0]);
-                    }}
-                    key={29}
-                    inputType="file"
-                    required="*"
-                    label="Une copie de la pièce d’identité en cours de validité"
-                    subLabel=""
-                  />
-
-                  <InputComponent
-                    checkFileIcon={ninaFile != ""}
-                    handleChange={(e) => {
-                      setNinaFile(e.target.files[0]);
-                    }}
-                    key={28}
-                    inputType="file"
-                    label="Une copie de la carte nina ou la fiche individuelle"
-                    subLabel="-"
-                  />
-
-                  <InputComponent
-                    checkFileIcon={demandeFile != ""}
-                    handleChange={(e) => {
-                      setDemandeFile(e.target.files[0]);
-                    }}
-                    key={30}
-                    inputType="file"
-                    required="*"
-                    label="Une demande manuscrite timbrée"
-                    subLabel="Timbrée à 200 F"
-                  />
-                </div>}
-
-                {/*     <div className="py-4 mt-4 mb-4 border-t-2 border-black ">
-                <CardTitle className="mb-2 text-green-500 ">
-                  Les Diplômes
-                </CardTitle>
-                <CardDescription>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  at tincidunt neque. Pellentesque vitae commodo justo. Integer
-                  tempor Pellentesque vitae Integer tempor
-                </CardDescription>
-              </div> */}
-
-                {/*   <div className="grid gap-6 md:grid-cols-2">
-
-                {defCheck == true &&  ( <InputComponent
-                  checkFileIcon={defFile != ""}
-                  handleChange={(e) => {
-                    setDefFile(e.target.files[0]);
-                  }}
-                  key={101}
-                  inputType="file"
-                  label="DEF"
-                />)  }
-                {bacCheck == true &&  ( <InputComponent
-                  checkFileIcon={bacFile != ""}
-                  handleChange={(e) => {
-                    setBacFile(e.target.files[0]);
-                  }}
-                  key={102}
-                  inputType="file"
-                  label="Bac"
-                />)  }
-                {licenceCheck == true &&  ( <InputComponent
-                  checkFileIcon={licenceFile != ""}
-                  handleChange={(e) => {
-                    setLicenceFile(e.target.files[0]);
-                  }}
-                  key={103}
-                  inputType="file"
-                  label="Licence"
-                />)  }
-                {maitriseCheck == true &&  ( <InputComponent
-                  checkFileIcon={maitriseFile != ""}
-                  handleChange={(e) => {
-                    setMaitriseFile(e.target.files[0]);
-                  }}
-                  key={109}
-                  inputType="file"
-                  label="Maitrise"
-                />)  }
-                {master1Check == true &&  ( <InputComponent
-                  checkFileIcon={master1File != ""}
-                  handleChange={(e) => {
-                    setMaster1File(e.target.files[0]);
-                  }}
-                  key={104}
-                  inputType="file"
-                  label="Master 1"
-                />)  }
-                {master2Check == true &&  ( <InputComponent
-                  checkFileIcon={master2File != ""}
-                  handleChange={(e) => {
-                    setMaster2File(e.target.files[0]);
-                  }}
-                  key={105}
-                  inputType="file"
-                  label="Master 2"
-                />)  }
-                
-              </div>
- */}
+               
               </div>
             </CardContent>
             <CardFooter className="flex justify-end">
