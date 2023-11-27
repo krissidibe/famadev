@@ -6,6 +6,7 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import parse from "html-react-parser";
 import DataTable from "react-data-table-component";
 import { useRouter } from "next/navigation";
+import UserPdfNew from "./PDF/UserPdfNew";
 
  
 
@@ -61,7 +62,7 @@ const columns = [
   {
     name: "Action",
    selector: (row) => row.id,
-   cell: row => ( <UserPdf data={row} className="h-10 p-0 text-center text-white bg-green-500  text-[12px] px-2  rounded-md  " />),
+   cell: row => ( <UserPdfNew data={row} className="h-10 p-0 text-center text-white bg-green-500  text-[12px] px-2  rounded-md  " />),
     /* cell: row => (<button onClick={()=>{
       alert("kkk")
     }} className={`p-1 text-white text-[12px] px-2 rounded-md   `} >récépissé</button>),
@@ -91,7 +92,7 @@ const mobileColumns = [
   {
     name: "Action",
    selector: (row) => row.id,
-   cell: row => ( <UserPdf data={row} className="h-10 p-0 text-center text-white bg-green-500  text-[12px] px-2  rounded-md  " />),
+   cell: row => ( <UserPdfNew data={row} className="h-10 p-0 text-center text-white bg-green-500  text-[12px] px-2  rounded-md  " />),
     /* cell: row => (<button onClick={()=>{
       alert("kkk")
     }} className={`p-1 text-white text-[12px] px-2 rounded-md   `} >récépissé</button>),

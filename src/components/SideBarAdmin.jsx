@@ -47,7 +47,7 @@ const SideBarAdmin = ({show=true,handleClick=()=>{
       {/*   <NavItem key={4} handleClick={handleClick} name="Profile" href="/admin/profile" Icon={UserIcon}  /> */}
        
       </div>
-      <NavItem key={5} name="Deconnexion"  handleClick={() => signOut()}   Icon={ArrowLeftIcon} className="mb-20" />
+      <NavItem key={5} name="Deconnexion"  handleClick={() => signOut()}   Icon={ArrowLeftIcon} className="mb-20 bg-red-700 opacity-70" />
       
     </div>
   );

@@ -22,11 +22,11 @@ const router = useRouter();
     <div  onClick={()=>{
       router.push(`/admin/candidatures/${data.id}/${data.title}`,{datas:data})
     }}   passHref legacyBehavior className="flex flex-col cursor-pointer rounded-lg   h-[558px] shadow-md mr-4 mt-4 ">
-      <div className="w-full rounded-t-lg h-1/2 bg-slate-600 ">
+      <div className="w-full bg-white rounded-t-lg h-1/2 ">
         
      <picture>
       
-     <img  src={imageUrl} alt="image" className="object-cover w-full h-full rounded-t-lg" />
+     <img  src="/images/people.png" alt="image" className="object-cover w-full h-full rounded-t-lg" />
      </picture>
       </div>
        
