@@ -26,7 +26,7 @@ async function Candidatures() {
       </div>
 
  
- 
+  
 
       {data.candidatures.length >0  &&   <DataUserCandidatureComponent datas={data}  />  }
    {data.candidatures.length <=0 &&  <div className="w-full p-4 mt-10 text-center border rounded-md">
