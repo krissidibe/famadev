@@ -29,33 +29,22 @@ const SideBarUser = ({ show = true, handleClick = () => {
   //  alert()
   return (
     <div
-      className={`bg-[#274472] text-white  md:w-[260px] w-full ${
+      className={`bg-[#052703] text-white  md:w-[260px] w-full ${
         canClose ? "" : "hidden"
       } md:flex  flex flex-col h-screen transition-all ease-in-out px-4 `}
     >
+     <div className="flex items-center justify-center w-auto mt-10 space-x-4 ">
         <Image
-            src="/images/Dnajml.png"
-            alt="me"
-            className="absolute top-0 left-0"
-            width="64"
-            height="64"
-          />
-      <div className="md:min-w-[450px] w-[353px] text-white items-center justify-between my-4 flex space-x-2">
-        <div className="flex items-center pl-10 space-x-4">
-          {/* <Image
-            src="/images/logo.png"
-            alt="me"
-            className=" left-20"
-            width="40"
-            height="40"
-          /> */}
-        <div className="flex flex-col">
-        <div className="text-xl border-b-2 border-white"><p>DNAJ</p></div>
-          <div className="text-xl font-bold text-[#50a1ef]"><p>CONCOURS</p></div>
-        </div>
-
+          src="/images/logo_fama.png"
+          alt="me"
+          className="cursor-pointer rounded-xl "
+          width={120}
+          height={120}
+        />
         
         </div>
+      <div className="md:min-w-[450px] w-[353px] text-white items-center justify-between my-2 flex space-x-2">
+       
         {show && (
           <XCircleIcon
             onClick={toogleClose}
@@ -93,9 +82,9 @@ const SideBarUser = ({ show = true, handleClick = () => {
           Icon={UserIcon}
         />
       </div>
-      <p className="mb-20 text-sm">
-          CONTACTS : 0023 76 16 49 33 / 67 04 44 85
-          </p>
+    {/*   <p className="mb-20 text-sm">
+          CONTACTS : 0023 70 60 50 50 / 70 00 00 00
+          </p> */}
       <NavItem
         key={5}
         name="Deconnexion"
@@ -125,13 +114,13 @@ function NavItem({ name, href = "", Icon, className = "", handleClick }) {
         }  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}
       >
         <Icon
-          className={`w-6 h-6  group-hover:text-blue-500 transition-all ease-in-out ${
-            router.includes(href) ? "text-blue-500" : "text-white"
+          className={`w-6 h-6   transition-all ease-in-out ${
+            router.includes(href) ? "text-[#123610]" : "text-white"
           }`}
-        />
+        /> 
         <p
-          className={`text-[16px]  group-hover:text-blue-500 transition-all ease-in-out ${
-            router.includes(href) ? "text-blue-500" : "text-white"
+          className={`text-[16px]    transition-all ease-in-out ${
+            router.includes(href) ? "text-[#123610]" : "text-white"
           }`}
         >
           {name}
@@ -148,16 +137,16 @@ function NavItem({ name, href = "", Icon, className = "", handleClick }) {
         }  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}
       >
         <Icon
-          className={`w-6 h-6  group-hover:text-blue-500 transition-all ease-in-out ${
+          className={`w-6 h-6    transition-all ease-in-out ${
             router.includes(href.split("/")[2])
-              ? "text-blue-500"
+              ? "text-[#123610]"
               : "text-white"
           }`}
         />
         <p
-          className={`text-[16px]  group-hover:text-blue-500 transition-all ease-in-out ${
+          className={`text-[16px]    transition-all ease-in-out ${
             router.includes(href.split("/")[2])
-              ? "text-blue-500"
+              ? "text-[#123610]"
               : "text-white"
           }`}
         >

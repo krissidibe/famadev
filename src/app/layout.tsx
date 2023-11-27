@@ -6,8 +6,8 @@ import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "DNAJ | SUPERADMIN",
-  description: "Direction nationale de l'administration de la justice",
+  title: "FAMA | CONCOURS",
+  description: "Défense et des anciens Combattants MDAC",
 };
 
 export default function RootLayout({

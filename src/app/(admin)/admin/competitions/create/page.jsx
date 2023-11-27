@@ -249,8 +249,7 @@ function CreateCompetition() {
         </h1>
         
         <h1 className="flex items-center justify-between font-bold text-md">
-        <p className="font-semibold text-md">Ordre des magistrats</p> <Switch checked={orderOfMagistrates}
-                      onCheckedChange={(x) =>setOrderOfMagistrates(x => x=!x)}   />
+        
         </h1>
 
        
@@ -288,6 +287,18 @@ function CreateCompetition() {
       </div>
 
 
+   
+
+
+
+
+
+
+      <p className="text-[14px] text-gray-500 mt-8">
+        <EditorComponent value={content} handleChange={(v) => setContent(v)} />
+      </p>
+      
+      {/* Piece */}
       <div className="flex self-end flex-col w-[580px] mt-4 space-y-2 border-2 p-4">
       <div className="flex items-end justify-between mb-4 font-bold text-md">
         
@@ -368,16 +379,6 @@ setCurentFileItem(x => x =null)
        
     
       </div>
-
-
-
-
-
-
-      <p className="text-[14px] text-gray-500 mt-8">
-        <EditorComponent value={content} handleChange={(v) => setContent(v)} />
-      </p>
-
       <div className="flex items-end justify-end w-full my-4">
         {!visible ? (
           <ButtonComponent

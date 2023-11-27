@@ -50,7 +50,7 @@ const SideBarSuperAdmin = ({ show = true, handleClick = () => {
             height="40"
           /> */}
         <div className="flex flex-col">
-        <div className="text-xl border-b-2 border-white"><p>DNAJ</p></div>
+        <div className="text-xl border-b-2 border-white"><p>FAMA</p></div>
           <div className="text-xl font-bold text-[#50a1ef]"><p>SuperAdmin</p></div>
         </div>
 

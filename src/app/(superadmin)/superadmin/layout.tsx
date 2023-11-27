@@ -37,14 +37,14 @@ export default async function AdminLayout({
         </div>
         <div className="flex flex-col flex-1">
           <div className="w-full h-[70px] p-4 relative bg-[#3582ca]  text-white flex shadow-xl items-center justify-end">
-          <Image
+        {/*   <Image
             src="/images/logo2.png"
             alt="me"
             className="absolute md:left-10 left-24"
             width="250"
             height="250"
           />
-
+ */}
           <div className="flex-col flex-1 hidden text-sm text-center md:flex">
             <p>REPUBLIQUE DU MALI</p>
             <p>Un Peuple - Un But - Une Foi</p>

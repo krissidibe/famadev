@@ -147,20 +147,24 @@ function page() {
         />
       <div className="flex flex-col items-center justify-between w-full h-full p-10 md:w-1/2 overscroll-y-auto ">
         <div className="md:min-w-[450px] mt-10 mb-10 justify-center w-[353px] items-center flex flex-col space-y-2">
-          <Image
-            src="/images/logo.png"
-            alt="me"
-            className=" left-20"
-            width="64"
-            height="64"
-          />
+         
           <div className="flex flex-col items-center justify-center w-full text-center ">
-            <p className="font-bold underline ">DNAJ</p>
+           
 
-            <p>Direction nationale de l'administration de la justice </p>
-            <p className="mt-10 text-2xl  text-[#50a1ef] bg-gray-50  w-full md:w-[420px]  p-4 rounded-md shadow-md font-bold uppercase">
+           <div className="font-normal leading-5 text-center md:font-bold">
+           <p>Ministère de la Défense et des Anciens Combattants</p>
+           <p>État-major Général des Armées</p>
+           </div>
+           <Image
+            src="/images/top_concours.png"
+            alt="me"
+            className="mt-14"
+            width="400"
+            height="400"
+          />
+           {/*  <p className="mt-10 text-2xl  text-[#50a1ef] bg-gray-50  w-full md:w-[420px]  p-4 rounded-md shadow-md font-bold uppercase">
               Portail CONCOURS
-            </p>
+            </p> */}
           </div>
         </div>
 
@@ -221,42 +225,23 @@ function page() {
         </Card>
         <div className="mt-4 text-black md:hidden text-md">Comment utiliser ce site</div>
 <div className="mb-0 text-black md:hidden text-md">Clique sur le lien pdf pour suivre les instructions</div>
-<a className="p-1 px-2 mt-2 text-white bg-black rounded-md cursor-pointer md:hidden" target="blank" href="/images/tuto.pdf"> <p>Explication</p> </a>
-        <p className="text-[12px] pb-8 text-gray-500 max-w-[420px] text-justify mt-10 mb-10">
-          Cette plateforme est une propriété du Ministère de la Justice et des
-          Droits de l'homme du Mali. Elle a pour but de faciliter aux candidats,
-          le dépôt des dossiers de candidature aux concours organisés par la
-          Direction Nationale de l'Administration de la Justice sans besoin de
-          se déplacer. Cependant , Toute fraude volontaire ou involontaire sur
-          ce site peut faire l'objet de poursuite judiciaire.
+<a className="p-1 px-2 mt-2 text-white bg-black rounded-md cursor-pointer md:hidden" target="blank" href="/images/tutos.pdf"> <p>Explication</p> </a>
+        <p className="text-[12px] text-center pb-8 text-gray-500 max-w-[420px]  mt-10 mb-10">
+        Cette plateforme est une propriété du Ministère de la Défense et des Anciens Combattants. Elle a pour but de faciliter aux candidats, le dépôt des dossiers de candidature
+ aux concours de recrutements organisés par État-major Général des Armées.
         </p>
       </div>
-      <div className="relative md:flex flex-col items-center justify-center hidden w-1/2 h-full bg-[#274472] ">
-        <Image
-          src="/images/logo2.png"
-          alt="me"
-          className="absolute left-10 top-10"
-          width="290"
-          height="290"
-        />
-
-        <div className="absolute flex-col flex-1 text-sm text-center text-white right-10 top-10 md:flex">
-          <p>REPUBLIQUE DU MALI</p>
-          <p>Un Peuple - Un But - Une Foi</p>
-        </div>
+      <div className="relative md:flex flex-col items-center justify-center hidden w-1/2 h-full bg-[#024010] ">
+       
+        
 
 <div className="mb-0 text-2xl text-white">Comment utiliser ce site   </div>
 <div className="mb-10 text-white text-md">Clique sur le fichier pdf pour suivre les instructions</div>
 
-        <div className="absolute flex-col flex-1 max-w-lg space-y-2 text-sm text-left text-white left-20 right-20 bottom-20 md:flex">
-          <p className="text-lg font-bold border-b-2">PORTAIL CONCOURS</p>
-          <p>
-          CONTACTS : 0023 76 16 49 33 / 67 04 44 85
-          </p>
-        </div>
-        <a target="blank" href="/images/tuto.pdf">
+        
+        <a target="blank" href="/images/tutos.pdf">
         <Image
-          src="/images/pdfimage.jpg"
+          src="/images/logo_fama.png"
           alt="me"
           className="cursor-pointer rounded-xl "
           width={300}
@@ -264,6 +249,11 @@ function page() {
         />
 
         </a>
+        <div className="mt-10 text-center text-white text-md">
+       <p> Direction des Transmissions, des Télécommunications </p>
+<p>et de l'Informatique des Armées  (DTTIA)</p>
+        </div>
+
         {/*  <Image
           className="object-cover w-full h-full"
           // loader={myLoader}

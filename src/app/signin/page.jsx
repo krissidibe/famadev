@@ -127,7 +127,7 @@ export default function Signin() {
 
   return (
     <div className="flex flex-1 w-screen h-screen bg-black ">
-      <div className="flex flex-col items-center w-full h-full p-10 overflow-y-scroll md:w-1/2 bg-gray-50">
+      <div className="flex flex-col items-center w-full h-full p-10 overflow-y-scroll md:w-full bg-gray-50">
         <AlertModalResponse
           title={modalTitle}
           refModal={showDialogClick}
@@ -141,22 +141,22 @@ export default function Signin() {
             }
           }}
         />
-        <div className="md:min-w-[450px] mt-10 mb-10 justify-center w-[353px] items-center flex flex-col space-y-2">
-          <Image
-            src="/images/logo.png"
+        <div className="md:w-full mt-10 mb-10 flex-col md:flex-row  border-b-[15px] pb-4 border-b-[#024010]  justify-between   items-center flex  space-y-2">
+        <Image
+            src="/images/top_concours.png"
             alt="me"
-            className=" left-20"
-            width="64"
-            height="64"
+            className=""
+            width="400"
+            height="400"
           />
           
-          <div className="flex flex-col items-center justify-center ">
-        <p className="font-bold underline ">DNAJ</p>
-          <p>Direction nationale de l'administration de la justice </p>
-        </div>
+          <div className="text-xs leading-5 text-center md:text-base">
+           <p>Ministère de la Défense et des Anciens Combattants</p>
+           <p>État-major Général des Armées</p>
+           </div>
         </div>
 
-        <Card className="max-w-[400px]  md:max-w-[500px]">
+        <Card className="max-w-full ">
           <CardTitle
             className="px-4 mt-4 text-sm cursor-pointer"
             onClick={() => {
@@ -170,7 +170,7 @@ export default function Signin() {
               <CardTitle>Inscription</CardTitle>
             </div>
             <CardDescription className="">
-           <p> Votre inscription sur cette plateforme vous donne le privilège de candidater aux différents concours organisés par la DNAJ. </p>
+           <p> Votre inscription sur cette plateforme vous donne le privilège de candidater aux différents concours organisés par la DDTIA. </p>
            <p>
            Donc rassurez-vous de remplir correctement le formulaire d'inscription ci-dessous  avec les informations fiables. En particulier votre adresse mail fournie doit être correcte et accessible permettant de vous contacter en cas de besoin.
            </p>
@@ -321,43 +321,7 @@ export default function Signin() {
           </CardFooter>
         </Card>
       </div>
-      <div className="relative md:flex flex-col items-center justify-center hidden w-1/2 h-full bg-[#274472] ">
-        <Image
-          src="/images/logo2.png"
-          alt="me"
-          className="absolute left-10 top-10"
-          width="290"
-          height="290"
-        />
-
-        <div className="absolute flex-col flex-1 text-sm text-center text-white right-10 top-10 md:flex">
-          <p>REPUBLIQUE DU MALI</p>
-          <p>Un Peuple - Un But - Une Foi</p>
-        </div>
-
-        <div className="absolute flex-col flex-1 max-w-lg space-y-2 text-sm text-left text-white left-20 right-20 bottom-20 md:flex">
-          <p className="text-lg font-bold border-b-2">PORTAIL CONCOURS</p>
-          <p>
-          CONTACTS : 0023 76 16 49 33 / 67 04 44 85
-          </p>
-        </div>
-        <Image
-          src="/images/111.png"
-          alt="me"
-          className=""
-          width={400}
-          height={400}
-        />
-
-        {/*  <Image
-          className="object-cover w-full h-full"
-          // loader={myLoader}
-          src="/images/meilleure-universite-africaine1.jpg"
-          alt="Picture of the author"
-          width={500}
-          height={500}
-        /> */}
-      </div>
+      
     {/*   <div className="relative flex flex-col items-center justify-between hidden w-1/2 h-full md:block bg-red-50">
       <Image
               src="/images/logo2.png"

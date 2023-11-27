@@ -579,8 +579,7 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired)
 data.data.filesRequired
 */}
  
- 
-{JSON.stringify(dataFiles)}
+  
 
                {data.data.filesRequired.length !=0 &&  <div className="grid gap-6 min-[1720px]:grid-cols-2">
                 

@@ -20,18 +20,20 @@ const SideBarAdmin = ({show=true,handleClick=()=>{
 
   //  alert()
   return (
-    <div className={`bg-neutral-800 md:w-[260px] w-full ${canClose  ? "" : "hidden"} md:flex  flex flex-col h-screen transition-all ease-in-out p-4 `}>
-      <div className="md:min-w-[450px] w-[353px] items-center justify-between my-4 flex space-x-2">
-     <div className="flex items-center space-x-4">
-     <Image
-          src="/images/logo.png"
+    <div className={`bg-[#052703] md:w-[260px] w-full ${canClose  ? "" : "hidden"} md:flex  flex flex-col h-screen transition-all ease-in-out p-4 `}>
+     
+     <div className="flex items-center justify-center w-auto mt-10 space-x-4 ">
+        <Image
+          src="/images/logo_fama.png"
           alt="me"
-          className=" left-20"
-          width="40"
-          height="40"
+          className="cursor-pointer rounded-xl "
+          width={120}
+          height={120}
         />
-        <p className="text-white" >DNAJ</p>
-     </div>
+        
+        </div>
+      <div className="md:min-w-[450px] w-[353px] items-center justify-between my-2 flex space-x-2">
+     
         { show &&
          <XCircleIcon   onClick={toogleClose}  className={ `cursor-pointer w-6 h-6 md:hidden self text-gray-500 group-hover:text-blue-500 transition-all ease-in-out hover:text-blue-500 hover:scale-110 `}   />
 
@@ -60,22 +62,54 @@ function NavItem({name,href = "",Icon,className="",handleClick}) {
      
 if(router == "/admin"){
   return (
-    <Link href={href} onClick={handleClick} className={`flex py-3 px-4 mb-4 space-x-2 ${ router.includes(href)  ? "bg-white" :""}  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}>
-     
-     
-    <Icon  className={`w-6 h-6  group-hover:text-blue-500 transition-all ease-in-out ${ router.includes(href)  ? "text-blue-500" :"text-gray-500"}`}   />
-      <p className={`text-[16px]  group-hover:text-blue-500 transition-all ease-in-out ${ router.includes(href)  ? "text-blue-500" :"text-gray-500"}`}>{name}</p>
-    </Link>
+    <Link
+        href={href}
+        onClick={handleClick}
+        className={`flex py-3 px-4 mb-4 space-x-2 ${
+          router.includes(href) ? "bg-white" : ""
+        }  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}
+      >
+        <Icon
+          className={`w-6 h-6   transition-all ease-in-out ${
+            router.includes(href) ? "text-[#123610]" : "text-white"
+          }`}
+        /> 
+        <p
+          className={`text-[16px]    transition-all ease-in-out ${
+            router.includes(href) ? "text-[#123610]" : "text-white"
+          }`}
+        >
+          {name}
+        </p>
+      </Link>
   );
 }
 else{
   return (
-    <Link href={href} onClick={handleClick} className={`flex py-3 px-4 mb-4 space-x-2 ${ router.includes(href.split("/")[2])  ? "bg-white" :""}  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}>
-     
-     
-    <Icon  className={`w-6 h-6  group-hover:text-blue-500 transition-all ease-in-out ${ router.includes(href.split("/")[2])  ? "text-blue-500" :"text-gray-500"}`}   />
-      <p className={`text-[16px]  group-hover:text-blue-500 transition-all ease-in-out ${ router.includes(href.split("/")[2])  ? "text-blue-500" :"text-gray-500"}`}>{name}</p>
-    </Link>
+    <Link
+        href={href}
+        onClick={handleClick}
+        className={`flex py-3 px-4 mb-4 space-x-2 ${
+          router.includes(href.split("/")[2]) ? "bg-white" : ""
+        }  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}
+      >
+        <Icon
+          className={`w-6 h-6    transition-all ease-in-out ${
+            router.includes(href.split("/")[2])
+              ? "text-[#123610]"
+              : "text-white"
+          }`}
+        />
+        <p
+          className={`text-[16px]    transition-all ease-in-out ${
+            router.includes(href.split("/")[2])
+              ? "text-[#123610]"
+              : "text-white"
+          }`}
+        >
+          {name}
+        </p>
+      </Link>
   );  return (
     <Link href={href} onClick={handleClick} className={`flex py-3 px-4 mb-4 space-x-2 ${ router.includes(href.split("/")[2])  ? "bg-white" :""}  cursor-pointer rounded-xl group transition-all ease-in-out ${className}`}>
      

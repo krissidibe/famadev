@@ -19,7 +19,7 @@ const ButtonComponent = ({label ,full = false ,href = "", handleClick = ()=>{}, 
     return (
    
       
-      <Button  className={`p-2 px-4   w-full rounded-md ${full ? "bg-blue-500 border-2 border-blue-100 text-white" : "border-blue-100 border-2 text-blue-100"} ${className}`}     type={type}  onClick={handleClick}   >{label}</Button>
+      <Button  className={`p-2 px-4   w-full rounded-md ${full ? "bg-[#024010] border-2 hover:bg-[#267438]   text-white" : "border-blue-100 border-2 text-blue-100"} ${className}`}     type={type}  onClick={handleClick}   >{label}</Button>
      
      )
   }
