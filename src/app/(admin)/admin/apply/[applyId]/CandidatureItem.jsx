@@ -223,40 +223,27 @@ function CandidatureItem({ datas }) {
                 tempor Pellentesque vitae Integer tempor
               </CardDescription> */}
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
-                <InputComponent
-                  value={result.diplome}
-                  key={7}
-                  label="Diplôme"
-                />
-                <InputComponent value={result.study} key={8} label="Filiere" />
-                <InputComponent
-                  value={result.speciality}
-                  key={9}
-                  label="Spécialité"
-                />
-                <InputComponent
-                  value={result.placeOfGraduation}
-                  key={10}
-                  label="Lieu d’optention du diplôme"
-                />
-                <InputComponent
-                  value={result.countryOfGraduation}
-                  key={11}
-                  label="Pays d’optention du diplôme"
-                />
-                <InputComponent
-                  value={result.diplomeNumber}
-                  key={12}
-                  label="Numero du diplôme"
-                />
+             
+                 { JSON.parse(result.inputsRequired).map(item => ( 
+    
+    <InputComponent
+                    
+    value={item.value}
+    name={item}
+                    key={item.name}
+                    label={item.name}
+                   
+                    
+                   
+                  />
+ 
+ ))}  
 
-{ result.orderOfMagistrates !=""
-                && (  <InputComponent
-                  value={result.orderOfMagistrates == "0" ? "Ordre admnistratif" : "Ordre judiciaire"} 
-                  key={12}
-                  label="Ordre Judiciaire / Ordre Administratif"
-                />)
-                }
+ 
+            
+               
+
+ 
               </div>
 
               <CardTitle className="mt-4 mb-2 text-blue-500">

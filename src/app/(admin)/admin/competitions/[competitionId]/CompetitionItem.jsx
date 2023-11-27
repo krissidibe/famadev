@@ -288,10 +288,7 @@ function CompetitionItem({ params, data }) {
          />
        </h1>
        
-      <h1 className="flex items-center justify-between font-bold text-md">
-        <p className="font-semibold text-md">Ordre des magistrats</p> <Switch checked={orderOfMagistrates}
-                      onCheckedChange={(x) =>setOrderOfMagistrates(x => x=!x)}   />
-        </h1>
+     
       {/*   
         <h1 className="font-bold text-md">
           Les documents a fournir pour le concours
