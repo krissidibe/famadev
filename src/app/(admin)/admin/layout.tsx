@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOption";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 /* const inter = Inter({ subsets: ['latin'] })
  */
 export const metadata = {
@@ -42,15 +43,11 @@ export default async function AdminLayout({
 
 <div className="flex-col flex-1 hidden text-sm text-center md:flex">
             <p>Ministère de la Défense et des Anciens Combattants</p>
-            <p>UÉtat-major Général des Armées</p>
+            <p>État-major Général des Armées</p>
           </div>
 
             <div className="flex items-center">
-              <p className="mr-4 text-sm">{session?.user?.email} </p>
-
-              <picture className="self-center w-12 h-12 bg-white rounded-full shadow-md md:self-start">
-                {/*  <img src={"https://picsum.photos/300/200?random=10"} alt="image" className="object-cover w-full h-full rounded-lg rounded-t-lg white" /> */}
-              </picture>
+           
             </div>
           </div>
           <div className="flex-1 w-full h-full p-4 overflow-y-scroll md:p-10 ">

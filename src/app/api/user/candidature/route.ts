@@ -177,7 +177,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       id: data.id,
     },
     data: {
-      numeroRef: `DNAJ${dataFormat}${competition.letterNumber?.toUpperCase()}${strNumber.toString().padStart(6, "0")}`,
+      numeroRef: `FAMA${dataFormat}${competition.letterNumber?.toUpperCase()}${strNumber.toString().padStart(6, "0")}`,
     },
   });
 

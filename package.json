@@ -9,7 +9,8 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "dbprismamig": "prisma migrate dev",
-    "dbprismastudio": "prisma studio"
+    "dbprismastudio": "prisma studio",
+    "dbpush": "prisma db push"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",

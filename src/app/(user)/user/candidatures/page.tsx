@@ -27,9 +27,14 @@ async function Candidatures() {
 
  
  
+
+      {data.candidatures.length >0  &&   <DataUserCandidatureComponent datas={data}  />  }
+   {data.candidatures.length <=0 &&  <div className="w-full p-4 mt-10 text-center border rounded-md">
+    Il n'y a aucun enregistrement à afficher
+   </div>  }
  
    
-   <DataUserCandidatureComponent datas={data}  />   
+  
     </div>
   )
 }

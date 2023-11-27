@@ -53,20 +53,16 @@ export default async function AdminLayout({
 
           <div className="flex-col flex-1 hidden text-sm text-center md:flex">
             <p>Ministère de la Défense et des Anciens Combattants</p>
-            <p>UÉtat-major Général des Armées</p>
+            <p>État-major Général des Armées</p>
           </div>
             <MenuComponent />
             <div className="items-center justify-center hidden md:flex">
-              <p className="mr-4 text-sm">
-           
-                {session?.user?.email}{" "}
-              </p>
-
+              
               <Avatar>
                 <AvatarImage
                   src={`${process.env.BASE_URL}${session?.user?.image}`}
                 />
-                <AvatarFallback>CN</AvatarFallback>
+              <img src="/images/user1.png" alt=""    />
               </Avatar>
             </div>
           </div>
