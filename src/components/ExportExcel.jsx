@@ -83,11 +83,7 @@ function ExportExcel({datas} ) {
         key: "admin",
         width: 40,
       },
-      {
-        header: "Ordre Judiciaire / Ordre Administratif",
-        key: "orderOfMagistrates",
-        width: 40,
-      },
+      
 
       
       {
@@ -146,7 +142,7 @@ function ExportExcel({datas} ) {
         statut: statutOptions[item.statut].label,
         message: item.message,
         admin: item.admin,
-        orderOfMagistrates: orderOptions[item.orderOfMagistrates] ,
+       
         updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY") ,
       });
     });

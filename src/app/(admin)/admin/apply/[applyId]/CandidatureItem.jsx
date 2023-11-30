@@ -49,12 +49,12 @@ function CandidatureItem({ datas }) {
       color: "bg-yellow-500",
     },
     {
-      label: "Valider",
+      label: "Validé",
       value: 1,
       color: "bg-green-500",
     },
     {
-      label: "refuser",
+      label: "Refusé",
       value: 3,
       color: "bg-red-500",
     },
@@ -380,8 +380,8 @@ function CandidatureItem({ datas }) {
                     <SelectValue placeholder="Sexe" />
                     <SelectContent position="popper">
                       <SelectItem value="0">En attente de traitement</SelectItem>
-                      <SelectItem value="1">Valider</SelectItem>
-                      <SelectItem value="2">refuser</SelectItem>
+                      <SelectItem value="1">Validé</SelectItem>
+                      <SelectItem value="2">Refusé</SelectItem>
                     </SelectContent>
                   </SelectTrigger>
                 </Select>

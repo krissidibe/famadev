@@ -62,12 +62,12 @@ function CandidatureItem({ data }) {
       color: "bg-yellow-500",
     },
     {
-      label: "Valider",
+      label: "Validé",
       value: 1,
       color: "bg-green-500",
     },
     {
-      label: "refuser",
+      label: "Refusé",
       value: 3,
       color: "bg-red-500",
     },
