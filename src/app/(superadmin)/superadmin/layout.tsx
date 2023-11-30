@@ -13,7 +13,7 @@ import Image from "next/image";
 /* const inter = Inter({ subsets: ["latin"] });
  */
 export const metadata = {
-  title: "DNAJ | Concours",
+  title: "FAMA | Concours",
   description: "Direction nationale de l'administration de la justice",
 };
 

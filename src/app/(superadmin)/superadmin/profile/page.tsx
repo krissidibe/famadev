@@ -79,12 +79,7 @@ function page() {
             <div className="flex items-center mb-4 space-x-4">
               <CardTitle>Inscription</CardTitle>
             </div>
-            <CardDescription className="">
-           <p> Votre inscription sur cette plateforme vous donne le privilège de candidater aux différents concours organisés par la DNAJ. </p>
-           <p>
-           Donc rassurez-vous de remplir correctement le formulaire d'inscription ci-dessous  avec les informations fiables. En particulier votre adresse mail fournie doit être correcte et accessible permettant de vous contacter en cas de besoin.
-           </p>
-            </CardDescription>
+          
           </CardHeader>
           <CardContent>
             <form>

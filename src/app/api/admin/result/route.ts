@@ -1,11 +1,11 @@
+"use client"
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../utils/prisma";
 import bcrypt from "bcryptjs";
 import fs from "fs";
 import { stat, mkdir, writeFile } from "fs/promises";
 import path, { join } from "path";
-import storeImage from "@/utils/addImageHelper";
-import { useSession } from "next-auth/react";
+import storeImage from "@/utils/addImageHelper"; 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
  
