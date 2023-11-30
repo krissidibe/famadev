@@ -1,6 +1,7 @@
 import ButtonComponent from "@/components/ButtonComponent";
 import CompetitionCardAdminComponent from "@/components/CompetitionCardAdminComponent";
 import React from "react";
+import DeleteBtn from "./deleteBtn";
 
 async function ResultsPage() {
   const res = await fetch(`${process.env.BASE_URL}/api/admin/result`, {
@@ -18,16 +19,7 @@ async function ResultsPage() {
         />
       </div>
 
-      {/* 
-        <a
-            target="_blank"
-            href={`${process.env.BASE_URL}${result}`}
-            className="flex items-center justify-between flex-1 space-x-2"
-          >
-            <p className="text-sm">Télécharger </p>
-            <FaDownload className="h-12 mr-4" />
-          </a>
-      */}
+ 
 
       <div className="flex flex-col items-center w-full gap-3 ">
         {datas.map((data) => (
@@ -41,12 +33,7 @@ async function ResultsPage() {
               {data.content}  
             </div>
             <div className="flex self-end gap-3">
-            <div
-            
-            className="p-2 text-xs text-white bg-red-700 rounded-lg opacity-100 cursor-pointer">
-            Supprimer
-            
-            </div>
+            <DeleteBtn id={data.id} />
             <a 
              target="_blank"
              href={`${process.env.BASE_URL}${data.files}`}

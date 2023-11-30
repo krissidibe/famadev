@@ -98,3 +98,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
 }
 
  
+
+export async function DELETE(req: NextRequest, res: NextResponse) {
+   
+  const data = await prisma.results.delete({
+    where: {
+      id: req.nextUrl.searchParams.get("id")?.toString(),
+    },
+  });
+  return new Response(
+    JSON.stringify({ user: data, message: "Le concours est supprimer" })
+  );
+}

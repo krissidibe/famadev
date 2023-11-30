@@ -10,7 +10,7 @@ import { AiFillPicture } from "react-icons/ai";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar ,CalendarChangeEvent} from "primereact/calendar";
 import { convertToHTML } from 'draft-convert';
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
   
 function CreateResult() {
@@ -22,7 +22,7 @@ function CreateResult() {
   const [content, setContent] = useState("");
   const { data: session, status } = useSession()
   const [statut, setStatutSelect] = useState( { name: "Non", code: "0" },);
- 
+ const router = useRouter()
   const statutData = [
     { name: "Non", code: "0" },
     { name: "Oui", code: "1" },
@@ -51,10 +51,14 @@ function CreateResult() {
     }) 
 
     const data = await res.json()
+    console.log("data");
     console.log(data);
-    if(data.ok){
-
-      redirect("/admin/resultats/")
+    console.log("data");
+    if(data.user != null){
+      
+      router.refresh()
+      router.push("/admin/resultats")
+    
     }
   };
 
@@ -86,7 +90,7 @@ function CreateResult() {
       }}
       />
 
-      <div className="flex w-full gap-4 my-4">
+    {/*   <div className="flex w-full gap-4 my-4">
         <div className="flex flex-col w-full">
           <p className="text-[14px] text-gray-500 font-semibold mb-2  overflow-ellipsis">
             Public
@@ -101,7 +105,7 @@ function CreateResult() {
           />
         </div>
       
-      </div>
+      </div> */}
       
  
    
