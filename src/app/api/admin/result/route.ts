@@ -1,4 +1,4 @@
-"use client"
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../utils/prisma";
 import bcrypt from "bcryptjs";
