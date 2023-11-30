@@ -220,7 +220,7 @@ function page() {
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Label>Mot de passe oublier ?</Label>
+            <Label>Mot de passe oublié ?</Label>
           </CardFooter>
         </Card>
         <div className="mt-4 text-black md:hidden text-md">Comment utiliser ce site</div>
@@ -228,7 +228,7 @@ function page() {
 <a className="p-1 px-2 mt-2 text-white bg-black rounded-md cursor-pointer md:hidden" target="blank" href="/images/tutos.pdf"> <p>Explication</p> </a>
         <p className="text-[12px] text-center pb-8 text-gray-500 max-w-[420px]  mt-10 mb-10">
         Cette plateforme est une propriété du Ministère de la Défense et des Anciens Combattants. Elle a pour but de faciliter aux candidats, le dépôt des dossiers de candidature
- aux concours de recrutements organisés par État-major Général des Armées.
+ aux concours de recrutements organisés par les differents États-majors, Directions et Services Général des Armées.
         </p>
       </div>
       <div className="relative md:flex flex-col items-center justify-center hidden w-1/2 h-full bg-[#024010] ">
@@ -249,7 +249,14 @@ function page() {
         />
 
         </a>
-        <div className="mt-10 text-center text-white text-md">
+        <div className="mt-[100px] text-center text-white text-[12px]">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
        <p> Direction des Transmissions, des Télécommunications </p>
 <p>et de l'Informatique des Armées  (DTTIA)</p>
         </div>

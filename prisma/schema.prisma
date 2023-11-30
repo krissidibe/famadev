@@ -57,9 +57,38 @@ model User {
   updatedAt     DateTime?     @db.Date
   emailVerified Boolean       @default(false)
   role          UserRole      @default(USER)
+  adminRole     String?
   accounts      Account[]
   candidatures  Candidature[]
   sessions      Session[]
+  results      Results[]
+}
+
+
+model roles {
+  id           String        @id @default(cuid())
+  title        String
+  content      String?       @db.LongText 
+ 
+  active          Boolean?      @default(true)
+ 
+  createdAt    DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime?     @db.Date 
+}
+
+
+model Results {
+  id           String        @id @default(cuid())
+  title        String
+  content      String?       @db.LongText 
+   files        String?
+  public          Boolean?      @default(false)
+ 
+  createdAt    DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime?     @db.Date 
+  authorId            String
+  author              User        @relation(fields: [authorId], references: [id]) 
+ 
 }
 
 model Competition {

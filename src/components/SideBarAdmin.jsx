@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter ,usePathname} from 'next/navigation';
 import { useSession, signOut } from "next-auth/react";
 import { HomeIcon,BookOpenIcon,UserIcon,AcademicCapIcon,ArrowLeftIcon ,XCircleIcon} from '@heroicons/react/24/solid'
+import { ListIcon } from "lucide-react";
 const SideBarAdmin = ({show=true,handleClick=()=>{
 
    useRouter().refresh();
@@ -44,6 +45,7 @@ const SideBarAdmin = ({show=true,handleClick=()=>{
         <NavItem key={1} handleClick={handleClick} name="Tableau de bord"  href="/admin" Icon={HomeIcon} />
         <NavItem key={2} handleClick={handleClick} name="Concours" href="/admin/competitions"  Icon={BookOpenIcon} />
         <NavItem key={3} handleClick={handleClick} name="Candidatures" href="/admin/candidatures"  Icon={AcademicCapIcon} />
+        <NavItem key={3} handleClick={handleClick} name="Résultats" href="/admin/resultats"  Icon={ListIcon} />
       {/*   <NavItem key={4} handleClick={handleClick} name="Profile" href="/admin/profile" Icon={UserIcon}  /> */}
        
       </div>

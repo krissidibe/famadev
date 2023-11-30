@@ -65,7 +65,8 @@ export default function Signin() {
   const [modalTitle, setModalTitle] = useState("");
   const [modalData, setModalData] = useState("");
   const router = useRouter();
-  const createUser = async () => {
+  const createUser = async (e) => {
+    e.preventDefault()
     
     //dayjs(date).format("DD/MM/YYYY")
 
@@ -137,11 +138,11 @@ export default function Signin() {
             if(modalTitle == "Le compte est créé"){
 
             // router.refresh();
-             router.back();
+             router.replace("/");
             }
           }}
         />
-        <div className="md:w-full mt-10 mb-10 flex-col md:flex-row  border-b-[15px] pb-4 border-b-[#024010]  justify-between   items-center flex  space-y-2">
+        <div className="w-full mt-10 mb-10 flex-col md:flex-row  border-b-[15px] pb-0 border-b-[#024010]  justify-between   items-center flex  space-y-2">
         <Image
             src="/images/top_concours.png"
             alt="me"
@@ -152,11 +153,11 @@ export default function Signin() {
           
           <div className="text-xs leading-5 text-center md:text-base">
            <p>Ministère de la Défense et des Anciens Combattants</p>
-           <p>État-major Général des Armées</p>
+           <p>État-Major Général des Armées</p>
            </div>
         </div>
-
-        <Card className="max-w-full ">
+        <form  onSubmit={createUser} className="w-full">
+        <Card className="w-full ">
           <CardTitle
             className="px-4 mt-4 text-sm cursor-pointer"
             onClick={() => {
@@ -169,15 +170,10 @@ export default function Signin() {
             <div className="flex items-center mb-4 space-x-4">
               <CardTitle>Inscription</CardTitle>
             </div>
-            <CardDescription className="">
-           <p> Votre inscription sur cette plateforme vous donne le privilège de candidater aux différents concours organisés par la DDTIA. </p>
-           <p>
-           Donc rassurez-vous de remplir correctement le formulaire d'inscription ci-dessous  avec les informations fiables. En particulier votre adresse mail fournie doit être correcte et accessible permettant de vous contacter en cas de besoin.
-           </p>
-            </CardDescription>
+             
           </CardHeader>
           <CardContent>
-            <form>
+         
               <div className="grid items-center w-full gap-4">
                 <div className="grid gap-6 md:grid-cols-2">
                   <InputComponent
@@ -215,6 +211,8 @@ export default function Signin() {
                     label="Email"
                     required="*"
                     inputType="email"
+                    
+                    
                   />
                   <InputComponent
                     value={number}
@@ -308,18 +306,20 @@ export default function Signin() {
                   />
                 </div>
               </div>
-            </form>
+          
           </CardContent>
           <CardFooter className="flex justify-end">
             <ButtonComponent
-              handleClick={createUser}
+            //  handleClick={createUser}
               key={8}
               label="Créer le compte"
               full={true}
+              type="submit"
               className="self-end w-full mt-4 md:w-[200px]"
             />
           </CardFooter>
         </Card>
+        </form>
       </div>
       
     {/*   <div className="relative flex flex-col items-center justify-between hidden w-1/2 h-full md:block bg-red-50">

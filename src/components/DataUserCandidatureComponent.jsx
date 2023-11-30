@@ -156,7 +156,7 @@ export default function DataUserCandidatureComponent({datas}) {
   return (
     <div className="w-screen md:w-full md:p-4 ">
       <p>Retrouvez ci-dessous la liste  de vos candidatures. Vous pouvez  consulter votre candidature en cliquant sur un enregistrement ou télécharger le récépissé</p>
-      <div className="hidden w-full md:max-w-full md:block">
+      <div className="hidden md:w-full w-[93%] md:max-w-full md:block">
         {" "}
         <DataTable
           pagination
@@ -197,7 +197,7 @@ export default function DataUserCandidatureComponent({datas}) {
           }}
         />
       </div>
-      <div className="w-full md:hidden">
+      <div className="w-[93%] md:hidden">
         {" "}
         <DataTable
           pagination

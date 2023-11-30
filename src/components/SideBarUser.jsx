@@ -13,6 +13,7 @@ import {
   ArrowLeftIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
+import { ListIcon } from "lucide-react";
 const SideBarUser = ({ show = true, handleClick = () => {
   useRouter().refresh();
 
@@ -30,10 +31,10 @@ const SideBarUser = ({ show = true, handleClick = () => {
   return (
     <div
       className={`bg-[#052703] text-white  md:w-[260px] w-full ${
-        canClose ? "" : "hidden"
+        canClose ? "flex" : "hidden"
       } md:flex  flex flex-col h-screen transition-all ease-in-out px-4 `}
     >
-     <div className="flex items-center justify-center w-auto mt-10 space-x-4 ">
+     <div className="flex items-center justify-center w-auto space-x-4 md:mt-10 ">
         <Image
           src="/images/logo_fama.png"
           alt="me"
@@ -43,12 +44,16 @@ const SideBarUser = ({ show = true, handleClick = () => {
         />
         
         </div>
+        <div className="flex-col text-[13px]   my-5 mb-0 md:hidden  text-center md:text-sm ">
+            <p>Ministère de la Défense et des Anciens Combattants</p>
+            <p>État-Major Général des Armées</p>
+          </div>
       <div className="md:min-w-[450px] w-[353px] text-white items-center justify-between my-2 flex space-x-2">
        
         {show && (
           <XCircleIcon
             onClick={toogleClose}
-            className={`cursor-pointer w-6 h-6 md:hidden self text-gray-500 group-hover:text-blue-500 transition-all ease-in-out hover:text-blue-500 hover:scale-110 `}
+            className={`cursor-pointer w-6 h-6 md:hidden self text-white group-hover:text-blue-500 transition-all ease-in-out hover:text-green-500 hover:scale-110 `}
           />
         )}
       </div>
@@ -77,11 +82,19 @@ const SideBarUser = ({ show = true, handleClick = () => {
         <NavItem
           key={4}
           handleClick={handleClick}
+          name="Résultats"
+          href="/user/resultats"
+          Icon={ListIcon}
+        />
+        <NavItem
+          key={4}
+          handleClick={handleClick}
           name="Profile"
           href="/user/profile"
           Icon={UserIcon}
         />
       </div>
+      
     {/*   <p className="mb-20 text-sm">
           CONTACTS : 0023 70 60 50 50 / 70 00 00 00
           </p> */}
@@ -91,7 +104,7 @@ const SideBarUser = ({ show = true, handleClick = () => {
         
         handleClick={() => signOut()}
         Icon={ArrowLeftIcon}
-        className="mb-20 bg-red-700 opacity-70"
+        className="mb-10 bg-red-700 opacity-70"
       />
    {/*    <button   onClick={() => signOut()}>Deconnexion </button> */}
     </div>

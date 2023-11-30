@@ -12,6 +12,9 @@
 /.next/
 /out/
 /public/files/
+/public/files
+/public/files/
+/files/
 
 # production
 /build

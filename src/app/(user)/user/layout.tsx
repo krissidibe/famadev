@@ -35,7 +35,7 @@ export default async function AdminLayout({
       <body className="flex flex-1 w-full h-screen">
         <ModalInfo title="Alert" body="kris" />
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex">
           <SideBarUser />
         </div>
         <div className="flex flex-col flex-1">
@@ -47,15 +47,27 @@ export default async function AdminLayout({
             width="250"
             height="250"
           /> */}
+           
  
 
 
-
-          <div className="flex-col flex-1 hidden text-sm text-center md:flex">
+          <div className="flex-col flex-1 text-[10px] ml-14 md:ml-0 text-center md:text-sm md:flex">
             <p>Ministère de la Défense et des Anciens Combattants</p>
-            <p>État-major Général des Armées</p>
+            <p>État-Major Général des Armées</p>
           </div>
-            <MenuComponent />
+
+
+
+          <Image
+          src="/images/logo_fama.png"
+          alt="me"
+          className="cursor-pointer rounded-xl md:hidden"
+          width={50}
+          height={50}
+        />
+         <div className="absolute inset-0 top-0">
+         <MenuComponent />
+         </div>
             <div className="items-center justify-center hidden md:flex">
               
               <Avatar>
@@ -66,7 +78,7 @@ export default async function AdminLayout({
               </Avatar>
             </div>
           </div>
-          <div className="h-full p-4 overflow-y-scroll md:p-10 ">
+          <div className="w-screen h-full p-4 overflow-y-scroll md:w-full md:p-10 ">
             {children}
           </div>
         </div>
