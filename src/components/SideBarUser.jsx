@@ -89,7 +89,7 @@ const SideBarUser = ({ show = true, handleClick = () => {
         <NavItem
           key={4}
           handleClick={handleClick}
-          name="Profile"
+          name="Profil"
           href="/user/profile"
           Icon={UserIcon}
         />

@@ -2,8 +2,10 @@ import ButtonComponent from "@/components/ButtonComponent";
 import CompetitionCardAdminComponent from "@/components/CompetitionCardAdminComponent";
 import React from "react";
 import DeleteBtn from "./deleteBtn";
-
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOption";
 async function ResultsPage() {
+  const session = await getServerSession(authOptions)
   const res = await fetch(`${process.env.BASE_URL}/api/admin/result`, {
     cache: "no-store",
   });

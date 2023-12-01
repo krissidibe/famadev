@@ -15,6 +15,7 @@
 /public/files
 /public/files/
 /files/
+/files
 
 # production
 /build
