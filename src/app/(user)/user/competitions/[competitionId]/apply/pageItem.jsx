@@ -50,7 +50,14 @@ import {
 import BackComponent from "@/components/BackComponent";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
-export default function ApplyItem(data, competitionId, fileAttach,filesRequired,inputsRequired,groupsRequired) {
+export default function ApplyItem(
+  data,
+  competitionId,
+  fileAttach,
+  filesRequired,
+  inputsRequired,
+  groupsRequired
+) {
   const { data: session, status } = useSession();
   const [lastName, setLastName] = useState(data.data.data.lastName);
   const [firstName, setFirstName] = useState(data.data.data.firstName);
@@ -108,7 +115,7 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired,
   const [titleModal, setTitleModal] = useState("");
   const [modalData, setModalData] = useState("");
   const dataAttach = JSON.parse(`${router.get("fileAttach")}`);
- 
+
   const defRef = useRef(null);
   const [defFile, setDefFile] = useState("");
   const [bacFile, setBacFile] = useState("");
@@ -117,28 +124,23 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired,
   const [master1File, setMaster1File] = useState("");
   const [master2File, setMaster2File] = useState("");
 
-
-  const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired))));
+  const [dataFiles, setDataFiles] = useState(
+    JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired)))
+  );
   const [dataInputs, setDataInputs] = useState([]);
   const [dataGroups, setDataGroups] = useState([]);
-const groups = data.data.groupsRequired;
-const inputs = data.data.inputsRequired;
-useEffect(() => {
-  
- 
- setDataInputs(JSON.parse(inputs))
- setDataGroups(JSON.parse(groups))
+  const [selectDataGroups, setSelectDataGroups] = useState();
+  const groups = data.data.groupsRequired;
+  const inputs = data.data.inputsRequired;
+  useEffect(() => {
+    setDataInputs(JSON.parse(inputs));
+    setDataGroups(JSON.parse(groups));
 
-  return () => {
-    
-  }
-}, [])
+    return () => {};
+  }, []);
 
-
-  const handleChangeInputRequired = (item,e) => {
-   
-    
-    const nextShapes = dataInputs.map(shape => {
+  const handleChangeInputRequired = (item, e) => {
+    const nextShapes = dataInputs.map((shape) => {
       if (shape.id != item.id) {
         // No change
         return shape;
@@ -146,21 +148,18 @@ useEffect(() => {
         // Return a new circle 50px below
         return {
           ...shape,
-          type:"input",
+          type: "input",
           value: e,
         };
       }
     });
     // Re-render with the new array
-    setDataInputs(nextShapes); 
+    setDataInputs(nextShapes);
 
     return;
-    
   };
-  const handleChangeFileRequired = (item,e) => {
-    
-    
-    const nextShapes = dataFiles.map(shape => {
+  const handleChangeFileRequired = (item, e) => {
+    const nextShapes = dataFiles.map((shape) => {
       if (shape.id != item.id) {
         // No change
         return shape;
@@ -168,17 +167,13 @@ useEffect(() => {
         // Return a new circle 50px below
         return {
           ...shape,
-          value:   e.files[0],
+          value: e.files[0],
         };
       }
     });
     // Re-render with the new array
     setDataFiles(nextShapes);
- 
-    
   };
-
-
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -212,15 +207,11 @@ useEffect(() => {
   const createApply = async (e) => {
     e.preventDefault();
 
-    
-  
-
     launchTimer();
 
     setIsLoading((x) => (x = false));
 
- 
-  /*   if (diplome == "" || study == "" || speciality == "") {
+    /*   if (diplome == "" || study == "" || speciality == "") {
       showDialogClick.current.click();
       clearInterval(interval);
 
@@ -234,16 +225,10 @@ useEffect(() => {
 
     const formData = new FormData();
 
-    dataFiles.map((item =>
+    dataFiles.map((item) => formData.append(item.id, item.value));
 
-      formData.append(item.id, item.value)
-      
-      
-      ))
-
-   
-      formData.append("dataFilesArray", JSON.stringify(dataFiles));
-      formData.append("dataInputsArray", JSON.stringify(dataInputs));
+    formData.append("dataFilesArray", JSON.stringify(dataFiles));
+    formData.append("dataInputsArray", JSON.stringify(dataInputs));
     formData.append("sexe", sexe);
     formData.append("nina", nina);
     formData.append("certificate", certificate);
@@ -269,13 +254,7 @@ useEffect(() => {
     formData.append("demandeFile", demandeFile);
     formData.append("orderOfMagistratesType", orderOfMagistratesType);
 
-  
-
-
-   
- 
-
-      const url = data.filesRequired != null ? "candidature" : "candidatureold"
+    const url = data.filesRequired != null ? "candidature" : "candidatureold";
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
       method: "POST",
@@ -312,10 +291,8 @@ useEffect(() => {
         refModal={showDialogClick}
         message={modalData}
         handleClick={() => {
-
           clearInterval(interval);
 
-         
           setIsLoading((x) => (x = true));
 
           if (
@@ -332,7 +309,6 @@ useEffect(() => {
       />
 
       <div className="flex flex-col md:flex-row md:space-x-10">
-        
         <Card className="flex-1 mb-10  md:max-w-[500px]">
           <CardHeader>
             <CardTitle className="mb-2">Mes informations</CardTitle>
@@ -468,13 +444,7 @@ useEffect(() => {
           encType="multipart/form-data"
           className="flex-1 mb-10 "
         >
-
-          
-
-     
           <Card>
-            
-            
             <CardHeader className="mb-4">
               <CardTitle>
                 Les informations à renseigner pour le concours
@@ -485,80 +455,51 @@ useEffect(() => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <CardDescription>
+                {JSON.stringify(selectDataGroups)}
+                <div>
+                  <Label className="text-black">Le niveau</Label>
+                  <select onChange={(e)=>{
+                    console.log(JSON.stringify(e.target.value));
+                  }}  className="w-full p-[10px] mt-1 mb-4 border rounded-md">
+                    {dataGroups.map((item) => (
+                      <optgroup key={item.id} label={`${item.name}`}>
+                        {item?.children.map((itemSub) => (
+                          <option
+                            key={itemSub.id}
+                            value={itemSub.name}
+                           
+                          >
+                            {itemSub.name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </div>
+              </CardDescription>
 
-
-            <CardTitle className="mb-2 text-blue-500">
-                    Categorie :
-                  </CardTitle>
-                  <CardDescription>
-                
-
-                  {dataGroups.map(item => ( 
-    
-    <InputComponent
-                    
-    value={item.value}
-    name={item}
-                    key={item.name}
-                    label={item.name}
-                    required="*"
-                    
-                    handleChange={(e) => {
-                      handleChangeInputRequired(item,e.target.value);
-                    }}
-                  />
- 
- ))}
-           
-                  
-                  </CardDescription>
-
-
-              
               <div className="grid items-center w-full gap-4">
-               
-
-
-              {dataInputs.length !=0 &&  <div className="grid gap-6 ">
-                
-                <div className="grid grid-cols-1 gap-6">
- 
-                {dataInputs.map(item => ( 
-    
-    <InputComponent
-                    
-    value={item.value}
-    name={item}
-                    key={item.name}
-                    label={item.name}
-                    required="*"
-                    
-                    handleChange={(e) => {
-                      handleChangeInputRequired(item,e.target.value);
-                    }}
-                  />
-/*     <InputComponent
-    checkFileIcon={item.type != "file"}
-    name = {item.name}
-    handleChange={(e) => {
-      handleChangeFileRequired(item,e.target);
-    }}
-    key={21}
-    inputType="file"
-    required="*"
-    label={item.name}
-   // subLabel="Une copie d'acte de naissance ou  jugement supplétif en tenant lieu"
-  /> */
- ))}
-                
+                {dataInputs.length != 0 && (
+                  <div className="grid gap-6 ">
+                    <div className="grid grid-cols-1 gap-6">
+                      {dataInputs.map((item) => (
+                        <InputComponent
+                          value={item.value}
+                          name={item}
+                          key={item.name}
+                          label={item.name}
+                          required="*"
+                          handleChange={(e) => {
+                            handleChangeInputRequired(item, e.target.value);
+                          }}
+                        />
+                        
+                      ))}
                     </div>
-                 </div>}
-               
-               
-               
-               
-               
-               
+                  </div>
+                )}
+
                 <div className="py-4 mt-4 mb-4 border-t-2 border-black">
                   <CardTitle className="mb-2 text-blue-500">
                     Les pieces jointes
@@ -571,37 +512,32 @@ useEffect(() => {
                     pour les fichiers est de 5 Mega octets.
                   </CardDescription>
                 </div>
-{/* 
+                {/* 
 data.data.filesRequired
 */}
- 
-  
 
-               {data.data.filesRequired.length !=0 &&  <div className="grid gap-6 ">
-                
-               <div className="grid grid-cols-1 gap-6">
-
-               {JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired))).map(item => ( 
-   
-   <InputComponent
-   checkFileIcon={item.type != "file"}
-   name = {item.name}
-   handleChange={(e) => {
-     handleChangeFileRequired(item,e.target);
-   }}
-   key={item.name}
-   inputType="file"
-   required="*"
-   label={item.name}
-  // subLabel="Une copie d'acte de naissance ou  jugement supplétif en tenant lieu"
- />
-))}
-               
-                   </div>
-                </div>}
-             
-
-               
+                {data.data.filesRequired.length != 0 && (
+                  <div className="grid gap-6 ">
+                    <div className="grid grid-cols-1 gap-6">
+                      {JSON.parse(
+                        JSON.parse(JSON.stringify(data.data.filesRequired))
+                      ).map((item) => (
+                        <InputComponent
+                          checkFileIcon={item.type != "file"}
+                          name={item.name}
+                          handleChange={(e) => {
+                            handleChangeFileRequired(item, e.target);
+                          }}
+                          key={item.name}
+                          inputType="file"
+                          required="*"
+                          label={item.name}
+                          // subLabel="Une copie d'acte de naissance ou  jugement supplétif en tenant lieu"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
             <CardFooter className="flex justify-end">

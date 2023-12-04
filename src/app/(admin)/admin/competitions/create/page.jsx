@@ -445,7 +445,7 @@ function CreateCompetition() {
                 }}
                 className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
               >
-                XX
+                X
               </div>
             </div>{" "}
           </div></AccordionTrigger>
