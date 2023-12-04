@@ -129,6 +129,7 @@ master2 */
       
       filesRequired : formData.get("filesRequired")?.toString(), 
       inputsRequired : formData.get("inputsRequired")?.toString(), 
+      groupsRequired : formData.get("groupsRequired")?.toString(), 
      
       
     },
@@ -176,6 +177,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       orderOfMagistrates: formData.get("orderOfMagistrates") === "true",
       filesRequired : formData.get("filesRequired")?.toString()   , 
       inputsRequired : formData.get("inputsRequired")?.toString(), 
+      groupsRequired : formData.get("groupsRequired")?.toString(), 
      /*  def: formData.get("def") === "true",
       bac: formData.get("bac") === "true",
       licence: formData.get("licence") === "true",

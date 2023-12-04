@@ -50,7 +50,7 @@ import {
 import BackComponent from "@/components/BackComponent";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
-export default function ApplyItem(data, competitionId, fileAttach,filesRequired,inputsRequired) {
+export default function ApplyItem(data, competitionId, fileAttach,filesRequired,inputsRequired,groupsRequired) {
   const { data: session, status } = useSession();
   const [lastName, setLastName] = useState(data.data.data.lastName);
   const [firstName, setFirstName] = useState(data.data.data.firstName);
@@ -120,11 +120,14 @@ export default function ApplyItem(data, competitionId, fileAttach,filesRequired,
 
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired))));
   const [dataInputs, setDataInputs] = useState([]);
+  const [dataGroups, setDataGroups] = useState([]);
+const groups = data.data.groupsRequired;
 const inputs = data.data.inputsRequired;
 useEffect(() => {
   
  
  setDataInputs(JSON.parse(inputs))
+ setDataGroups(JSON.parse(groups))
 
   return () => {
     
@@ -466,8 +469,12 @@ useEffect(() => {
           className="flex-1 mb-10 "
         >
 
+          
+
      
           <Card>
+            
+            
             <CardHeader className="mb-4">
               <CardTitle>
                 Les informations à renseigner pour le concours
@@ -478,6 +485,36 @@ useEffect(() => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+
+
+            <CardTitle className="mb-2 text-blue-500">
+                    Categorie :
+                  </CardTitle>
+                  <CardDescription>
+                
+
+                  {dataGroups.map(item => ( 
+    
+    <InputComponent
+                    
+    value={item.value}
+    name={item}
+                    key={item.name}
+                    label={item.name}
+                    required="*"
+                    
+                    handleChange={(e) => {
+                      handleChangeInputRequired(item,e.target.value);
+                    }}
+                  />
+ 
+ ))}
+           
+                  
+                  </CardDescription>
+
+
+              
               <div className="grid items-center w-full gap-4">
                
 

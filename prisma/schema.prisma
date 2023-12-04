@@ -112,7 +112,8 @@ model Competition {
   startDateAt  DateTime      @db.Date
   endDateAt    DateTime      @db.Date
    filesRequired      String?       @db.LongText
-   inputsRequired      String?       @db.LongText
+   inputsRequired      String?       @db.LongText 
+   groupsRequired      String?       @db.LongText
   candidatures Candidature[]
 }
 
@@ -145,6 +146,7 @@ email         String?
   speciality          String
   filesRequired      String?       @db.LongText
   inputsRequired      String?       @db.LongText
+  groupsRequired      String?       @db.LongText
   certificate         String?
 
   ninaFile            String?

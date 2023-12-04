@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useRef } from "react";
 import ButtonComponent from "../../../../../components/ButtonComponent";
 import InputComponent from "../../../../../components/InputComponent";
@@ -9,16 +10,24 @@ import {
   convertFromRaw,
   convertToRaw,
 } from "draft-js";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import dynamic from "next/dynamic";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AiFillPicture } from "react-icons/ai";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar, CalendarChangeEvent } from "primereact/calendar";
 import { convertToHTML } from "draft-convert";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { Switch } from "@/components/ui/switch";
 import { redirect, useRouter } from "next/navigation";
 import AlertModalResponse from "@/components/Modals/AlertModalResponse";
+import { DeleteIcon, EditIcon, PlusCircleIcon, PlusIcon, SaveIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
   {
@@ -62,19 +71,22 @@ function CreateCompetition() {
   const [bac, setBac] = useState(false);
   const [filesRequired, setFilesRequired] = useState([]);
   const [inputsRequired, setInputsRequired] = useState([]);
+  const [groupsRequired, setGroupsRequired] = useState([]); 
+  const [groupNameRequired, setGroupNameRequired] = useState("");
   const [fileNameRequired, setFileNameRequired] = useState("");
   const [inputNameRequired, setInputNameRequired] = useState("");
   const [curentFileItem, setCurentFileItem] = useState();
   const [curentInputItem, setCurentInputItem] = useState();
+  const [curentGroupItem, setCurentGroupItem] = useState();
   const [licence, setLicence] = useState(false);
   const [maitrise, setMaitrise] = useState(false);
   const [master1, setMaster1] = useState(false);
   const [master2, setMaster2] = useState(false);
-  const showDialogClick = useRef(null)
+  const showDialogClick = useRef(null);
   const [message, setMessage] = useState("");
   const createData = async (e) => {
     e.preventDefault();
-
+ 
     const valueContent = convertToHTML(content.getCurrentContent());
 
     const formData = new FormData();
@@ -92,22 +104,14 @@ function CreateCompetition() {
     formData.append("orderOfMagistrates", orderOfMagistrates);
     formData.append("filesRequired", JSON.stringify(filesRequired));
     formData.append("inputsRequired", JSON.stringify(inputsRequired));
+    formData.append("groupsRequired", JSON.stringify(groupsRequired));
     formData.append("def", def);
     formData.append("bac", bac);
     formData.append("licence", licence);
     formData.append("maitrise", maitrise);
     formData.append("master1", master1);
     formData.append("master2", master2);
-    /*  body: JSON.stringify({
-        image,
-        title,
-        ageMax,
-        ageMin,
-        valueContent,
-        startDateAt,
-        endDateAt,
-        statut,
-      }), */
+ 
 
     const res = await fetch(`/api/admin/competition`, {
       body: formData,
@@ -115,12 +119,10 @@ function CreateCompetition() {
       method: "POST",
     });
     const data = await res.json();
-    
-    if (res.status == 200) {
-      
 
-      showDialogClick.current.click()
-      setMessage("Le concours est creer")
+    if (res.status == 200) {
+      showDialogClick.current.click();
+      setMessage("Le concours est creer");
     }
     /* 
        redirect("/admin") */
@@ -132,11 +134,15 @@ function CreateCompetition() {
       onSubmit={(e) => createData(e)}
       className="flex flex-col"
     >
-      <AlertModalResponse title="" refModal={showDialogClick} message={message} handleClick={()=>{ 
- router.refresh()
- router.push("/admin/competitions")
-
-       }}  />
+      <AlertModalResponse
+        title=""
+        refModal={showDialogClick}
+        message={message}
+        handleClick={() => {
+          router.refresh();
+          router.push("/admin/competitions");
+        }}
+      />
       <p className="mb-2 text-lg font-bold">Phtoto de couverture</p>
       <picture
         onClick={() => {
@@ -190,29 +196,26 @@ function CreateCompetition() {
       </div>
       <div className="flex w-full gap-4 my-2">
         <div className="flex gap-4 ">
-        
-        <InputComponent
-                    value={startDateAt}
-                    handleChange={(e) => {
-                      setStartDateAt(e.target.value);
-                    }}
-                   
-                    withIcon={true}
-                    key={4}
-                    inputType="date"
-                    label="Date debut"
-                  />
           <InputComponent
-                    value={endDateAt}
-                    handleChange={(e) => {
-                      setEndDateAt(e.target.value);
-                    }}
-                   
-                    withIcon={true}
-                    key={4}
-                    inputType="date"
-                    label="Date fin"
-                  />
+            value={startDateAt}
+            handleChange={(e) => {
+              setStartDateAt(e.target.value);
+            }}
+            withIcon={true}
+            key={4}
+            inputType="date"
+            label="Date debut"
+          />
+          <InputComponent
+            value={endDateAt}
+            handleChange={(e) => {
+              setEndDateAt(e.target.value);
+            }}
+            withIcon={true}
+            key={4}
+            inputType="date"
+            label="Date fin"
+          />
         </div>
         <div className="flex gap-4 ">
           <InputComponent
@@ -235,13 +238,10 @@ function CreateCompetition() {
           />
         </div>
       </div>
-     
-   
+
       <div className="flex self-end flex-col w-[380px] mt-4 space-y-4 border-2 p-4">
-      <h1 className="flex items-center justify-between mb-4 font-bold text-md">
-       
-        
-        <InputComponent
+        <h1 className="flex items-center justify-between mb-4 font-bold text-md">
+          <InputComponent
             key={3}
             label={"Lettre de référence"}
             value={letterNumber}
@@ -251,20 +251,16 @@ function CreateCompetition() {
             }}
           />
         </h1>
-        
-        <h1 className="flex items-center justify-between font-bold text-md">
-        
-        </h1>
 
-       
-   
-       {/*  
+        <h1 className="flex items-center justify-between font-bold text-md"></h1>
+
+        {/*  
         <h1 className="font-bold text-md">
           Les documents a fournir pour le concours
         </h1>
     */}
 
-       {/*  <div className="flex items-center justify-between">
+        {/*  <div className="flex items-center justify-between">
           <p className="font-semibold text-md">Def</p> <Switch checked={def}
                       onCheckedChange={(x) =>setDef(x => x=!x)}   />
         </div>
@@ -290,183 +286,470 @@ function CreateCompetition() {
         </div> */}
       </div>
 
-
-   
-
-
-
-
-
-
       <p className="text-[14px] text-gray-500 mt-8">
         <EditorComponent value={content} handleChange={(v) => setContent(v)} />
       </p>
       <hr />
+
+      <p className="mt-4 font-bold ">Les niveaux</p>
+      <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
+        <div className="flex items-end justify-between mb-4 font-bold text-md">
+          <InputComponent
+            key={219}
+            label={"Nom du champ"}
+            value={groupNameRequired}
+            inputType="text"
+            handleChange={(e) => {
+              setGroupNameRequired((x) => (x = e.target.value));
+            }}
+          />
+
+          <div className="flex flex-row items-end justify-end flex-1 mb-1">
+            <div
+              onClick={(e) => {
+                if (curentGroupItem) {
+                  const nextShapes = groupsRequired.map((shape) => {
+                    if (shape.id != curentGroupItem.id) {
+                      // No change
+                      return shape;
+                    } else {
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        name: groupNameRequired,
+                        
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setGroupsRequired(nextShapes);
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                  return;
+                }
+
+                setGroupsRequired((prev) => [
+                  ...prev,
+                  {
+                    id: uuidv4(),
+                    name: groupNameRequired,
+                    type: "select",
+                    children: [],
+                  },
+                ]);
+                setGroupNameRequired((x) => (x = ""));
+              }}
+              className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm"
+            >
+              {curentGroupItem ? "Modifier" : "Ajouter"}{" "}
+            </div>
+            {curentGroupItem   && (
+              <div
+                onClick={() => {
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            )}
+          </div>
+        </div>
+
+ 
+
+        {groupsRequired.map((item) => (
+
+
+<Accordion key={item.id}  type="single" collapsible>
+<AccordionItem value="item-1">
+    <AccordionTrigger className="">
+      <div
+      onClick={()=>{
+        setCurentGroupItem((x) => (x = item));
+      }}
+      className="flex items-center justify-center w-full p-2 border">
+            <p className="flex-1 text-left">{item.name}</p> 
+            <div className="flex items-center justify-center">
+              <PlusCircleIcon
+                className="z-50 cursor-pointer"
+                onClick={(e) => {
+                 e.stopPropagation()
+
+                 const childrenArray = item.children;
+                
+                 childrenArray.push({
+                  id: uuidv4(),
+                  name: "",
+                  value: "",
+                  type: "text",
+                  
+                })
+              
+              
+
+//                  setCurentGroupItem((x) => (x = item));
+         
+ 
+                  if (item) {
+                    const nextShapes = groupsRequired.map((shape) => {
+                      if (shape.id != item.id) {
+                        // No change
+                        return shape;
+                      } else {
+                        // Return a new circle 50px below
+                        return {
+                          ...shape,
+                         children: childrenArray
+                          
+                        };
+                      }
+                    });
+                    // Re-render with the new array
+                    setGroupsRequired(nextShapes);
+                   // setSubGroupsRequired(x=> x = [])
+                  //  setGroupNameRequired((x) => (x = ""));
+                  //  setCurentGroupItem((x) => (x = null));
+                  console.log(nextShapes);
+                    return;
+                  }
+
+
+                  
+        
+
+                  
+                  
+                }}
+              />
+
+              <div
+                onClick={() => {
+                  setGroupNameRequired((x) => (x = item.name));
+                  setCurentGroupItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
+
+              <div
+                onClick={() => {
+                  setGroupsRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
+
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                XX
+              </div>
+            </div>{" "}
+          </div></AccordionTrigger>
+    <AccordionContent asChild >
      
+   
+    {item?.children.map(itemSub=>(
+       <div key={itemSub.id} className="flex items-center justify-center gap-3 px-2 py-1">
+       
+       <Input value={itemSub.name}
+       onChange={(e)=>{
+        console.log(e.target.value);
+        const childrenArray = item.children ;
+ 
+        /*   return {
+                        ...shape,
+                        name: inputNameRequired,
+                      };
+                       */
+   
+        if (item) {
+          const subNewValue = childrenArray.map((shape) => {
+            if (shape.id != itemSub.id) {
+              // No change
+              return shape;
+            } else {
+              // Return a new circle 50px below
+              return {
+                ...shape,
+                name: e.target.value,
+                
+              };
+            }
+          });
+
+
+          const nextShapes = groupsRequired.map((shape) => {
+            if (shape.id != item.id) {
+              // No change
+              return shape;
+            } else {
+              // Return a new circle 50px below
+              return {
+                ...shape,
+               children: subNewValue
+                
+              };
+            }
+          });
+          // Re-render with the new array
+          setGroupsRequired(nextShapes);
+        
+      
+        
+          return;
+        }
+   
+  
+   
+          
+       }}
+       />
+       <SaveIcon className="cursor-pointer" />
+       <DeleteIcon
+       onClick={()=>{
+
+        const childrenArray = item.children ;
+ 
+      const arrayNew =   childrenArray.filter((fruit) => fruit.id !== itemSub.id)
+ 
+
+ 
+         if (item) {
+           const nextShapes = groupsRequired.map((shape) => {
+             if (shape.id != item.id) {
+               // No change
+               return shape;
+             } else {
+               // Return a new circle 50px below
+               return {
+                 ...shape,
+                children: arrayNew
+                 
+               };
+             }
+           });
+           // Re-render with the new array
+           setGroupsRequired(nextShapes);
+       
+         
+           return;
+         }
+      
+       }}
+       className="text-red-500 cursor-pointer hover:text-red-700" />
+       
+       </div>
+    ))}  
+    </AccordionContent>
+  </AccordionItem>
+
+</Accordion>
+         
+        ))}
+      </div>
+
+      <hr />
+
       <p className="mt-4 font-bold ">Les champs</p>
       <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
-      <div className="flex items-end justify-between mb-4 font-bold text-md">
-        
-        
-        <InputComponent
+        <div className="flex items-end justify-between mb-4 font-bold text-md">
+          <InputComponent
             key={129}
             label={"Nom du champ"}
             value={inputNameRequired}
             inputType="text"
             handleChange={(e) => {
-              setInputNameRequired(x=> x= e.target.value);
+              setInputNameRequired((x) => (x = e.target.value));
             }}
           />
 
-<div className="flex flex-row items-end justify-end flex-1 mb-1">
-<div onClick={(e)=>{
+          <div className="flex flex-row items-end justify-end flex-1 mb-1">
+            <div
+              onClick={(e) => {
+                if (curentInputItem) {
+                  const nextShapes = inputsRequired.map((shape) => {
+                    if (shape.id != curentInputItem.id) {
+                      // No change
+                      return shape;
+                    } else {
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        name: inputNameRequired,
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setInputsRequired(nextShapes);
+                  setInputNameRequired((x) => (x = ""));
+                  setCurentInputItem((x) => (x = null));
+                  return;
+                }
 
-if(curentInputItem){
-  const nextShapes = inputsRequired.map(shape => {
-    if (shape.id != curentInputItem.id) {
-      // No change
-      return shape;
-    } else {
-      // Return a new circle 50px below
-      return {
-        ...shape,
-        name:   inputNameRequired,
-      };
-    }
-  });
-  // Re-render with the new array
-  setInputsRequired(nextShapes);
-  setInputNameRequired(x => x ="")
-  setCurentInputItem(x => x =null)
-  return;
-}
+                setInputsRequired((prev) => [
+                  ...prev,
+                  {
+                    id: uuidv4(),
+                    value: "",
+                    name: inputNameRequired,
+                    type: "input",
+                  },
+                ]);
+                setInputNameRequired((x) => (x = ""));
+              }}
+              className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm"
+            >
+              {curentInputItem ? "Modifier" : "Ajouter"}{" "}
+            </div>
+            {curentInputItem && (
+              <div
+                onClick={() => {
+                  setInputNameRequired((x) => (x = ""));
+                  setCurentInputItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            )}
+          </div>
+        </div>
 
+        {inputsRequired.map((item) => (
+          <div key={item.id} className="flex items-center justify-center p-2 border">
+            {" "}
+            <p className="flex-1">{item.name}</p>{" "}
+            <div className="flex">
+              <div
+                onClick={() => {
+                  setInputNameRequired((x) => (x = item.name));
+                  setCurentInputItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
 
+              <div
+                onClick={() => {
+                  setInputsRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
 
-            setInputsRequired( prev => [...prev,{
-              id:uuidv4(),
-              value:"",
-              name:inputNameRequired,type:"input"}])
-            setInputNameRequired(x => x ="")
-          }} className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm">{curentInputItem ? "Modifier" :"Ajouter"}  </div>
-   {curentInputItem &&       <div onClick={()=>{
-   
-   setInputNameRequired(x => x ="")
-   setCurentInputItem(x => x =null)
- }} className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm">X</div>}
-
-</div>
-
-
-       </div>
-      
-   {inputsRequired.map(item=>(
-   <div className="flex items-center justify-center p-2 border"> <p className="flex-1">{item.name}</p> <div className="flex"><div onClick={()=>{
-   
-    setInputNameRequired(x => x =item.name)
-    setCurentInputItem(x => x =item)
-  }} className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm">Modifier</div>
-  
-  <div onClick={()=>{
-
-setInputsRequired((current) =>
-current.filter((fruit) => fruit.id !== item.id)
-);
-
-setInputNameRequired(x => x ="")
-setCurentInputItem(x => x =null)
-
- 
- }} className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm">X</div>
-   </div>  </div>
-   ))}
-
-       
-    
+                  setInputNameRequired((x) => (x = ""));
+                  setCurentInputItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            </div>{" "}
+          </div>
+        ))}
       </div>
 
       {/* Piece */}
       <hr />
       <p className="mt-4 font-bold ">Les pièces à fournir</p>
       <div className="flex flex-col self-end w-full p-4 mt-4 space-y-2 border-2">
-      <div className="flex items-end justify-between mb-4 font-bold text-md">
-        
-        
-        <InputComponent
+        <div className="flex items-end justify-between mb-4 font-bold text-md">
+          <InputComponent
             key={10}
             label={"Les pièces à fournir"}
             value={fileNameRequired}
             inputType="text"
             handleChange={(e) => {
-              setFileNameRequired(x=> x= e.target.value);
+              setFileNameRequired((x) => (x = e.target.value));
             }}
           />
 
-<div className="flex flex-row items-end justify-end flex-1 mb-1">
-<div onClick={(e)=>{
+          <div className="flex flex-row items-end justify-end flex-1 mb-1">
+            <div
+              onClick={(e) => {
+                if (curentFileItem) {
+                  const nextShapes = filesRequired.map((shape) => {
+                    if (shape.id != curentFileItem.id) {
+                      // No change
+                      return shape;
+                    } else {
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        name: fileNameRequired,
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setFilesRequired(nextShapes);
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                  return;
+                }
 
-if(curentFileItem){
-  const nextShapes = filesRequired.map(shape => {
-    if (shape.id != curentFileItem.id) {
-      // No change
-      return shape;
-    } else {
-      // Return a new circle 50px below
-      return {
-        ...shape,
-        name:   fileNameRequired,
-      };
-    }
-  });
-  // Re-render with the new array
-  setFilesRequired(nextShapes);
-  setFileNameRequired(x => x ="")
-  setCurentFileItem(x => x =null)
-  return;
-}
+                setFilesRequired((prev) => [
+                  ...prev,
+                  {
+                    id: uuidv4(),
+                    value: "",
+                    name: fileNameRequired,
+                    type: "file",
+                  },
+                ]);
+                setFileNameRequired((x) => (x = ""));
+              }}
+              className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm"
+            >
+              {curentFileItem ? "Modifier" : "Ajouter"}{" "}
+            </div>
+            {curentFileItem && (
+              <div
+                onClick={() => {
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            )}
+          </div>
+        </div>
 
+        {filesRequired.map((item) => (
+          <div key={item.id} className="flex items-center justify-center p-2 border">
+            {" "}
+            <p className="flex-1">{item.name}</p>{" "}
+            <div className="flex">
+              <div
+                onClick={() => {
+                  setFileNameRequired((x) => (x = item.name));
+                  setCurentFileItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
 
+              <div
+                onClick={() => {
+                  setFilesRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
 
-            setFilesRequired( prev => [...prev,{
-              id:uuidv4(),
-              value:"",
-              name:fileNameRequired,type:"file"}])
-            setFileNameRequired(x => x ="")
-          }} className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm">{curentFileItem ? "Modifier" :"Ajouter"}  </div>
-   {curentFileItem &&       <div onClick={()=>{
-   
-   setFileNameRequired(x => x ="")
-   setCurentFileItem(x => x =null)
- }} className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm">X</div>}
-
-</div>
-
-
-       </div>
-      
-   {filesRequired.map(item=>(
-   <div className="flex items-center justify-center p-2 border"> <p className="flex-1">{item.name}</p> <div className="flex"><div onClick={()=>{
-   
-    setFileNameRequired(x => x =item.name)
-    setCurentFileItem(x => x =item)
-  }} className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm">Modifier</div>
-  
-  <div onClick={()=>{
-
-setFilesRequired((current) =>
-current.filter((fruit) => fruit.id !== item.id)
-);
-
-setFileNameRequired(x => x ="")
-setCurentFileItem(x => x =null)
-
- 
- }} className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm">X</div>
-   </div>  </div>
-   ))}
-
-       
-    
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            </div>{" "}
+          </div>
+        ))}
       </div>
       <div className="flex items-end justify-end w-full my-4">
         {!visible ? (
