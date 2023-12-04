@@ -214,9 +214,23 @@ function CandidatureItem({ datas }) {
                 </div>
               </div>
 
-              <CardTitle className="mt-4 mb-2">
+              <CardTitle className="mt-4 mb-4">
                 Les informations à renseigner pour le concours
               </CardTitle>
+
+                {result.groupsRequired.length > 0 &&  
+              
+              <InputComponent
+                    
+              value={result.groupsRequired}
+             
+                             
+                              label={"Niveau"}
+                               
+                              
+                          
+                            />
+                }
             {/*   <CardDescription>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
                 at tincidunt neque. Pellentesque vitae commodo justo. Integer

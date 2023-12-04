@@ -47,12 +47,12 @@ function ExportExcel({datas} ) {
         width: 50,
       },
       {
-        header: "DIPLOME",
+        header: "Information",
         key: "diplome",
         width: 50,
       },
       {
-        header: "FILIERE",
+        header: "NIVEAU",
         key: "study",
         width: 50,
       },
@@ -125,7 +125,9 @@ function ExportExcel({datas} ) {
     ]
     const orderOptions = [ "Ordre admnistratif","Ordre Judiciaire"]
 
+
     datas.map((item) => {
+      const arrayInfo =  JSON.parse(item.inputsRequired).map(i=>(i.name +" : " +i.value))
       sheet.addRow({
      
         lastName: item.lastName,
@@ -133,8 +135,8 @@ function ExportExcel({datas} ) {
         sexe: item.sexe,
         birthDate:  dayjs(item.birthDate).format("DD/MM/YYYY") ,
         placeBirthDate: item.placeBirthDate,
-        diplome: item.diplome,
-        study: item.study,
+        diplome:arrayInfo,
+        study: item.groupsRequired,
         id: dayjs(item.createdAt).format("DD/MM/YYYY") ,
         createdAt: dayjs(item.createdAt).format("DD/MM/YYYY") ,
         id: item.numeroRef,

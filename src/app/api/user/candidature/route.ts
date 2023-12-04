@@ -101,6 +101,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   const dataFilesArray = formData.get("dataFilesArray")!.toString();
   const dataInputsArray = formData.get("dataInputsArray")!.toString();
+  const selectDataGroups = formData.get("selectDataGroups")!.toString();
   let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
   let dataFilesArrayUser:any[] =  [];
   let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
@@ -157,7 +158,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
      
       orderOfMagistrates: formData.get("orderOfMagistratesType")?.toString() ?? "",
       filesRequired: JSON.stringify(dataFilesArrayUser),
-      inputsRequired: JSON.stringify(dataInputsArrayUser)
+      inputsRequired: JSON.stringify(dataInputsArrayUser),
+      groupsRequired:selectDataGroups
      
     },
   });
@@ -231,9 +233,9 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
   
 
-
   const dataFilesArray = formData.get("dataFilesArray")!.toString();
-
+  const dataInputsArray = formData.get("dataInputsArray")!.toString();
+  const selectDataGroups = formData.get("selectDataGroups")!.toString();
  
   let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
 
@@ -241,7 +243,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
   let dataFilesArrayUser:any[] =  [];
  
 
-
+  let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
 
 
 
@@ -290,6 +292,8 @@ export async function PUT(req: NextRequest, res: NextResponse) {
      
       //file
       filesRequired: JSON.stringify(dataFilesArrayUser),
+      inputsRequired: JSON.stringify(dataInputsArrayUser),
+      groupsRequired:selectDataGroups,
      
      
      //

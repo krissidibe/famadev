@@ -129,7 +129,7 @@ export default function ApplyItem(
   );
   const [dataInputs, setDataInputs] = useState([]);
   const [dataGroups, setDataGroups] = useState([]);
-  const [selectDataGroups, setSelectDataGroups] = useState();
+  const [selectDataGroups, setSelectDataGroups] = useState("");
   const groups = data.data.groupsRequired;
   const inputs = data.data.inputsRequired;
   useEffect(() => {
@@ -253,6 +253,7 @@ export default function ApplyItem(
     formData.append("infoCardFile", infoCardFile);
     formData.append("demandeFile", demandeFile);
     formData.append("orderOfMagistratesType", orderOfMagistratesType);
+    formData.append("selectDataGroups", selectDataGroups);
 
     const url = data.filesRequired != null ? "candidature" : "candidatureold";
     const res = await fetch(`/api/user/candidature`, {
@@ -456,11 +457,12 @@ export default function ApplyItem(
             </CardHeader>
             <CardContent>
               <CardDescription>
-                {JSON.stringify(selectDataGroups)}
-                <div>
+               
+             {dataGroups.length > 0 &&   <div>
                   <Label className="text-black">Le niveau</Label>
                   <select onChange={(e)=>{
-                    console.log(JSON.stringify(e.target.value));
+                    setSelectDataGroups(x=> x = e.target.value.trim())
+                   
                   }}  className="w-full p-[10px] mt-1 mb-4 border rounded-md">
                     {dataGroups.map((item) => (
                       <optgroup key={item.id} label={`${item.name}`}>
@@ -476,7 +478,7 @@ export default function ApplyItem(
                       </optgroup>
                     ))}
                   </select>
-                </div>
+                </div>}
               </CardDescription>
 
               <div className="grid items-center w-full gap-4">

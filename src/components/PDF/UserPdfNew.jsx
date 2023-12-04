@@ -302,6 +302,16 @@ const MyDocument = ({ data }) => (
           }}
         >
 
+{ data?.groupsRequired.length > 0 && <View
+   style={{
+  minWidth:"48%"
+
+  }}
+   
+   >
+   {InfoInput("Niveau", data?.groupsRequired)}
+   </View>}
+
 { 
 
 JSON.parse(data?.inputsRequired).map(item=>(

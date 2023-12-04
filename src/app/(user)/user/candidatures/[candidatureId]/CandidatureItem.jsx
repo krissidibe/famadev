@@ -87,6 +87,7 @@ function CandidatureItem({ data }) {
   const showDialogClick = useRef(null);
   const [titleModal, setTitleModal] = useState("");
   const [modalData, setModalData] = useState("");
+ 
   const [dataUser, setDataUser] = useState({
     lastName: user.lastName,
     firstName: user.firstName,
@@ -121,6 +122,7 @@ function CandidatureItem({ data }) {
 
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.filesRequired))));
   const [dataInputs, setDataInputs] = useState(JSON.parse(JSON.parse(JSON.stringify(data.inputsRequired))));
+  const [selectDataGroups, setSelectDataGroups] =  useState(data.groupsRequired);
 
   const inputs = data.inputsRequired;
 useEffect(() => {
@@ -590,9 +592,28 @@ if (
                 </div>
               </div>
 
-              <CardTitle className="mt-4 mb-2">
+              <CardTitle className="mt-4 mb-4">
                 Informations à propos du concours
               </CardTitle>
+
+              {selectDataGroups.length > 0 &&  
+              
+              <InputComponent
+                    
+              value={selectDataGroups}
+              name={"Niveau"}
+                             
+                              label={"Niveau"}
+                              required={`${checkEdit ? "*" : ""}`}
+                              
+                              handleChange={(e) => {
+                                if(!checkEdit){
+                                  return;
+                                }
+                                setSelectDataGroups(x=> x =e.target.value);
+                              }}
+                            />
+                }
               
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
               {dataInputs.length > 0 && dataInputs.map(item => ( 
