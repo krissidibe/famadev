@@ -9,17 +9,18 @@ async function page() {
   });
   const datas: any[] = await res.json();
   return (
-    <div className='flex flex-col'>
-       <div className='flex items-center justify-center justify-between w-full pb-4 border-b'>
+    <div className='flex flex-col overflow-y-scroll'>
+       <div className='flex items-center justify-between w-full pb-4 border-b'>
        <p>Liste des roles</p>
    <AddRole/>
        </div>
-       <div className="flex flex-wrap gap-4">
+       <div className="flex flex-col flex-wrap flex-1 gap-4 pt-4 overflow-y-scroll cursor-pointer md:grid-cols-2 xl:grid-cols-3 md:grid ">
         {
           datas.map((item)=> (
 
-            <div key={item.id}  >
-              {item.name}
+            <div className='flex flex-col w-full p-4 rounded-md bg-black/5' key={item.id}  >
+              <p className='font-bold'> {item.name}</p>
+            <p className='text-xs opacity-50'>  {item.content}</p>
             </div>
           ))
         }

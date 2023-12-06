@@ -114,13 +114,13 @@ if(dataNew.id != ""){
             />
           </div>
         </div>
-        <DialogFooter>
+       {data.name.length > 2 && data.content.length > 2 && <DialogFooter>
           
           <Button
           onClick={createRole}
-          type="button">Save</Button>
+          type="button">Enregistré</Button>
            <DialogClose />
-        </DialogFooter>
+        </DialogFooter>}
       </DialogContent>
     </Dialog>
          
