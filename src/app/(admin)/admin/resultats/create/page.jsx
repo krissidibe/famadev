@@ -64,7 +64,7 @@ function CreateResult() {
 
   return (
     <form onSubmit={(e)=>createData(e)} className="flex flex-col">
-     {JSON.stringify(session?.user?.id)}
+    
      
       <InputComponent
        key={1}

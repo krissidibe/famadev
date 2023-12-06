@@ -2,11 +2,20 @@
 import React from "react"; 
 import CandidatureCardComponent from "@/components/CandidatureCardComponent"; 
 export const dynamic = "force-dynamic"
+import { authOptions } from "@/lib/authOption";
+import { getServerSession } from "next-auth/next";
 async function Competition() {
-  const res = await fetch(`${process.env.BASE_URL}/api/admin/competition`, {
-    cache:"no-store"
+
+  const session = await getServerSession(authOptions)
+  const adminRole  = JSON.parse(session!.user.adminRole)
+ const res = await fetch(`${process.env.BASE_URL}/api/admin/role?id=${adminRole.id}`, {
+  cache:"no-store",
+  next:{revalidate:0}
   });
-  const data: any[] = await res.json();
+  const datas = await res.json(); 
+  const competitions  = datas.competition
+
+ 
  
   return (
     <div className="flex flex-col">
@@ -21,7 +30,7 @@ async function Competition() {
       </div>
 
       <div className="grid items-center w-full sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 md:flex-row">
-        {data.map((data) => (
+        {competitions.map((data:any) => (
           
             <CandidatureCardComponent
               key={data.id}

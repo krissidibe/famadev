@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import ButtonComponent from "../../../../../components/ButtonComponent";
 import InputComponent from "../../../../../components/InputComponent";
+
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import {
   EditorState,
@@ -28,6 +29,7 @@ import { redirect, useRouter } from "next/navigation";
 import AlertModalResponse from "@/components/Modals/AlertModalResponse";
 import { DeleteIcon, EditIcon, PlusCircleIcon, PlusIcon, SaveIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useSession } from "next-auth/react";
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
   {
@@ -48,6 +50,7 @@ function EditorComponent({ value, handleChange }) {
   );
 }
 function CreateCompetition() {
+  const { data: session, status } = useSession()
   const [visible, setVisible] = useState(false);
   const imageRef = useRef(null);
   const [image, setImage] = useState(null);
@@ -100,6 +103,7 @@ function CreateCompetition() {
     formData.append("startDateAt", startDateAt);
     formData.append("endDateAt", endDateAt);
     formData.append("statut", statut.code);
+    formData.append("adminRoleId", JSON.parse(session?.user.adminRole).id);
 
     formData.append("orderOfMagistrates", orderOfMagistrates);
     formData.append("filesRequired", JSON.stringify(filesRequired));
@@ -134,6 +138,7 @@ function CreateCompetition() {
       onSubmit={(e) => createData(e)}
       className="flex flex-col"
     >
+     
       <AlertModalResponse
         title=""
         refModal={showDialogClick}

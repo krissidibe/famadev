@@ -57,7 +57,7 @@ model User {
   updatedAt     DateTime?     @db.Date
   emailVerified Boolean       @default(false)
   role          UserRole      @default(USER)
-  adminRole     String?
+  adminRole     String?       @db.LongText 
   accounts      Account[]
   candidatures  Candidature[]
   sessions      Session[]
@@ -65,7 +65,7 @@ model User {
 }
 
 
-model roles {
+model Roles {
   id           String        @id @default(cuid())
   name        String
   content      String?       @db.LongText 
@@ -74,6 +74,8 @@ model roles {
  
   createdAt    DateTime?     @default(now()) @db.Timestamp(0)
   updatedAt    DateTime?     @default(now()) @db.Timestamp(0)
+  competition Competition[]
+ 
 }
 
 
@@ -115,6 +117,10 @@ model Competition {
    inputsRequired      String?       @db.LongText 
    groupsRequired      String?       @db.LongText
   candidatures Candidature[]
+
+  roleId       String
+  role         Roles @relation(fields: [roleId], references: [id])
+   
 }
 
 model Candidature {
@@ -171,14 +177,15 @@ email         String?
   createdAt           DateTime?   @default(now()) @db.Timestamp(0)
   updatedAt           DateTime?   @db.Date
   authorId            String
-  competitionId       String
   birthDate           DateTime    @db.Date
   placeBirthDate     String?       @default("")
   firstName           String
   lastName            String
   sexe                String
   author              User        @relation(fields: [authorId], references: [id])
+  competitionId       String
   competition         Competition @relation(fields: [competitionId], references: [id])
+ 
 
   @@index([authorId], map: "Candidature_authorId_fkey")
   @@index([competitionId], map: "Candidature_competitionId_fkey")

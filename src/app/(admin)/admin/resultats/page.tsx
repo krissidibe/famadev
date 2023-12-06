@@ -12,7 +12,7 @@ async function ResultsPage() {
   const datas: any[] = await res.json();
   return (
     <div className="flex flex-col">
-        {JSON.stringify(session)}
+      
       <div className="flex items-center gap-3 pb-2 mb-8 border-b-2 ">
         <div className="flex-1">Liste des résultats</div>
         <ButtonComponent

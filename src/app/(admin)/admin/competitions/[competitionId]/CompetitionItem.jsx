@@ -17,6 +17,7 @@ import {
   convertFromRaw,
   convertToRaw,
 } from "draft-js";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AiFillPicture } from "react-icons/ai";
@@ -92,7 +93,7 @@ function CompetitionItem({ params, data }) {
   const [statut, setStatutSelect] = useState(statutData[data.statut]);
   const [startDateAt, setStartDateAt] = useState( dayjs(new Date(data.startDateAt)).format("YYYY-MM-DD")  );
   const [endDateAt, setEndDateAt] = useState(dayjs(new Date(data.endDateAt)).format("YYYY-MM-DD"));
-
+  const { data: session, status } = useSession()
   const updateData = async (e) => {
     e.preventDefault();
     
@@ -117,6 +118,7 @@ function CompetitionItem({ params, data }) {
     formData.append("endDateAt", endDateAt);
     formData.append("statut", statut.code);
     formData.append("letterNumber", letterNumber);
+    formData.append("adminRoleId", JSON.parse(session?.user.adminRole).id);
 
     formData.append("orderOfMagistrates", orderOfMagistrates);
     formData.append("def", def);

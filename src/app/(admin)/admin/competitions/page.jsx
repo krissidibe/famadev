@@ -4,9 +4,11 @@ import MagnifyingGlassIcon from "@/components/ButtonComponent";
 import React from "react";
 import { AiFillMessage } from "react-icons/ai";
 import {prisma} from '../../../../utils/prisma'
+import { authOptions } from "@/lib/authOption";
+import { getServerSession } from "next-auth/next";
 export const dynamic = 'force-dynamic'
 async function getCompetition() {
- 
+
   const res = await fetch(`${process.env.BASE_URL}/api/admin/competition`, {
  cache:"no-store",
  next:{revalidate:0}
@@ -24,12 +26,14 @@ async function getCompetition() {
  
 }
  async function Competition() {
-
- const res = await fetch(`${process.env.BASE_URL}/api/admin/competition`, {
+  const session = await getServerSession(authOptions)
+  const adminRole  = JSON.parse(session.user.adminRole)
+ const res = await fetch(`${process.env.BASE_URL}/api/admin/role?id=${adminRole.id}`, {
   cache:"no-store",
   next:{revalidate:0}
   });
   const datas = await res.json(); 
+  const competitions  = datas.competition
  
   return (
     <div className="flex flex-col">
@@ -49,9 +53,11 @@ async function getCompetition() {
       </div>
 
       <div className="grid items-center w-full sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 md:flex-row">
-   
-    
-     {datas.map((data) => (
+ 
+
+ 
+
+     {competitions.map((data) => (
           <div key={data.id}>
             <CompetitionCardAdminComponent
               key={data.id}
@@ -59,7 +65,7 @@ async function getCompetition() {
               imageUrl={`${process.env.BASE_URL}${data.image}`}
             />
           </div>
-        ))} 
+        ))}    
       </div>
     </div>
   );

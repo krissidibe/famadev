@@ -14,35 +14,38 @@ import {
   AcademicCapIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/solid";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOption";
 /* const inter = Inter({ subsets: ["latin"] }); */
 export const dynamic = "force-dynamic"
 const Home = async () => {
+  const session = await getServerSession(authOptions)
   const res = await fetch(`${process.env.BASE_URL}/api/admin/user`, {
     cache: "no-store",
   });
   const data: any[] = await res.json();
-
+ 
   const competitionBrouillon = await fetch(
-    `${process.env.BASE_URL}/api/user/competition?count=${0}`,
+    `${process.env.BASE_URL}/api/user/competition?count=${0}&id=${JSON.parse(session?.user.adminRole ?? "").id}`,
     { cache: "no-store" }
   );
   const competitionBrouillonData: any[] = await competitionBrouillon.json();
 
   const competitionOpen = await fetch(
-    `${process.env.BASE_URL}/api/user/competition?count=${1}`,
+    `${process.env.BASE_URL}/api/user/competition?count=${1}&id=${JSON.parse(session?.user.adminRole ?? "").id}`,
     { cache: "no-store" }
   );
   const competitionOpenData: any[] = await competitionOpen.json();
 
   const competitionClose = await fetch(
-    `${process.env.BASE_URL}/api/user/competition?count=${2}`,
+    `${process.env.BASE_URL}/api/user/competition?count=${2}&id=${JSON.parse(session?.user.adminRole ?? "").id}`,
     { cache: "no-store" }
   );
 
   const competitionCloseData: any[] = await competitionClose.json();
 
   const competitionSus = await fetch(
-    `${process.env.BASE_URL}/api/user/competition?count=${3}`,
+    `${process.env.BASE_URL}/api/user/competition?count=${3}&id=${JSON.parse(session?.user.adminRole ?? "").id}`,
     { cache: "no-store" }
   );
 
@@ -50,6 +53,7 @@ const Home = async () => {
 
   return (
     <div className="flex">
+     
       <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>

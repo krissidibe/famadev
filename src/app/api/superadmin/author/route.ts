@@ -50,6 +50,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     birthDate,
     placeBirthDate,
     adress,
+    role,
     password,
     type,
   } = await req.json();
@@ -59,6 +60,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       const user = await prisma.user.findUnique({
         where: {
           email,
+          
         },
       });
       if (user != null)
@@ -76,6 +78,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           sexe,
           birthDate: new Date(Date.now()),
           role:"ADMIN",
+          adminRole:role,
           address: adress,
           password: passwordCryp,
         },
@@ -157,7 +160,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     number,
     sexe,
     password,
-     
+    role,
     adress,
      
   } = await req.json();
@@ -189,6 +192,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           email,
           number,
           sexe,
+          role,
           address: adress,
           password: passwordCryp,
     },
