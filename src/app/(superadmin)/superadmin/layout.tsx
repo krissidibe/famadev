@@ -36,7 +36,7 @@ export default async function AdminLayout({
           <SideBarSuperAdmin />
         </div>
         <div className="flex flex-col flex-1">
-          <div className="w-full h-[70px] p-4 relative bg-[#3582ca]  text-white flex shadow-xl items-center justify-end">
+          <div className="w-full h-[70px] p-4 relative bg-[#0C4304]   text-white flex shadow-xl items-center justify-end">
         {/*   <Image
             src="/images/logo2.png"
             alt="me"

@@ -32,7 +32,7 @@ const SideBarAdmin = ({show=true,handleClick=()=>{
           height={120}
         />
         
-        </div>
+      </div>
       <div className="md:min-w-[450px] w-[353px] items-center justify-between my-2 flex space-x-2">
      
         { show &&
@@ -41,7 +41,7 @@ const SideBarAdmin = ({show=true,handleClick=()=>{
       }
       </div>
       <div className="flex flex-col mt-[30px] flex-1   ">
-       
+        
         <NavItem key={1} handleClick={handleClick} name="Tableau de bord"  href="/admin" Icon={HomeIcon} />
         <NavItem key={2} handleClick={handleClick} name="Concours" href="/admin/competitions"  Icon={BookOpenIcon} />
         <NavItem key={3} handleClick={handleClick} name="Candidatures" href="/admin/candidatures"  Icon={AcademicCapIcon} />
