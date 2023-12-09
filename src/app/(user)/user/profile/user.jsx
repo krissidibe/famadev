@@ -210,7 +210,8 @@ function UserProfile({ data }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [placeBirthDate, setPlaceBirthDate] = useState("");
-  
+  const [fatherName, setFatherName] = useState("");
+  const [motherName, setMotherName] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [sexe, setSexe] = useState("");
@@ -226,6 +227,8 @@ const showDialogClick = useRef(null)
     setImage(data.image ?? "");
     setFirstName(data.firstName ?? "");
     setLastName(data.lastName ?? "");
+    setFatherName(data.fatherName ?? "");
+    setMotherName(data.motherName ?? "");
     setEmail(data.email ?? "");
     setNumber(data.number ?? "");
     setAddress(data.address ?? "");
@@ -352,6 +355,28 @@ sur le bouton Modifier pour valider les modifications.
                     }}
                     key={1}
                     label="Prénom"
+                  />
+                   <InputComponent
+                    value={fatherName}
+                    handleChange={(e) => {
+                      setFatherName(e.target.value);
+                    }}
+                    Icon={UserIcon}
+                    withIcon={true}
+                    key={21}
+                    label="Nom & prénom du père"
+                    required="*"
+                  />
+                   <InputComponent
+                    value={motherName}
+                    handleChange={(e) => {
+                      setMotherName(e.target.value);
+                    }}
+                    Icon={UserIcon}
+                    withIcon={true}
+                    key={22}
+                    label="Nom & prénom de la mère"
+                    required="*"
                   />
                 </div>
                 <div className="grid gap-6 md:grid-cols-2">

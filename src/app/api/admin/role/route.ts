@@ -8,7 +8,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
     where:{
       id: searchParams.get("id")!.toString()
     },
-    include:{competition:true}
+    include:{competition:{
+      include:{candidatures:true}
+    }}
   }) 
         
         return new Response(JSON.stringify(role));

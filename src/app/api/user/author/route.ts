@@ -45,6 +45,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
     placeBirthDate,
     adress,
     password,
+    fatherName,
+motherName,
+nina,
     type,
   } = await req.json();
 
@@ -72,6 +75,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
           placeBirthDate,
           address: adress,
           password: passwordCryp,
+          fatherName:fatherName,
+          motherName:motherName,
+          nina:nina,
         },
       });
       return new Response(
@@ -168,6 +174,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     where: {
       email: formData.get("email")?.toString(),
     },
+    
     data: {
       firstName: formData.get("firstName")?.toString(),
       lastName: formData.get("lastName")?.toString(),
@@ -177,6 +184,8 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
       nina: formData.get("numberNina")?.toString(),
       number: formData.get("number")?.toString(),
       address: formData.get("address")?.toString(),
+      fatherName: formData.get("fatherName")?.toString(),
+      motherName: formData.get("motherName")?.toString(),
       ninaFile: ninaFileName,
       image: fileImage,
     },

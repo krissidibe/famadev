@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import ButtonComponent from "../../../../../components/ButtonComponent";
 import InputComponent from "../../../../../components/InputComponent";
-
+import Image from "next/image";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import {
   EditorState,
@@ -148,7 +148,8 @@ function CreateCompetition() {
           router.push("/admin/competitions");
         }}
       />
-      <p className="mb-2 text-lg font-bold">Phtoto de couverture</p>
+      
+      <p className="mb-2 text-lg font-bold">Phtoto de couverture</p> 
       <picture
         onClick={() => {
           imageRef.current.click();
@@ -162,7 +163,15 @@ function CreateCompetition() {
             className="object-contain w-full h-full rounded-lg"
           />
         ) : (
-          <AiFillPicture className="w-12 h-12" />
+        <>
+          <Image
+          src="/images/logo_fama.png"
+          alt="me"
+          className="cursor-pointer rounded-xl "
+          width={320}
+          height={320}
+        />
+        </>
         )}
       </picture>
 

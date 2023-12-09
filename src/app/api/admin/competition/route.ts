@@ -102,7 +102,7 @@ let filename ="";
   try {
     fileImage = await storeImage(file);
   } catch (error) {
-    fileImage = "bad";
+    fileImage = "/images/logo_fama.png";
   }
 
   const val = formData.get("startDateAt");
@@ -156,7 +156,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     try {
       fileImage = await storeImage(file);
     } catch (error) {
-      fileImage = "bad";
+      fileImage = "/images/logo_fama.png";
     }
   }
 

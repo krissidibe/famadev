@@ -40,6 +40,9 @@ import AlertModalResponse from "@/components/Modals/AlertModalResponse";
 export default function Signin() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [fatherName, setFatherName] = useState("");
+  const [motherName, setMotherName] = useState("");
+  const [nina, setNina] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [placeBirthDate, setPlaceBirthDate] = useState("");
@@ -109,6 +112,9 @@ export default function Signin() {
         placeBirthDate,
         adress,
         password,
+        fatherName,
+        motherName,
+        nina,
         type: "create",
       }),
       headers: {
@@ -196,6 +202,28 @@ export default function Signin() {
                     withIcon={true}
                     key={2}
                     label="Prénom"
+                    required="*"
+                  />
+                   <InputComponent
+                    value={fatherName}
+                    handleChange={(e) => {
+                      setFatherName(e.target.value);
+                    }}
+                    Icon={UserIcon}
+                    withIcon={true}
+                    key={21}
+                    label="Nom & prénom du père"
+                    required="*"
+                  />
+                   <InputComponent
+                    value={motherName}
+                    handleChange={(e) => {
+                      setMotherName(e.target.value);
+                    }}
+                    Icon={UserIcon}
+                    withIcon={true}
+                    key={22}
+                    label="Nom & prénom de la mère"
                     required="*"
                   />
                 </div>
@@ -305,6 +333,17 @@ export default function Signin() {
                     label="Confirmer le mot de passe"
                   />
                 </div>
+                <InputComponent
+                    value={nina}
+                    handleChange={(e) => {
+                      setNina(e.target.value);
+                    }}
+                    Icon={UserIcon}
+                    withIcon={true}
+                    key={25}
+                    label="Numéro Nina/Carte biometrique"
+                    required="*"
+                  />
               </div>
           
           </CardContent>

@@ -179,7 +179,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       id: data.id,
     },
     data: {
-      numeroRef: `FAMA${dataFormat}${competition.letterNumber?.toUpperCase()}${strNumber.toString().padStart(6, "0")}`,
+      numeroRef: `${competition.letterNumber?.toUpperCase()}-${dataFormat}-${strNumber.toString().padStart(6, "0")}`,
     },
   });
 

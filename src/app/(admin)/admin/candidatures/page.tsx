@@ -30,12 +30,12 @@ async function Competition() {
       </div>
 
       <div className="grid items-center w-full sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 md:flex-row">
-        {competitions.map((data:any) => (
+        {competitions.map((competitions:any) => (
           
             <CandidatureCardComponent
-              key={data.id}
-              data={data}
-              imageUrl={`${process.env.BASE_URL}${data.image}`}
+              key={competitions.id}
+              data={competitions}
+              imageUrl={`${process.env.BASE_URL}${competitions.image}`}
             />
  
         ))}

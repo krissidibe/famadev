@@ -44,6 +44,8 @@ model User {
   email         String        @unique
   firstName     String
   image        String?        @default("")
+  fatherName      String?
+  motherName      String?
   lastName      String
   number        String
   birthDate     DateTime?     @db.Date

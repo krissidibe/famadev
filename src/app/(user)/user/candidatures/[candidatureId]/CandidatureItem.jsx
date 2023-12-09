@@ -350,17 +350,17 @@ if (
  
   {<UserPdfNew data={data} className="p-4 text-white bg-green-500" />}
   
- {(data.canEdit  || (data.statut == 0 && new Date(data.competition.endDateAt) > new Date(Date.now()))) &&   <div onClick={()=>{
+{/*  {(data.canEdit  || (data.statut == 0 && new Date(data.competition.endDateAt) > new Date(Date.now()))) &&   <div onClick={()=>{
    setEditFile(x=> x =!x)
    setCheckEdit(data.canEdit ? true : editFile ? false : true)
-   }} className="p-4 px-6 text-white bg-blue-500 border-2 rounded-sm cursor-pointer"> {editFile == false ? "Modifier" :"Annuler"}  </div>}
+   }} className="p-4 px-6 text-white bg-blue-500 border-2 rounded-sm cursor-pointer"> {editFile == false ? "Modifier" :"Annuler"}  </div>} */}
    </div>
-      {checkEdit == true && (
+     {/*  {checkEdit == true && (
         <div className="p-4 border-[1px] border-green-500 flex justify-between  shadow-md rounded-md my-4">
           <div>Vous pouvez modifier les informations de la candidature</div>
           <RiAlertLine className="w-6 h-6 text-green-500" />
         </div>
-      )}
+      )} */}
       <p className="pb-2 mt-4 mb-10 font-semibold border-b-2">
         Informations à propos de votre candidature
       </p>
