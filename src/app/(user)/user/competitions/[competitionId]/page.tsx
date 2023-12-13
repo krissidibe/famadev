@@ -9,6 +9,7 @@ import parse from "html-react-parser";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOption";
 import Link from "next/link";
+import dayjs from "dayjs";
 export const dynamic = "force-dynamic";
 async function ShowCompetition({
   params,
@@ -48,6 +49,8 @@ const access = arrayCandidature.filter(word => word.competitionId == data.data.i
   if (!data.data) {
     return notFound();
   }
+
+  const currentAge = new Date().getFullYear() - new Date(dataUser.birthDate).getFullYear();
   // const [visible, setVisible] = useState(false);
   return (
     <div className="flex flex-col">
@@ -84,8 +87,11 @@ const access = arrayCandidature.filter(word => word.competitionId == data.data.i
       <p className="text-[15px]">
         {parse(data.data?.content || "")}
       </p>
+    
      {access ?  <div className="flex items-end justify-end w-full my-4 ">
-        {new Date(data.data.endDateAt) > new Date(Date.now()) && data.data.statut == "1" ? (
+        {new Date(data.data.endDateAt) > new Date(Date.now())
+        && (currentAge >= data.data.ageMin && currentAge <= data.data.ageMax )
+        && data.data.statut == "1" ? (
 
          <Link 
          href={`/user/competitions/${data.data?.id}/apply?title=${data.data.title}`}
@@ -106,8 +112,9 @@ const access = arrayCandidature.filter(word => word.competitionId == data.data.i
             full={true}
           /> */
         ) : (
-          <div className="flex w-full items-center justify-center p-4 my-4 border-[1px] border-orange-300   text-white bg-red-500">
-          <p>La date du concours est dépassée où le concours n'est plus disponible</p>
+          <div className="flex w-full flex-col items-center justify-center p-4 my-4 border-[1px] border-orange-300   text-white bg-red-500">
+          {<p>La date du concours est dépassée où le concours n'est plus disponible</p>}
+         {!(currentAge >= data.data.ageMin && currentAge <= data.data.ageMax ) && <p> Ou Votre âge ne peut pas faire le concours</p>}
           </div>
         )}
       </div> : <div className="flex items-center justify-center p-4 my-4 border-[1px] text-xl  text-white bg-red-500">

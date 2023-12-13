@@ -103,6 +103,8 @@ function UserProfile({ data }) {
     formData.append("file", image);
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
+    formData.append("fatherName", fatherName);
+    formData.append("motherName", motherName);
     formData.append("email", email);
     formData.append("number", number);
     formData.append("sexe", sexe);

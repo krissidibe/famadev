@@ -123,12 +123,19 @@ function CandidatureItem({ data }) {
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.filesRequired))));
   const [dataInputs, setDataInputs] = useState(JSON.parse(JSON.parse(JSON.stringify(data.inputsRequired))));
   const [selectDataGroups, setSelectDataGroups] =  useState(data.groupsRequired);
+  const [dataGroups, setDataGroups] = useState([]);
 
+  const groups = data.groupsRequired;
   const inputs = data.inputsRequired;
 useEffect(() => {
   
- 
+  setDataGroups(JSON.parse(result.groupsRequired));
  setDataInputs(JSON.parse(inputs))
+
+ if(data.canEdit){
+
+   setCheckEdit(true)
+ }
 
   return () => {
     
@@ -195,7 +202,7 @@ const handleChangeInputRequired = (item,e) => {
             "Problème de connexion internet veuillez réessayer ultérieurement")
       );
       setIsLoading((x) => (x = true));
-    }, 10000);
+    }, 1000);
   };
 
   const updateApply = async (e) => {
@@ -220,24 +227,16 @@ if (
     showDialogClick.current.click();
 
   setTitleModal((x) => (x = "Impossible"));
-  setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)xx"));
+  setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
 
   return;
 }
-
+/* 
     if (
       
       dataUser.lastName.length <= 1 || 
-      dataUser.firstName.length <= 1 || 
-      dataUser.number.length <= 1 || 
-      dataUser.birthDate.length <= 1 || 
-      dataUser.placeBirthDate.length <= 1 || 
-      dataUser.sexe.length <= 1 || 
-      dataUser.address.length <= 1 || 
+      dataUser.firstName.length <= 1 |
   
-      dataUser.diplome.length <= 1 || 
-      dataUser.study.length <= 1 || 
-      dataUser.speciality.length <= 1
       ) {
      
         clearInterval(interval);
@@ -248,7 +247,7 @@ if (
       setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
    
       return;
-    }
+    } */
 
 
     const formData = new FormData();
@@ -293,6 +292,8 @@ if (
 
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
+      formData.append("dataInputsArray", JSON.stringify(dataInputs));
+      formData.append("selectDataGroups", JSON.stringify(dataGroups));
 
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
@@ -335,7 +336,7 @@ if (
               const timer = setTimeout(() => {
       
                  
-                routerPaht.push("/user/candidatures");
+                routerPaht.replace("/user/candidatures");
             }, 300);
             }
                 
@@ -350,10 +351,10 @@ if (
  
   {<UserPdfNew data={data} className="p-4 text-white bg-green-500" />}
   
-{/*  {(data.canEdit  || (data.statut == 0 && new Date(data.competition.endDateAt) > new Date(Date.now()))) &&   <div onClick={()=>{
+  {(data.canEdit) &&   <div onClick={()=>{
    setEditFile(x=> x =!x)
    setCheckEdit(data.canEdit ? true : editFile ? false : true)
-   }} className="p-4 px-6 text-white bg-blue-500 border-2 rounded-sm cursor-pointer"> {editFile == false ? "Modifier" :"Annuler"}  </div>} */}
+   }} className="p-4 px-6 text-white bg-blue-500 border-2 rounded-sm cursor-pointer"> {editFile == false ? "Modifier" :"Annuler"}  </div>}  
    </div>
      {/*  {checkEdit == true && (
         <div className="p-4 border-[1px] border-green-500 flex justify-between  shadow-md rounded-md my-4">
@@ -377,11 +378,11 @@ if (
             </p>
             <p
               className={`text-sm font-semibold text-white p-2 rounded ${
-                statutOptions[data.statut].color
+                statutOptions[data.statut]?.color ?? "bg-black"
               }`}
             >
               {" "}
-              {statutOptions[data.statut].label}{" "}
+              {statutOptions[data.statut]?.label ?? "Brouillon"} 
             </p>
           </div>
           <div className="w-full h-full p-4 my-4  text-sm bg-white border-[1px] border-gray-200 rounded-md scrollbar-hide md:max-w-[600px]">
@@ -592,28 +593,34 @@ if (
                 </div>
               </div>
 
-              <CardTitle className="mt-4 mb-4">
+              <CardTitle className="mt-4 mb-6">
                 Informations à propos du concours
               </CardTitle>
 
-              {selectDataGroups.length > 0 &&  
-              
-              <InputComponent
-                    
-              value={selectDataGroups}
-              name={"Niveau"}
-                             
-                              label={"Niveau"}
-                              required={`${checkEdit ? "*" : ""}`}
-                              
-                              handleChange={(e) => {
-                                if(!checkEdit){
-                                  return;
-                                }
-                                setSelectDataGroups(x=> x =e.target.value);
-                              }}
-                            />
-                }
+ 
+
+              {dataGroups.length > 0 &&   <div>
+                  <Label className="text-black">Le niveau</Label>
+                  <select defaultValue={selectDataGroups} onChange={(e)=>{
+                    setSelectDataGroups(x=> x = e.target.value.trim())
+                   
+                  }}  className="w-full p-[10px] mt-1 mb-3 border rounded-md">
+                    {dataGroups.map((item) => (
+                      <optgroup key={item.id} label={`${item.name}`}>
+                        {item?.children.map((itemSub) => (
+                          <option
+                            key={itemSub.id}
+                            value={itemSub.name}
+                           
+                          >
+                            {itemSub.name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </div>}
+ 
               
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
               {dataInputs.length > 0 && dataInputs.map(item => ( 
@@ -650,6 +657,11 @@ if (
               <CardTitle className="mt-4 mb-2 text-blue-500">
                 Les pieces jointes
               </CardTitle>
+              {JSON.stringify(dataFiles)}
+              <br />
+              <br />
+              <br />
+              {JSON.stringify(JSON.parse(data.filesRequired))}
               {/*   <CardDescription>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
                 at tincidunt neque. Pellentesque vitae commodo justo. Integer
@@ -658,21 +670,32 @@ if (
 
  
 
-              {data.filesRequired != null && <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
+              {data.filesRequired != null && <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
 
              {dataFiles.map(item=>(
-               checkEdit ? ( <InputComponent
+               checkEdit ? ( 
+                
+<div className="flex items-center justify-center gap-2">
+
+ <div className="flex-1">
+ {fileFunctionCutom(item.name,item.value)}
+ </div>
+<div className="mt-4 max-w-2">
+<InputComponent
                 checkFileIcon={birthDateFile != ""}
                 name = {item.name}
                 handleChange={(e) => {
                   handleChangeFileRequired(item,e.target);
                 }}
                 key={item.name}
-                inputType="file"
-                required="*"
-                label={item.name}
+                inputType="file" 
+              
                 
-              />) : fileFunctionCutom(
+              />
+</div>
+</div>
+
+               ) : fileFunctionCutom(
                item.name,
                
                item.value
@@ -682,233 +705,13 @@ if (
 
               </div>  }
              
-            {data.filesRequired == null &&   <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
-{checkEdit ? ( <InputComponent
-                    checkFileIcon={birthDateFile != ""}
-                    handleChange={(e) => {
-                      setBirthDateFile(e.target.files[0]);
-                    }}
-                    key={21}
-                    inputType="file"
-                    required="*"
-                    label="Une copie d'acte de naissance"
-                    
-                  />) : fileFunction(
-                    "La copie d'acte de naissance",
-                    "ou  jugement supplétif en tenant lieu",
-                    user.birthDateFile
-                  ) }
-              
-
-                
-
-
-                { checkEdit ?   <InputComponent
-                    checkFileIcon={cassierFile != ""}
-                    handleChange={(e) => {
-                      setCassierFile(e.target.files[0]);
-                    }}
-                    key={22}
-                    inputType="file"
-                    required="*"
-                    label=" Un extrait du casier judiciaire"
-                    
-                  />  :fileFunction(
-                  "L'extrait du casier judiciaire",
-                  "Datant d'au moins de trois(3) mois",
-                  user.cassierFile
-                )}
-
-
-                {checkEdit ? <InputComponent
-                    checkFileIcon={certificatVie != ""}
-                    handleChange={(e) => {
-                      setCertificatVie(e.target.files[0]);
-                    }}
-                    key={23}
-                    inputType="file"
-                    required="*"
-                    label="Un certificat de bonne vie et moeurs"
-                   
-                  />
- : fileFunction(
-                  "Le certificat de bonne vie et moeurs",
-                  "Un certificat de bonne vie et moeurs valide",
-                  user.certificatVie
-                )}
-                {checkEdit ? 
-                  <InputComponent
-                  checkFileIcon={certificate != ""}
-                  handleChange={(e) => {
-                    setCertificate(e.target.files[0]);
-                  }}
-                  key={24}
-                  inputType="file"
-                  required="*"
-                  label="Un certificat de nationalité malienne"
-                  
-                />
-                : fileFunction(
-                  "Le certificat de nationalité malienne",
-                  "Un certificat valide",
-                  user.certificate
-                )}
-                {
-                checkEdit ?   <InputComponent
-                checkFileIcon={diplomeFile != ""}
-                handleChange={(e) => {
-                  setDiplomeFile(e.target.files[0]);
-                }}
-                key={25}
-                inputType="file"
-                required="*"
-                label="Une copie certifiée conforme du diplome requis"
-                subLabel=""
-              /> :
-                fileFunction(
-                  "La copie certifiée conforme du diplome requis",
-                  "et son équivalence pour les diplomes étrangers",
-                  user.diplomeFile
-                )}
-
-
-                {checkEdit ?  <InputComponent
-                    checkFileIcon={certificatVisite != ""}
-                    handleChange={(e) => {
-                      setCertificatVisite(e.target.files[0]);
-                    }}
-                    key={26}
-                    inputType="file"
-                    required="*"
-                    label="Un certificat de visite et contre visite "
-                    
-                  /> 
-                  : fileFunction(
-                  "Le certificat de visite et contre visite",
-                  "Délivré par une  autorité médicale agréée",
-                  user.certificatVisite
-                )}
-                {checkEdit ? 
-                <InputComponent
-                checkFileIcon={equivalenceFile != ""}
-                handleChange={(e) => {
-                  setEquivalenceFile(e.target.files[0]);
-                }}
-                key={27}
-                inputType="file"
-                label="L'équivalence du diplômes requis pour les diplômes étrangers"
-                subLabel=""
-              />
-                : fileFunction(
-                  "L'équivalence du diplômes requis pour les diplômes étrangers",
-                  "et son équivalence pour les diplomes étrangers",
-                  user.equivalenceFile
-                )}
-
-                {checkEdit ?  <InputComponent
-                    checkFileIcon={infoCardFile != ""}
-                    handleChange={(e) => {
-                      setInfoCardFile(e.target.files[0]);
-                    }}
-                    key={29}
-                    inputType="file"
-                    required="*"
-                    label="Une copie de la pièce d’identité en cours de validité"
-                    subLabel=""
-                  />  : fileFunction(
-                  "La copie de la carte nina ou la fiche individuelle",
-                  "",
-                  user.ninaFile
-                )}
-                {checkEdit ?  <InputComponent
-                    checkFileIcon={ninaFile != ""}
-                    handleChange={(e) => {
-                      setNinaFile(e.target.files[0]);
-                    }}
-                    key={28}
-                    inputType="file"
-                    label="Une copie de la carte nina ou la fiche individuelle"
-                    
-                  /> : fileFunction(
-                  "La copie de la pièce d’identité",
-                  "",
-                  user.infoCardFile
-                )}
-                {
-                checkEdit ?
-                <InputComponent
-                checkFileIcon={demandeFile != ""}
-                handleChange={(e) => {
-                  setDemandeFile(e.target.files[0]);
-                }}
-                key={30}
-                inputType="file"
-                required="*"
-                label="Une demande manuscrite timbrée"
-                
-              />
-                :
-                fileFunction(
-                  "La demande manuscrite timbrée",
-                  "",
-                  user.demandeFile
-                )}
-              </div>}
-              {/* 
-              <CardTitle className="mt-4 mb-10 text-green-500">
-                Les Diplômes
-              </CardTitle>
-              <CardDescription>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                at tincidunt neque. Pellentesque vitae commodo justo. Integer
-                tempor Pellentesque vitae Integer tempor
-              </CardDescription>
-              <div className="grid gap-6 mt-4 md:grid-cols-2">
-              {user.def.toString().includes("files/")     && fileFunction(
-                  "Def",
-                  "",
-                  user.def
-                )}
-              
-              {user.bac.toString().includes("files/")  && fileFunction(
-                  "Bac",
-                  "",
-                  user.bac
-                )}
-              
-              {user.licence.toString().includes("files/")  && fileFunction(
-                  "Licence",
-                  "",
-                  user.licence
-                )}
-              
-              {user.maitrise.toString().includes("files/")  && fileFunction(
-                  "Maitrise",
-                  "",
-                  user.maitrise
-                )}
-              
-              {user.master1.toString().includes("files/")  && fileFunction(
-                  "Master1",
-                  "",
-                  user.master1
-                )}
-              
-              {user.master2.toString().includes("files/")  && fileFunction(
-                  "Master2",
-                  "",
-                  user.master2
-                )}
-              
-                
-                
-              </div> */}
+             
             </CardContent>
            {checkEdit &&   <CardFooter className="flex justify-end">
 
 {isLoading ?               <ButtonComponent
                 key={8}
-                label="Modifier"
+                label="Postuler"
                 full={true}
                 type="submit"
                 className="self-end w-full mt-4 md:w-[200px]"

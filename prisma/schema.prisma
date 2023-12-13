@@ -183,6 +183,8 @@ email         String?
   placeBirthDate     String?       @default("")
   firstName           String
   lastName            String
+  fatherName          String
+  motherName          String
   sexe                String
   author              User        @relation(fields: [authorId], references: [id])
   competitionId       String

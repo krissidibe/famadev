@@ -57,7 +57,7 @@ const columns = [
     name: "Statut",
     selector: (row) => row.statut,
     sortable: true,
-    cell: row => (<div className={`p-1 text-white text-[12px] px-2 h-10 text-center flex items-center  rounded-md ${statutOptions[row.statut].color } `} >{ statutOptions[row.statut].label }</div>),
+    cell: row => (<div className={`p-1 text-white text-[12px] px-2 h-10 text-center flex items-center  rounded-md ${statutOptions[row.statut]?.color ?? "bg-black" } `} >{ statutOptions[row.statut]?.label != null ?  statutOptions[row.statut].label : "Brouillon" }</div>),
   },
   {
     name: "Action",
@@ -87,7 +87,7 @@ const mobileColumns = [
     name: "Statut",
     selector: (row) => row.statut,
     sortable: true,
-    cell: row => (<div className={`p-1 text-white text-[12px] px-2  rounded-md ${statutOptions[row.statut].color } `} >{ statutOptions[row.statut].label }</div>),
+    cell: row => (<div className={`p-1 text-white text-[12px] px-2  rounded-md ${statutOptions[row.statut]?.color  ?? "bg-black"} `} >{ statutOptions[row.statut]?.label != null ?  statutOptions[row.statut].label : "Brouillon" }</div>),
   },
   {
     name: "Action",

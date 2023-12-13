@@ -166,7 +166,7 @@ const MyDocument = ({ data }) => (
         >
           {InfoInput(
             "Statut de candidature",
-            ` ${statutOptions[parseInt(data?.statut ?? 0)].label} `
+            ` ${statutOptions[parseInt(data?.statut ?? 0)]?.label ?? "Brouillon"} `
           )}
         </View>
 

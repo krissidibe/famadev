@@ -91,7 +91,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return new Response(
       JSON.stringify({
         data: candidatureCheck.id,
-        message: "Vous avez déjà postulé",
+        message: "Vous avez déjà enregistré",
       })
     );
   }
@@ -130,7 +130,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const data = await prisma.candidature.create({
     data: {
       title: "title",
-      statut: "0",
+      statut: "100",
       content: "",
       certificat: "",
 
@@ -157,7 +157,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       competitionId: formData.get("competitionId")?.toString() ?? "",
       //file
       certificate: certificateName,
-     
+     canEdit : true,
       orderOfMagistrates: formData.get("orderOfMagistratesType")?.toString() ?? "",
       filesRequired: JSON.stringify(dataFilesArrayUser),
       inputsRequired: JSON.stringify(dataInputsArrayUser),
@@ -167,30 +167,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
   });
 
 
- 
-
-  const dataFormat = new Date(Date.now())
-    .getFullYear()
-    .toString()
-    .substring(2, 4);
-
-  const candidatureCount =  await prisma.candidature.findMany({
-      where:{
-        NOT:{
-          statut: "100"
-        }
-      }
-    })
-
-  //const strNumber = competition.candidatures.length + 1;
-  const strNumber = candidatureCount.length + 1;
-
+  
   const finalData = await prisma.candidature.update({
     where: {
       id: data.id,
     },
     data: {
-      numeroRef: `${competition.letterNumber?.toUpperCase()}-${dataFormat}-${strNumber.toString().padStart(6, "0")}`,
+      numeroRef: `------`,
     },
   });
 
@@ -228,7 +211,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
   
   const formData = await req.formData();
 
-
+ 
 
   const user = await prisma.user.findFirst({
     where: {
@@ -243,64 +226,35 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     
 
   
+
   const dataFilesArray = formData.get("dataFilesArray")!.toString();
   const dataInputsArray = formData.get("dataInputsArray")!.toString();
   const selectDataGroups = formData.get("selectDataGroups")!.toString();
-
  
   let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
 
  
   let dataFilesArrayUser:any[] =  [];
-  
+ 
 
   let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
 
- 
 
-  
 
  for await (const item of dataFilesArrayConvert) {
   
 
-  if(typeof item.value == "string"){
- 
-    dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value})
-  }  else{
-
-    dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
+  if(item.value.length <=2){
+    return new Response(
+      JSON.stringify({
+        data: "error",
+        message: `Veuillez ajouter les pièces obligatoires (*)`,
+      })
+    );
   }
  
+  dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
 }
-/* return new Response(
-  JSON.stringify({ data: "error", message: `error ${user}` })
-); */
-
-const competition = await prisma.competition.findFirst({
-  where: {
-    id: formData.get("competitionId")?.toString(),
-  },
-  include :{ candidatures:true }
- 
-});
-
-const dataFormat = new Date(Date.now())
-  .getFullYear()
-  .toString()
-  .substring(2, 4);
-
-const candidatureCount =  await prisma.candidature.findMany({
-    where:{
-      NOT:{
-        statut: "100"
-      }
-    }
-  })
-
-//const strNumber = competition.candidatures.length + 1;
-const strNumber = candidatureCount.length + 1;
-
- 
 
  
   const data = await prisma.candidature.update({
@@ -311,15 +265,12 @@ const strNumber = candidatureCount.length + 1;
     ,
     data: {
      
-      statut: "0",
-      numeroRef: `${competition!.letterNumber?.toUpperCase()}-${dataFormat}-${strNumber.toString().padStart(6, "0")}`,
- 
+
+     
       number: formData.get("number")?.toString() ?? ""  ,
       address: formData.get("address")?.toString() ?? ""  ,
       firstName: formData.get("firstName")?.toString() ?? ""  ,
       lastName: formData.get("lastName")?.toString() ?? ""  ,
-      fatherName: user?.fatherName ?? "",
-      motherName: user?.motherName ?? "",
       birthDate: new Date( formData.get("birthDate")!.toString() ),
       placeBirthDate: formData.get("placeBirthDate")?.toString() ?? ""  ,
       sexe: formData.get("sexe")?.toString() ?? ""  ,
@@ -343,8 +294,6 @@ const strNumber = candidatureCount.length + 1;
      canEdit:false
     },
   });
-
-
 
  
   return new Response(

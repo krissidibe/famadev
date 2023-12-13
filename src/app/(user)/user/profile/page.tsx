@@ -39,7 +39,7 @@ async function Home() {
   });
   return (
     <div className="flex flex-col">
-    <p>{JSON.stringify(data)}</p>   
+   
     
        
     <UserProfile data={data}/>

@@ -32,6 +32,16 @@ function ExportExcel({datas} ) {
         width: 40,
       },
       {
+        header: "Nom & prénom du père",
+        key: "fatherName",
+        width: 40,
+      },
+      {
+        header: "Nom & prénom de la mère",
+        key: "motherName",
+        width: 40,
+      },
+      {
         header: "SEXE",
         key: "sexe",
         width: 40,
@@ -132,6 +142,8 @@ function ExportExcel({datas} ) {
      
         lastName: item.lastName,
         firstName: item.firstName,
+        fatherName: item.firstName,
+        motherName: item.firstName,
         sexe: item.sexe,
         birthDate:  dayjs(item.birthDate).format("DD/MM/YYYY") ,
         placeBirthDate: item.placeBirthDate,

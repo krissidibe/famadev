@@ -204,6 +204,68 @@ export default function ApplyItem(
     }, 60000);
   };
 
+  const createApplyDraft = async (e) => {
+    e.preventDefault();
+
+    launchTimer();
+
+    setIsLoading((x) => (x = false));
+
+ 
+    const formData = new FormData();
+
+    dataFiles.map((item) => formData.append(item.id, item.value));
+
+    formData.append("dataFilesArray", JSON.stringify(dataFiles));
+    formData.append("dataInputsArray", JSON.stringify(dataInputs));
+    formData.append("sexe", sexe);
+    formData.append("nina", nina);
+    formData.append("certificate", certificate);
+    formData.append("diplome", diplome);
+    formData.append("diplomeNumber", diplomeNumber);
+    formData.append("placeOfGraduation", placeOfGraduation);
+    formData.append("countryOfGraduation", countryOfGraduation);
+    formData.append("study", study);
+    formData.append("speciality", speciality);
+
+    formData.append("uid", data.data.data.email);
+    formData.append("competitionId", data.data.competitionId);
+
+    formData.append("certificate", certificate);
+    formData.append("birthDateFile", birthDateFile);
+    formData.append("cassierFile", cassierFile);
+    formData.append("certificatVie", certificatVie);
+    formData.append("certificatVisite", certificatVisite);
+    formData.append("diplomeFile", diplomeFile);
+    formData.append("equivalenceFile", equivalenceFile);
+    formData.append("ninaFile", ninaFile);
+    formData.append("infoCardFile", infoCardFile);
+    formData.append("demandeFile", demandeFile);
+    formData.append("orderOfMagistratesType", orderOfMagistratesType);
+    formData.append("selectDataGroups", selectDataGroups);
+
+ 
+    const res = await fetch(`/api/user/candidatureDraft`, {
+      body: formData,
+      method: "POST",
+    });
+    const dataNew = await res.json();
+   
+
+    setModalData((x) => (x = dataNew.message));
+
+    if (dataNew) {
+      setTitleModal(
+        (x) =>
+          (x =
+            dataNew.data == "error"
+              ? "Impossible"
+              : "Candidature enregistrée avec succès")
+      );
+      showDialogClick.current.click();
+      clearInterval(interval);
+    }
+  };
   const createApply = async (e) => {
     e.preventDefault();
 
@@ -211,18 +273,7 @@ export default function ApplyItem(
 
     setIsLoading((x) => (x = false));
 
-    /*   if (diplome == "" || study == "" || speciality == "") {
-      showDialogClick.current.click();
-      clearInterval(interval);
-
-      setTitleModal((x) => (x = "Impossible"));
-      setModalData(
-        (x) => (x = "Veuillez renseigner les champs obligatoires (*)")
-      );
-
-      return;
-    } */
-
+ 
     const formData = new FormData();
 
     dataFiles.map((item) => formData.append(item.id, item.value));
@@ -544,13 +595,23 @@ data.data.filesRequired
             </CardContent>
             <CardFooter className="flex justify-end">
               {isLoading ? (
-                <ButtonComponent
+                <div className="flex flex-col w-full space-x-5 md:flex-row md:w-1/2">
+                  <ButtonComponent
+                  key={7}
+                  handleClick={createApplyDraft}
+                  label="Enregistrer comme brouillon"
+                  full={true}
+                  type="button"
+                  className="self-end w-full mt-4 md:w-[200px] bg-yellow-600"
+                />
+                  <ButtonComponent
                   key={8}
                   label="Postuler"
                   full={true}
                   type="submit"
                   className="self-end w-full mt-4 md:w-[200px]"
                 />
+                </div>
               ) : (
                 <div className="flex items-center justify-center space-x-2">
                   <svg
