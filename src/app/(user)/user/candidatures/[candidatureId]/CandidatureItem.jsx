@@ -208,29 +208,44 @@ const handleChangeInputRequired = (item,e) => {
   const updateApply = async (e) => {
 
     e.preventDefault();
+    if(!checkEdit){
+      return
+      }
+     
 
+     
+      for (let index = 0; index < dataInputs.length; index++) {
+        const element = dataInputs[index];
+        
+      if(element.value.trim().length == 0){
+        clearInterval(interval);
+    
+        showDialogClick.current.click();
+    
+      setTitleModal((x) => (x = "Impossible"));
+      setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
+      return;
+      };
+
+        
+      }
+     
+      console.log("ici 100");
+      if (JSON.stringify(dataFiles).toString().includes("File not")) {
+ 
+        clearInterval(interval);
+    
+        showDialogClick.current.click();
+    
+      setTitleModal((x) => (x = "Impossible"));
+      setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
+    
+      return;
+    }
     launchTimer();
     setIsLoading(x => x = false)
-if(!checkEdit){
-return
-}
-    
  
-if (
-      
     
-  dataUser.orderOfMagistrates=="" && data.competition.orderOfMagistrates == true  
-  ) {
- 
-    clearInterval(interval);
-
-    showDialogClick.current.click();
-
-  setTitleModal((x) => (x = "Impossible"));
-  setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
-
-  return;
-}
 /* 
     if (
       
