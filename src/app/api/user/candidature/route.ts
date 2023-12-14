@@ -125,10 +125,30 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
    
 
+
+
+const dataFormat = new Date(Date.now())
+.getFullYear()
+.toString()
+.substring(2, 4);
+
+const candidatureCount =  await prisma.candidature.findMany({
+  where:{
+    NOT:{
+      statut: "100"
+    }
+  }
+})
+
+//const strNumber = competition.candidatures.length + 1;
+const strNumber = candidatureCount.length + 1;
+
+ 
  
 
   const data = await prisma.candidature.create({
     data: {
+      numeroRef: `${competition.letterNumber?.toUpperCase()}-${dataFormat}-${strNumber.toString().padStart(6, "0")}`,
       title: "title",
       statut: "0",
       content: "",
@@ -169,38 +189,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
  
 
-  const dataFormat = new Date(Date.now())
-    .getFullYear()
-    .toString()
-    .substring(2, 4);
 
-  const candidatureCount =  await prisma.candidature.findMany({
-      where:{
-        NOT:{
-          statut: "100"
-        }
-      }
-    })
-
-  //const strNumber = competition.candidatures.length + 1;
-  const strNumber = candidatureCount.length + 1;
-
-  const finalData = await prisma.candidature.update({
-    where: {
-      id: data.id,
-    },
-    data: {
-      numeroRef: `${competition.letterNumber?.toUpperCase()}-${dataFormat}-${strNumber.toString().padStart(6, "0")}`,
-    },
-  });
-
-  if(!finalData){
+  if(!data){
     return new Response(
       JSON.stringify({ data: "error", message: "Erreur d'envoi des données veuillez réessayer." })
     );
   }
   return new Response(
-    JSON.stringify({ data: finalData, message: "La candidature est créée" })
+    JSON.stringify({ data: data, message: "La candidature est créée" })
   );
  
 
