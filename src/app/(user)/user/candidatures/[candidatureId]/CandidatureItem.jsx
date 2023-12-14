@@ -202,7 +202,7 @@ const handleChangeInputRequired = (item,e) => {
             "Problème de connexion internet veuillez réessayer ultérieurement")
       );
       setIsLoading((x) => (x = true));
-    }, 1000);
+    }, 60000);
   };
 
   const updateApply = async (e) => {
