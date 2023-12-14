@@ -110,7 +110,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
  for await (const item of dataFilesArrayConvert) {
   
-
+/* 
   if(item.value.length <=2){
     return new Response(
       JSON.stringify({
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         message: `Veuillez ajouter les pièces obligatoires (*)`,
       })
     );
-  }
+  } */
  
   dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
 }

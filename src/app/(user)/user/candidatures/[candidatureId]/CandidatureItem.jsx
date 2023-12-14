@@ -254,6 +254,8 @@ if (
     formData.append("candId", data.id);
     formData.append("lastName", dataUser.lastName);
     formData.append("firstName", dataUser.firstName);
+    formData.append("fatherName", dataUser.fatherName);
+    formData.append("motherName", dataUser.motherName);
     formData.append("email", dataUser.email);
     formData.append("number", dataUser.number);
     formData.append("birthDate", dataUser.birthDate);
@@ -293,7 +295,7 @@ if (
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
       formData.append("dataInputsArray", JSON.stringify(dataInputs));
-      formData.append("selectDataGroups", JSON.stringify(dataGroups));
+      formData.append("selectDataGroups", selectDataGroups);
 
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
@@ -351,10 +353,10 @@ if (
  
   {<UserPdfNew data={data} className="p-4 text-white bg-green-500" />}
   
-  {(data.canEdit) &&   <div onClick={()=>{
+  {/* {(data.canEdit) &&   <div onClick={()=>{
    setEditFile(x=> x =!x)
    setCheckEdit(data.canEdit ? true : editFile ? false : true)
-   }} className="p-4 px-6 text-white bg-blue-500 border-2 rounded-sm cursor-pointer"> {editFile == false ? "Modifier" :"Annuler"}  </div>}  
+   }} className="p-4 px-6 text-white bg-blue-500 border-2 rounded-sm cursor-pointer"> {editFile == false ? "Modifier" :"Annuler"}  </div>}   */}
    </div>
      {/*  {checkEdit == true && (
         <div className="p-4 border-[1px] border-green-500 flex justify-between  shadow-md rounded-md my-4">
@@ -596,16 +598,14 @@ if (
               <CardTitle className="mt-4 mb-6">
                 Informations à propos du concours
               </CardTitle>
-
  
-
-              {dataGroups.length > 0 &&   <div>
+              {checkEdit ? dataGroups.length > 0 &&   <div>
                   <Label className="text-black">Le niveau</Label>
                   <select defaultValue={selectDataGroups} onChange={(e)=>{
                     setSelectDataGroups(x=> x = e.target.value.trim())
                    
                   }}  className="w-full p-[10px] mt-1 mb-3 border rounded-md">
-                    {dataGroups.map((item) => (
+                    {  dataGroups.map((item) => (
                       <optgroup key={item.id} label={`${item.name}`}>
                         {item?.children.map((itemSub) => (
                           <option
@@ -619,7 +619,17 @@ if (
                       </optgroup>
                     ))}
                   </select>
-                </div>}
+                </div>
+              :  <InputComponent
+                    
+              value={selectDataGroups} 
+                             
+                              label={"Niveau"}
+                              
+                              
+                              
+                            />
+              }
  
               
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
@@ -657,17 +667,7 @@ if (
               <CardTitle className="mt-4 mb-2 text-blue-500">
                 Les pieces jointes
               </CardTitle>
-              {JSON.stringify(dataFiles)}
-              <br />
-              <br />
-              <br />
-              {JSON.stringify(JSON.parse(data.filesRequired))}
-              {/*   <CardDescription>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                at tincidunt neque. Pellentesque vitae commodo justo. Integer
-                tempor Pellentesque vitae Integer tempor
-              </CardDescription> */}
-
+        
  
 
               {data.filesRequired != null && <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
@@ -675,13 +675,14 @@ if (
              {dataFiles.map(item=>(
                checkEdit ? ( 
                 
-<div className="flex items-center justify-center gap-2">
+<div className="flex gap-2">
 
- <div className="flex-1">
+{item.value != "File not" && <div className="flex-1">
  {fileFunctionCutom(item.name,item.value)}
- </div>
+ </div>}
 <div className="mt-4 max-w-2">
 <InputComponent
+label={item.value == "File not" && item.name}
                 checkFileIcon={birthDateFile != ""}
                 name = {item.name}
                 handleChange={(e) => {
@@ -708,14 +709,20 @@ if (
              
             </CardContent>
            {checkEdit &&   <CardFooter className="flex justify-end">
-
-{isLoading ?               <ButtonComponent
+            
+ 
+{isLoading  ?  
+<>
+{new Date(result.endDateAt) > new Date(Date.now()) && <ButtonComponent
                 key={8}
                 label="Postuler"
                 full={true}
                 type="submit"
                 className="self-end w-full mt-4 md:w-[200px]"
-              /> : 
+              /> }
+</>
+              
+              : 
               <div className="flex items-center justify-center space-x-2">
                   <svg
                     className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

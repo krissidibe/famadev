@@ -393,6 +393,18 @@ export default function ApplyItem(
                     key={2}
                     label="Prénom"
                   />
+                  <InputComponent
+                    value={data.data.data.fatherName}
+                    readonly={true}
+                    key={200}
+                    label="Nom & prénom du père"
+                  />
+                  <InputComponent
+                    value={data.data.data.motherName}
+                    readonly={true}
+                    key={201}
+                    label="Nom & prénom de la mère"
+                  />
                 </div>
                 <div className="grid gap-6 md:grid-cols-2">
                   <InputComponent
@@ -602,7 +614,7 @@ data.data.filesRequired
                   label="Enregistrer comme brouillon"
                   full={true}
                   type="button"
-                  className="self-end w-full mt-4 md:w-[200px] bg-yellow-600"
+                  className="self-end w-full mt-4 text-xs md:w-[400px] bg-yellow-600"
                 />
                   <ButtonComponent
                   key={8}

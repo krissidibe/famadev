@@ -155,6 +155,18 @@ function CandidatureItem({ datas }) {
                       key={2}
                       label="Prénom"
                     />
+                    <InputComponent
+                      value={user.fatherName}
+                      readonly={true}
+                      key={2}
+                      label="Nom & prénom du père"
+                    />
+                    <InputComponent
+                      value={user.motherName}
+                      readonly={true}
+                      key={2}
+                      label="Nom & prénom de la mère"
+                    />
                   </div>
                   <div className="grid gap-6 min-[1720px]:grid-cols-2">
                     <InputComponent

@@ -44,10 +44,10 @@ const router = useRouter();
     
     <div className=" px-4 py-2 my-2 bg-slate-100 border-[1px] rounded-md border-black text-[13px] ml-4 mr-4">
     <div className="flex justify-between px-2 py-4 rounded-sm" >  
-
+ 
    
     
-    <p className="font-bold">Nombre de candidature total</p> <p className="font-semibold">{data.candidatures.length}</p> </div>
+    <p className="font-bold">Nombre de candidature total</p> <p className="font-semibold">{data.candidatures.filter(item=> item.statut != "100" ).length}</p> </div>
    {/*  <div className="flex justify-between border-b-[1px] border-black rounded-sm" >  <p className="">Nombre de candidature validée</p> <p className="text-green-500">650</p> </div>
     <div className="flex justify-between rounded-sm " >  <p className="">Nombre de candidature en cours</p> <p className="text-orange-500">150</p> </div> */}
     </div>
