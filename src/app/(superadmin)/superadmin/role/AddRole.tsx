@@ -81,7 +81,7 @@ if(dataNew.id != ""){
         <DialogHeader>
           <DialogTitle>Role</DialogTitle>
           <DialogDescription>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum aspernatur accusantium ad molestiae 
+          Seuls les administrateurs associés à ce role verront les données des concours associées a ce role
            </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
