@@ -85,18 +85,8 @@ let statutNum =  searchParams.get("count");
   });
   return new Response(JSON.stringify({ data: data, message: "complet" }));
 }
-export async function POST(req: NextRequest, res: NextResponse) {
-  /* const {
-    title,
-    statut,
-    startDateAt,
-    endDateAt,
-    valueContent,
-    image,
-    ageMax,
-    ageMin,
-  } = await req.json();
- */
+/* export async function POST(req: NextRequest, res: NextResponse) {
+  
 
   const data = await prisma.candidature.create({
     data: {
@@ -122,3 +112,4 @@ export async function POST(req: NextRequest, res: NextResponse) {
     JSON.stringify({ data: data, message: "La candidature est créer" })
   );
 }
+ */

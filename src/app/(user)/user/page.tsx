@@ -79,7 +79,7 @@ async function Home() {
         />
         <CardMiniComponent
           key={3}
-          number={data.candidatures?.length ?? ""}
+          number={data?.candidatures?.length ?? ""}
           label={"Mes candidatures"}
           Icon={AcademicCapIcon}
         />
@@ -91,8 +91,8 @@ async function Home() {
       </div>
 
    
-   {data.candidatures.length >0  &&   <DataUserCandidatureComponent datas={data}  />  }
-   {data.candidatures.length <=0 &&  <div className="w-full p-4 mt-10 text-center border rounded-md">
+   {data?.candidatures?.length >0  &&   <DataUserCandidatureComponent datas={data}  />  }
+   {data?.candidatures?.length <=0 &&  <div className="w-full p-4 mt-10 text-center border rounded-md">
     Il n'y a aucun enregistrement à afficher
    </div>  }
        
