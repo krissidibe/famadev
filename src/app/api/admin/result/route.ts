@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import fs from "fs";
 import { stat, mkdir, writeFile } from "fs/promises";
 import path, { join } from "path";
-import storeImage from "@/utils/addImageHelper"; 
+import storeImage, { storeImageNormal } from "@/utils/addImageHelper"; 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
  
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const file = formData.get("file") as Blob | null;
 
     try {
-      fileImage = await storeImage(file);
+      fileImage = await storeImageNormal(file);
     } catch (error) {
       fileImage = "bad";
     }

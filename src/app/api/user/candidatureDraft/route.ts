@@ -105,23 +105,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
   let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
   let dataFilesArrayUser:any[] =  [];
   let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
- const val = await storeImage( formData.get("l")  as Blob | null)
+ //const val = await storeImage( formData.get("l")  as Blob | null)
 
 
- for await (const item of dataFilesArrayConvert) {
-  
-/* 
-  if(item.value.length <=2){
-    return new Response(
-      JSON.stringify({
-        data: "error",
-        message: `Veuillez ajouter les pièces obligatoires (*)`,
-      })
-    );
-  } */
- 
-  dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
-}
+
 
    
 
@@ -167,13 +154,30 @@ export async function POST(req: NextRequest, res: NextResponse) {
   });
 
 
+  for await (const item of dataFilesArrayConvert) {
+  
+    /* 
+      if(item.value.length <=2){
+        return new Response(
+          JSON.stringify({
+            data: "error",
+            message: `Veuillez ajouter les pièces obligatoires (*)`,
+          })
+        );
+      } */
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),`------${data.id}`,item.name)})
+     // dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
+    }
+
+    
   
   const finalData = await prisma.candidature.update({
     where: {
       id: data.id,
     },
     data: {
-      numeroRef: `------`,
+      numeroRef: data.number,
+      filesRequired: JSON.stringify(dataFilesArrayUser),
     },
   });
 
@@ -241,20 +245,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
 
 
- for await (const item of dataFilesArrayConvert) {
-  
-
-  if(item.value.length <=2){
-    return new Response(
-      JSON.stringify({
-        data: "error",
-        message: `Veuillez ajouter les pièces obligatoires (*)`,
-      })
-    );
-  }
- 
-  dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
-}
 
  
   const data = await prisma.candidature.update({
@@ -295,6 +285,22 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     },
   });
 
+
+  for await (const item of dataFilesArrayConvert) {
+  
+
+    if(item.value.length <=2){
+      return new Response(
+        JSON.stringify({
+          data: "error",
+          message: `Veuillez ajouter les pièces obligatoires (*)`,
+        })
+      );
+    }
+    dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),data.id.toString(),item.name)})
+   // dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
+  }
+  
  
   return new Response(
     JSON.stringify({ data: data, message: "La candidature est modifiée" })

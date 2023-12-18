@@ -79,6 +79,14 @@ model Roles {
   competition Competition[]
  
 }
+model TypeOfMessage {
+  id           String        @id @default(cuid())
+  name        String 
+  createdAt    DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime?     @default(now()) @db.Timestamp(0)
+  
+ 
+}
 
 
 model Results {
@@ -139,6 +147,7 @@ email         String?
   address          String?       @default("")
 
    message          String?       @db.LongText
+   motif          String?       @db.LongText
   title               String
   content             String?     @db.LongText
    admin         String?

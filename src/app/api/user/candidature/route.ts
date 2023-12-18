@@ -105,7 +105,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
   let dataFilesArrayUser:any[] =  [];
   let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
- const val = await storeImage( formData.get("l")  as Blob | null)
+ //const val = await storeImage( formData.get("l")  as Blob | null)
 
 
  for await (const item of dataFilesArrayConvert) {
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
  
-  dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
+  
 }
 
    
@@ -188,7 +188,41 @@ const strNumber = candidatureCount.length + 1;
 
 
  
+  for await (const item of dataFilesArrayConvert) {
+  
 
+    if(item.value.length <=2){
+      return new Response(
+        JSON.stringify({
+          data: "error",
+          message: `Veuillez ajouter les pièces obligatoires (*)`,
+        })
+      );
+    }
+   
+    dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),data.numeroRef!.toString(),item.name)})
+  }
+
+
+  const dataNew = await prisma.candidature.update({
+    where:{
+      id: data.id,
+      
+    }
+    ,
+    data: {
+     
+     
+      filesRequired: JSON.stringify(dataFilesArrayUser),
+     
+  
+     
+     
+    
+    },
+  });
+
+  
 
   if(!data){
     return new Response(
@@ -256,18 +290,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
   
 
- for await (const item of dataFilesArrayConvert) {
-  
 
-  if(typeof item.value == "string"){
- 
-    dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value})
-  }  else{
-
-    dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
-  }
- 
-}
 /* return new Response(
   JSON.stringify({ data: "error", message: `error ${user}` })
 ); */
@@ -340,6 +363,39 @@ const strNumber = candidatureCount.length + 1;
     },
   });
 
+
+  for await (const item of dataFilesArrayConvert) {
+  
+
+    if(typeof item.value == "string"){
+   
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value})
+    }  else{
+  
+//      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),data.numeroRef!.toString(),item.name)})
+    }
+   
+  }
+
+
+  const dataNew = await prisma.candidature.update({
+    where:{
+      id: data.id,
+      
+    }
+    ,
+    data: {
+     
+     
+      filesRequired: JSON.stringify(dataFilesArrayUser),
+     
+  
+     
+     
+    
+    },
+  });
 
 
  

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import fs from "fs";
 import { stat, mkdir, writeFile } from "fs/promises";
 import path, { join } from "path";
-import storeImage from "@/utils/addImageHelper";
+import  { storeImageNormal } from "@/utils/addImageHelper";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
@@ -100,7 +100,7 @@ let filename ="";
   let fileImage = "imageFile";
 
   try {
-    fileImage = await storeImage(file);
+    fileImage = await storeImageNormal(file);
   } catch (error) {
     fileImage = "/images/logo_fama.png";
   }
@@ -135,6 +135,12 @@ master2 */
       
     },
   });
+ const relativeUploadDirName = data.id.toString();
+  
+   if (!fs.existsSync(join(process.cwd(), "public/files", relativeUploadDirName))){
+   fs.mkdirSync(join(process.cwd(), "public/files", relativeUploadDirName), { recursive: true });
+
+} 
   return new Response(
     JSON.stringify({ user: data, message: "Le concours est créer" })
   );
@@ -154,7 +160,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     const file = formData.get("image") as Blob | null;
 
     try {
-      fileImage = await storeImage(file);
+      fileImage = await storeImageNormal(file);
     } catch (error) {
       fileImage = "/images/logo_fama.png";
     }

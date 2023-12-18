@@ -8,7 +8,7 @@ import path, { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import * as dateFn from "date-fns";
 import { getSession } from "next-auth/react";
-import storeImage from "@/utils/addImageHelper";
+import storeImage, { storeImageNormal } from "@/utils/addImageHelper";
 
 /* export const config = {
   api: {
@@ -158,13 +158,13 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
   let ninaFileName = "";
 
   try {
-    fileImage = await storeImage(file);
+    fileImage = await storeImageNormal(file);
   } catch (error) {
     fileImage = formData.get("file")?.toString() ?? "";
   }
 
   try {
-    ninaFileName = await storeImage(ninaFile);
+    ninaFileName = await storeImageNormal(ninaFile);
   } catch (error) {
     ninaFileName = formData.get("ninaFile")?.toString() ?? "";
   }
