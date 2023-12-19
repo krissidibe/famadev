@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import fs from "fs";
-import { stat, mkdir, writeFile } from "fs/promises";
+import { stat, mkdir, writeFile,rename } from "fs/promises";
 import path, { join } from "path";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,6 +8,31 @@ function greet():string { //the function returns a string
   return "Hello World" 
 } 
 
+export  async function storeImageRename(fileBlob:Blob | null): Promise<string>{
+   
+  let filename ="";
+  const file = fileBlob;
+
+if (!file) {
+  return  "File not" ;
+}
+const buffer = Buffer.from(await file.arrayBuffer());
+      //const relativeUploadDir = `/uploads/${dateFn.format(Date.now(), "dd-MM-Y")}`;
+      const relativeUploadDir = `/${"files" }/`;
+      const uploadDir = join(process.cwd(), "public", relativeUploadDir);
+      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        filename = `${file.name.replace(
+        /\.[^/.]+$/,
+        ""
+      )}-${uniqueSuffix}${path.extname(file.name)}`;
+      await writeFile(`${uploadDir}/${filename}`, buffer);
+      return `/${"files"}/${filename}`;
+      
+
+   
+    
+    
+}
 export  async function storeImageNormal(fileBlob:Blob | null): Promise<string>{
    
   let filename ="";
@@ -16,6 +41,7 @@ export  async function storeImageNormal(fileBlob:Blob | null): Promise<string>{
 if (!file) {
   return  "File not" ;
 }
+//rename(  const uploadDir = join(process.cwd(), `public/files/${idCompetition}`, refCandidature))
 const buffer = Buffer.from(await file.arrayBuffer());
       //const relativeUploadDir = `/uploads/${dateFn.format(Date.now(), "dd-MM-Y")}`;
       const relativeUploadDir = `/${"files" }/`;

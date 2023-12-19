@@ -371,9 +371,8 @@ const strNumber = candidatureCount.length + 1;
    
       dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value})
     }  else{
-  
-//      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
-      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),data.numeroRef!.toString(),item.name)})
+   
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,competition!.id,`${data.numeroRef}`,item.name)})
     }
    
   }
@@ -385,20 +384,21 @@ const strNumber = candidatureCount.length + 1;
       
     }
     ,
-    data: {
+    data: { 
      
-     
-      filesRequired: JSON.stringify(dataFilesArrayUser),
-     
-  
-     
-     
+      filesRequired: JSON.stringify(dataFilesArrayUser), 
     
     },
   });
-
+ 
 
  
+  console.log("======");
+  console.log(data.id);
+  console.log(dataNew);
+  console.log(dataFilesArrayUser);
+  console.log("======");
+  
   return new Response(
     JSON.stringify({ data: data, message: "La candidature est modifiée" })
   );
