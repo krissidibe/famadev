@@ -121,8 +121,8 @@ model Competition {
   master2      Boolean?      @default(false)
   createdAt    DateTime?     @default(now()) @db.Timestamp(0)
   updatedAt    DateTime?     @db.Date
-  startDateAt  DateTime      @db.Date
-  endDateAt    DateTime      @db.Date
+  startDateAt  DateTime       @default(now()) @db.Timestamp(0)
+  endDateAt    DateTime       @default(now()) @db.Timestamp(0)
    filesRequired      String?       @db.LongText
    inputsRequired      String?       @db.LongText 
    groupsRequired      String?       @db.LongText

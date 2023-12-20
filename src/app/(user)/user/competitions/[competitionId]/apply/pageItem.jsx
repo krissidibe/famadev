@@ -150,6 +150,7 @@ export default function ApplyItem(
           ...shape,
           type: "input",
           value: e,
+          
         };
       }
     });

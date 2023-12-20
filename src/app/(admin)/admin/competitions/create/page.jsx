@@ -238,7 +238,7 @@ function CreateCompetition() {
             }}
             withIcon={true}
             key={4}
-            inputType="date"
+            inputType="datetime-local"
             label="Date debut"
           />
           <InputComponent
@@ -248,7 +248,7 @@ function CreateCompetition() {
             }}
             withIcon={true}
             key={4}
-            inputType="date"
+            inputType="datetime-local"
             label="Date fin"
           />
         </div>
@@ -419,6 +419,7 @@ function CreateCompetition() {
                   name: "",
                   value: "",
                   type: "text",
+                  isCheck : false
                   
                 })
               
@@ -632,6 +633,7 @@ function CreateCompetition() {
                     value: "",
                     name: inputNameRequired,
                     type: "input",
+                    isCheck : false
                   },
                 ]);
                 setInputNameRequired((x) => (x = ""));
@@ -732,6 +734,7 @@ function CreateCompetition() {
                     value: "",
                     name: fileNameRequired,
                     type: "file",
+                    isCheck : false
                   },
                 ]);
                 setFileNameRequired((x) => (x = ""));

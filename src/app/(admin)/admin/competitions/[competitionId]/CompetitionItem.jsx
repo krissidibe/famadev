@@ -91,8 +91,8 @@ function CompetitionItem({ params, data }) {
 
   
   const [statut, setStatutSelect] = useState(statutData[data.statut]);
-  const [startDateAt, setStartDateAt] = useState( dayjs(new Date(data.startDateAt)).format("YYYY-MM-DD")  );
-  const [endDateAt, setEndDateAt] = useState(dayjs(new Date(data.endDateAt)).format("YYYY-MM-DD"));
+  const [startDateAt, setStartDateAt] = useState( dayjs(new Date(data.startDateAt)).format("YYYY-MM-DDTHH:mm")  );
+  const [endDateAt, setEndDateAt] = useState(dayjs(new Date(data.endDateAt)).format("YYYY-MM-DDTHH:mm"));
   const { data: session, status } = useSession()
   const updateData = async (e) => {
     e.preventDefault();
@@ -248,7 +248,7 @@ function CompetitionItem({ params, data }) {
                    
                     withIcon={true}
                     key={4}
-                    inputType="date"
+                    inputType="datetime-local"
                     label="Date debut"
                   />
           <InputComponent
@@ -259,7 +259,7 @@ function CompetitionItem({ params, data }) {
                    
                     withIcon={true}
                     key={4}
-                    inputType="date"
+                    inputType="datetime-local"
                     label="Date fin"
                   />
         </div>
@@ -436,6 +436,7 @@ className="flex items-center justify-center w-full p-2 border">
             name: "",
             value: "",
             type: "text",
+            isCheck: false,
             
           })
         
@@ -733,7 +734,7 @@ if(curentFileItem){
            setFilesRequired( prev => [...prev,{
              id:uuidv4(),
              value:"",
-             name:fileNameRequired,type:"file"}])
+             name:fileNameRequired,type:"file", isCheck:false}])
            setFileNameRequired(x => x ="")
          }} className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm">{curentFileItem ? "Modifier" :"Ajouter"}  </div>
   {curentFileItem &&       <div onClick={()=>{
