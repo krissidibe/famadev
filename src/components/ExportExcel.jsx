@@ -2,7 +2,8 @@
 import React, { useMemo } from "react";   
 import ExcelJS from "exceljs";
 import dayjs from "dayjs";
-function ExportExcel({datas} ) {
+function ExportExcel({datas,inputs} ) {
+  
    
   const exportFile = () => {
     const workbook = new ExcelJS.Workbook();
@@ -61,6 +62,7 @@ function ExportExcel({datas} ) {
         key: "diplome",
         width: 50,
       },
+
       {
         header: "NIVEAU",
         key: "study",
@@ -109,6 +111,12 @@ function ExportExcel({datas} ) {
     
     ];
 
+    sheet.columns = sheet.columns.concat(inputs.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
+    /*       inputs.map((item) => ({
+        header: item.name,
+        key: item.name,
+        width: 50,
+      })); */
     const statutOptions = [
       {
         label: "En attente de traitement",
@@ -133,33 +141,56 @@ function ExportExcel({datas} ) {
       label :"Femme",value:1,
     }
     ]
-    const orderOptions = [ "Ordre admnistratif","Ordre Judiciaire"]
+    
 
+    
 
     datas.map((item) => {
       const arrayInfo =  JSON.parse(item.inputsRequired).map(i=>(i.name +" : " +i.value))
-      sheet.addRow({
      
+     
+       
+      const newLocal = {
         lastName: item.lastName,
         firstName: item.firstName,
         fatherName: item.fatherName,
         motherName: item.motherName,
         sexe: item.sexe,
-        birthDate:  dayjs(item.birthDate).format("DD/MM/YYYY") ,
+        birthDate: dayjs(item.birthDate).format("DD/MM/YYYY"),
         placeBirthDate: item.placeBirthDate,
-        diplome:arrayInfo,
+        diplome: arrayInfo,
         study: item.groupsRequired,
-        id: dayjs(item.createdAt).format("DD/MM/YYYY") ,
-        createdAt: dayjs(item.createdAt).format("DD/MM/YYYYTHH:mm") ,
+        id: dayjs(item.createdAt).format("DD/MM/YYYY"),
+        createdAt: dayjs(item.createdAt).format("DD/MM/YYYYTHH:mm"),
         id: item.numeroRef,
         number: item.number,
         statut: statutOptions[item.statut].label,
         message: item.message,
         admin: item.admin,
-       
-        updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY") ,
+        updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY"),
+      };
+
+      const arrayInfoTest =  JSON.parse(item.inputsRequired).map(item=>( { [item.id.replaceAll("-","")]: item.value}))
+      const  test2 = arrayInfoTest
+      const  test = { "9bb6ae27f81a4e6a832f154538637000": item.lastName}
+      console.log("======");
+      //console.log(arrayInfoTest.length)
+    //  console.log(Object.assign(newLocal,arrayInfoTest));
+
+      arrayInfoTest.forEach(element => {
+        Object.assign(newLocal,element)
       });
+      
+      console.log(newLocal)
+      console.log("======");
+      sheet.addRow(newLocal);
+
+      
     });
+
+   
+   
+
     workbook.xlsx.writeBuffer().then(data=>{
       const blob = new Blob([data],{
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

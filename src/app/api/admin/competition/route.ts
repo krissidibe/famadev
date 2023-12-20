@@ -52,7 +52,9 @@ export async function GET(req: NextRequest) {
       },
      
     ],
-    include: { author: { include: { candidatures: {} } } },
+    include: { 
+      
+      author: { include: { candidatures: {} } } },
   });
 
   //  console.log(searchParams.get("name"));

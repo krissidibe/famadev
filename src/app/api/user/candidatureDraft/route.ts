@@ -165,7 +165,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           })
         );
       } */
-      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),`------${data.id}`,item.name)})
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),`${data.id}`,item.name)})
      // dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
     }
 
@@ -176,7 +176,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       id: data.id,
     },
     data: {
-      numeroRef: data.number,
+      numeroRef: `${data.id}`,
       filesRequired: JSON.stringify(dataFilesArrayUser),
     },
   });

@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../utils/prisma";
 import bcrypt from "bcryptjs";
-import storeImage from "@/utils/addImageHelper";
+import storeImage, { storeImageRename } from "@/utils/addImageHelper";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url);
@@ -320,8 +320,6 @@ const candidatureCount =  await prisma.candidature.findMany({
 const strNumber = candidatureCount.length + 1;
 
  
-
- 
   const data = await prisma.candidature.update({
     where:{
       id:parseInt(formData.get("candId")!.toString()),
@@ -364,12 +362,17 @@ const strNumber = candidatureCount.length + 1;
   });
 
 
+ 
+  storeImageRename(competition!.id,`${data.id}`,data.numeroRef!)
+
+
+
   for await (const item of dataFilesArrayConvert) {
   
 
     if(typeof item.value == "string"){
    
-      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value})
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value.replace(data.id,data.numeroRef!)})
     }  else{
    
       dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,competition!.id,`${data.numeroRef}`,item.name)})
@@ -377,6 +380,7 @@ const strNumber = candidatureCount.length + 1;
    
   }
 
+ 
 
   const dataNew = await prisma.candidature.update({
     where:{
@@ -393,11 +397,7 @@ const strNumber = candidatureCount.length + 1;
  
 
  
-  console.log("======");
-  console.log(data.id);
-  console.log(dataNew);
-  console.log(dataFilesArrayUser);
-  console.log("======");
+
   
   return new Response(
     JSON.stringify({ data: data, message: "La candidature est modifiée" })

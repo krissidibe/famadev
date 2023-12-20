@@ -15,6 +15,13 @@ async function page({
     { cache:"no-store" }
   );
   const datas: any[] = await res.json();
+
+
+  const resComp = await fetch(
+    `${process.env.BASE_URL}/api/admin/competition?id=${params.candidatureId}`,
+    { cache:"no-store" }
+  );
+  const datasComp: any = await resComp.json();
  
   return (
     <div className="flex flex-col flex-1 w-full ">
@@ -22,7 +29,8 @@ async function page({
     
     <p className="text-xl font-bold">L'intitulé du concours : {decodeURI(params.title)}</p>
  
-    <DataUserAdminCandidatureComponent datas={datas} /> 
+ 
+    <DataUserAdminCandidatureComponent datas={datas} inputs={JSON.parse(datasComp.inputsRequired)} /> 
     </div>
   );
 }
