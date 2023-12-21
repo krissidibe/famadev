@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { User } from "@prisma/client";
+import { randomBytes, randomUUID } from "crypto";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -84,6 +85,9 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 3 * 24 * 60 * 60 * 1000 * 10000,
+    generateSessionToken: () => {
+      return randomUUID?.() ?? randomBytes(32).toString("hex")
+    }
   },
   secret: process.env.JWT_SECRET,
 };
