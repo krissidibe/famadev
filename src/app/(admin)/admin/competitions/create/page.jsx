@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useRef } from "react";
 import ButtonComponent from "../../../../../components/ButtonComponent";
 import InputComponent from "../../../../../components/InputComponent";
@@ -50,9 +49,11 @@ function EditorComponent({ value, handleChange }) {
     </div>
   );
 }
-const CreateCompetition = ()=> {
+const CreateCompetition = ()=> { 
   const { data: session, status } = useSession()
-  const adminRole  = session.user
+
+
+  const adminRole  = session
   const [visible, setVisible] = useState(true);
   
   const imageRef = useRef(null);
