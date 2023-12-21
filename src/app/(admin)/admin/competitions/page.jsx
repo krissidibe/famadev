@@ -67,7 +67,7 @@ async function getCompetition() {
         ))}    
       </div>
        
-{JSON.stringify(adminRole)}
+
     </div>
   );
 }
