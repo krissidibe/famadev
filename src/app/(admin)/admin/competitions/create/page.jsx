@@ -50,9 +50,9 @@ function EditorComponent({ value, handleChange }) {
     </div>
   );
 }
-function CreateCompetition() {
+const CreateCompetition = ()=> {
   const { data: session, status } = useSession()
-  const adminRole  = JSON.parse(session.user.adminRole)
+  const adminRole  = session.user
   const [visible, setVisible] = useState(true);
   
   const imageRef = useRef(null);
@@ -175,7 +175,7 @@ function CreateCompetition() {
           router.push("/admin/competitions");
         }}
       />
-      {JSON.stringify(JSON.parse(session.user.adminRole))}
+     {JSON.stringify(adminRole)}  
       <p className="mb-2 text-lg font-bold">Phtoto de couverture</p> 
       <picture
         onClick={() => {
