@@ -3,6 +3,9 @@ const nextConfig = {
 
   env: {
     BASE_URL: process.env.BASE_URL,
+    JWT_SECRET: process.env.JWT_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_URL_INTERNAL: process.env.NEXTAUTH_URL_INTERNAL,
   },
   reactStrictMode:true,
   swcMinify: true,

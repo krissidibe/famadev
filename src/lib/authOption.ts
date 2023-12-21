@@ -78,6 +78,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
+  
   pages: {
     signIn: "/",
   },
