@@ -29,6 +29,7 @@ import { redirect, useRouter } from "next/navigation";
 import AlertModalResponse from "@/components/Modals/AlertModalResponse";
 import { DeleteIcon, EditIcon, PlusCircleIcon, PlusIcon, SaveIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
+
 import { useSession } from "next-auth/react";
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
@@ -51,6 +52,7 @@ function EditorComponent({ value, handleChange }) {
 }
 function CreateCompetition() {
   const { data: session, status } = useSession()
+  const adminRole  = JSON.parse(session.user.adminRole)
   const [visible, setVisible] = useState(true);
   
   const imageRef = useRef(null);
@@ -124,7 +126,7 @@ function CreateCompetition() {
     formData.append("startDateAt", startDateAt);
     formData.append("endDateAt", endDateAt);
     formData.append("statut", statut.code);
-    formData.append("adminRoleId", JSON.parse(session?.user.adminRole).id);
+    formData.append("adminRoleId", adminRole.id);
 
     formData.append("orderOfMagistrates", orderOfMagistrates);
     formData.append("filesRequired", JSON.stringify(filesRequired));
@@ -153,6 +155,10 @@ function CreateCompetition() {
        redirect("/admin") */
   };
 
+  if (status !== "authenticated") {
+    return <p>Error</p>
+  }
+
   return (
     <form
       encType="multipart/form-data"
@@ -169,7 +175,7 @@ function CreateCompetition() {
           router.push("/admin/competitions");
         }}
       />
-      
+      {JSON.stringify(JSON.parse(session.user.adminRole))}
       <p className="mb-2 text-lg font-bold">Phtoto de couverture</p> 
       <picture
         onClick={() => {

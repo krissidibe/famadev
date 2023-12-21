@@ -53,7 +53,6 @@ async function getCompetition() {
       </div>
 
       <div className="grid items-center w-full sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 md:flex-row">
- 
 
  
 
@@ -67,6 +66,8 @@ async function getCompetition() {
           </div>
         ))}    
       </div>
+       
+{JSON.stringify(adminRole)}
     </div>
   );
 }
