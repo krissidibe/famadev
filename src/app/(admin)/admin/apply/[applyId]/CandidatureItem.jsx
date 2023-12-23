@@ -63,6 +63,7 @@ function CandidatureItem({ datas ,rejets}) {
 
   const modal = useModalInfoStore();
   const [modalData, setModalData] = useState("");
+  const [filesGroup, setFilesGroup] = useState(JSON.parse(result.filesRequired));
   const [statut, setStatut] = useState(data.statut);
   const [motif, setMotif] = useState(data.motif);
   const [messageAdmin, setMessageAdmin] = useState(data.message);
@@ -76,6 +77,7 @@ function CandidatureItem({ datas ,rejets}) {
         id: result.id,
         statut: value,
         motif: motif,
+        filesGroup: filesGroup,
         message: messageAdmin,
         updatedAt: new Date(Date.now()),
         admin: session?.user?.email,
@@ -283,10 +285,10 @@ function CandidatureItem({ datas ,rejets}) {
                 at tincidunt neque. Pellentesque vitae commodo justo. Integer
                 tempor Pellentesque vitae Integer tempor
               </CardDescription> */}
-              
-             {result.filesRequired != null && 
+             
+             {filesGroup != null && 
              <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
-              {JSON.parse(result.filesRequired).map(item=>(
+              {filesGroup.map(item=>(
                  fileFunctionCustom(
                  
                 
@@ -296,7 +298,7 @@ function CandidatureItem({ datas ,rejets}) {
                 )
               ))}
               </div>}
-             {result.filesRequired == null &&  <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
+             {filesGroup == null &&  <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
               {fileFunction(
                   "La copie d'acte de naissance",
                   "ou  jugement supplétif en tenant lieu",
@@ -466,48 +468,103 @@ function CandidatureItem({ datas ,rejets}) {
       </div>
     );
   }
+
+  function fileFunctionCustom(label,  result,item) {
+    return (
+      <div key={label}   >
+        <div className="flex flex-col">
+          <Label className="mb-2">{label}</Label>
+          {/*  { <span className="text-[13px] text-gray-400">{subLabel}</span>} */}
+        </div>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center flex-1 cursor-pointer justify-end p-4 h-[38px] border-[1px] rounded-sm">
+            <a
+              target="_blank"
+              href={`${process.env.BASE_URL}${result}`}
+              className="flex items-center justify-between flex-1 space-x-2"
+            >
+              <p className="text-sm">Télécharger </p>
+              <FaDownload className="h-12 mr-4" />
+            </a>
+          </div>
+        </div>
+   
+        <div className="flex gap-4 mt-2">
+          <p onClick={()=>{
+            
+          if (item) {
+            const nextShapes = filesGroup.map((shape) => {
+              if (shape.id != item.id) {
+                // No change
+                return shape;
+              } else {
+                // Return a new circle 50px below
+                return {
+                  ...shape,
+                  fileState: 0,
+                };
+              }
+            });
+            // Re-render with the new array
+            setFilesGroup(nextShapes);
+             
+            return;
+          }
+          }}  className="flex items-center justify-center gap-2 text-black cursor-pointer hover:underline" >non vérifié {(item.fileState  == undefined  || item.fileState==0) &&  <CheckCircle className="w-4 h-4" />} </p>
+         
+          <p onClick={()=>{
+              
+              if (item) {
+                const nextShapes = filesGroup.map((shape) => {
+                  if (shape.id != item.id) {
+                    // No change
+                    return shape;
+                  } else {
+                    // Return a new circle 50px below
+                    return {
+                      ...shape,
+                      fileState: 1,
+                    };
+                  }
+                });
+                // Re-render with the new array
+                setFilesGroup(nextShapes);
+                 
+                return;
+              }
+          }}  className="flex items-center justify-center gap-2 text-red-500 cursor-pointer hover:underline" >non correct {item.fileState==1 &&  <CheckCircle className="w-4 h-4" />}  </p>
+
+<p onClick={()=>{
+                   if (item) {
+                    const nextShapes = filesGroup.map((shape) => {
+                      if (shape.id != item.id) {
+                        // No change
+                        return shape;
+                      } else {
+                        // Return a new circle 50px below
+                        return {
+                          ...shape,
+                          fileState: 2,
+                        };
+                      }
+                    });
+                    // Re-render with the new array
+                    setFilesGroup(nextShapes);
+                     
+                    return;
+                  }
+  
+          }}  className="flex items-center justify-center gap-2 text-green-500 cursor-pointer hover:underline" >correct {item.fileState==2 &&  <CheckCircle className="w-4 h-4" />}  </p>
+        </div>
+       
+      </div>
+    );
+  }
 }
 
 export default CandidatureItem;
 
-function fileFunctionCustom(label,  result,item) {
-  return (
-    <div key={label}   >
-      <div className="flex flex-col">
-        <Label className="mb-2">{label}</Label>
-        {/*  { <span className="text-[13px] text-gray-400">{subLabel}</span>} */}
-      </div>
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center flex-1 cursor-pointer justify-end p-4 h-[38px] border-[1px] rounded-sm">
-          <a
-            target="_blank"
-            href={`${process.env.BASE_URL}${result}`}
-            className="flex items-center justify-between flex-1 space-x-2"
-          >
-            <p className="text-sm">Télécharger </p>
-            <FaDownload className="h-12 mr-4" />
-          </a>
-        </div>
-      </div>
 
-      <div className="flex gap-4 mt-2">
-        <p onClick={()=>{
-          
-          Object.assign(item, {fileState:0})
-        }}  className="flex items-center justify-center gap-2 text-black cursor-pointer hover:underline" >non vérifié <CheckCircle className="w-3 h-3" /> </p>
-        <p onClick={()=>{
-            Object.assign(item, {fileState:1})
-
-        }}  className="flex items-center justify-center gap-2 text-green-500 cursor-pointer hover:underline" >correct</p>
-        <p onClick={()=>{
-            Object.assign(item, {fileState:2})
-
-        }}  className="flex items-center justify-center gap-2 text-red-500 cursor-pointer hover:underline" >non correct</p>
-      </div>
-    
-    </div>
-  );
-}
 function fileFunction(label, subLabel = "", result) {
   return (
     <div key={label} className={result.length <= 15 ? "hidden" :""} >

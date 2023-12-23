@@ -6,7 +6,7 @@ import Link from 'next/link'
 import {   convertFromRaw,convertToRaw } from "draft-js";
 import parse from 'html-react-parser'; 
 import { useRouter } from "next/navigation";
- 
+import dayjs from "dayjs";
 function CandidatureCardComponent({imageUrl, data}) {
  //console.log(JSON.parse(data.content).blocks);
 const router = useRouter();
@@ -40,7 +40,7 @@ const router = useRouter();
       <div className="text-[13px] transition-all duration-700   text-gray-500 flex-1 px-4 mb-3  line-clamp-4  ">
        {parse(data.content)}
       </div>
-      <span className="self-end text-[13px] px-4 text-gray-500 font-semibold border-t-2 pl-10  mr-0"><span className="font-normal" >Date de fin</span> :  {new Date(data.endDateAt).toLocaleDateString("fr-FR")}</span>
+      <span className="self-end text-[13px] px-4 text-gray-500 font-semibold border-t-2 pl-10  mr-0"><span className="font-normal" >Date de fin</span> : {dayjs(data.endDateAt).format("DD/MM/YYYYTHH:mm").replace("T", " ") }</span>
     
     <div className=" px-4 py-2 my-2 bg-slate-100 border-[1px] rounded-md border-black text-[13px] ml-4 mr-4">
     <div className="flex justify-between px-2 py-4 rounded-sm" >  
