@@ -33,8 +33,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import AlertModalResponse from "@/components/Modals/AlertModalResponse";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
+import { CheckCheckIcon, CheckCircle } from "lucide-react";
 
-function CandidatureItem({ datas }) {
+function CandidatureItem({ datas ,rejets}) {
   const searchParams = useSearchParams();
   const data = datas;
   const dataUser = datas;
@@ -63,6 +64,7 @@ function CandidatureItem({ datas }) {
   const modal = useModalInfoStore();
   const [modalData, setModalData] = useState("");
   const [statut, setStatut] = useState(data.statut);
+  const [motif, setMotif] = useState(data.motif);
   const [messageAdmin, setMessageAdmin] = useState(data.message);
   const showDialogClick = useRef(null);
   const updateApply = async (value) => {
@@ -73,6 +75,7 @@ function CandidatureItem({ datas }) {
       body: JSON.stringify({
         id: result.id,
         statut: value,
+        motif: motif,
         message: messageAdmin,
         updatedAt: new Date(Date.now()),
         admin: session?.user?.email,
@@ -282,17 +285,18 @@ function CandidatureItem({ datas }) {
               </CardDescription> */}
               
              {result.filesRequired != null && 
-             <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
+             <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
               {JSON.parse(result.filesRequired).map(item=>(
                  fileFunctionCustom(
                  
                 
                   item.name,
-                  item.value
+                  item.value,
+                  item
                 )
               ))}
               </div>}
-             {result.filesRequired == null &&  <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
+             {result.filesRequired == null &&  <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-1">
               {fileFunction(
                   "La copie d'acte de naissance",
                   "ou  jugement supplétif en tenant lieu",
@@ -414,7 +418,27 @@ function CandidatureItem({ datas }) {
               </div>
             </div>
 
-            <div>Motif : </div>
+           {statut == 2 && <div className="mb-4">
+            <div className="mb-2">Motif du rejet : </div>
+            <Select
+                  defaultValue={motif}
+                  onValueChange={(e) => setMotif(e)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Motif" />
+                    <SelectContent position="popper">
+                      <SelectItem key={1} value={""}>----</SelectItem>
+                      {rejets.map((item) => (
+                        
+                        <SelectItem key={item.id} value={item.name}>{item.name}</SelectItem>
+                        ))}
+                      
+                    </SelectContent>
+                  </SelectTrigger>
+                </Select>
+            </div>}
+             
+            <div>COMMENTAIRE : </div>
             <textarea
               value={messageAdmin}
               onChange={(e) => setMessageAdmin(e.target.value)}
@@ -446,7 +470,7 @@ function CandidatureItem({ datas }) {
 
 export default CandidatureItem;
 
-function fileFunctionCustom(label,  result) {
+function fileFunctionCustom(label,  result,item) {
   return (
     <div key={label}   >
       <div className="flex flex-col">
@@ -465,6 +489,22 @@ function fileFunctionCustom(label,  result) {
           </a>
         </div>
       </div>
+
+      <div className="flex gap-4 mt-2">
+        <p onClick={()=>{
+          
+          Object.assign(item, {fileState:0})
+        }}  className="flex items-center justify-center gap-2 text-black cursor-pointer hover:underline" >non vérifié <CheckCircle className="w-3 h-3" /> </p>
+        <p onClick={()=>{
+            Object.assign(item, {fileState:1})
+
+        }}  className="flex items-center justify-center gap-2 text-green-500 cursor-pointer hover:underline" >correct</p>
+        <p onClick={()=>{
+            Object.assign(item, {fileState:2})
+
+        }}  className="flex items-center justify-center gap-2 text-red-500 cursor-pointer hover:underline" >non correct</p>
+      </div>
+    
     </div>
   );
 }

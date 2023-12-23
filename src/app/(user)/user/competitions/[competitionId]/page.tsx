@@ -76,8 +76,11 @@ const access = arrayCandidature.filter(word => word.competitionId == data.data.i
         </span>
         <span className="text-[14px]  text-gray-500   ">
           Date : du{" "}
-          {new Date(data.data.startDateAt).toLocaleDateString("fr-FR")} au{" "}
-          {new Date(data.data.endDateAt).toLocaleDateString("fr-FR")}
+          {dayjs(data.data.startDateAt).format("DD/MM/YYYYTHH:mm").replace("T", " ") }
+          {" "}au{" "}
+          {dayjs(data.data.endDateAt).format("DD/MM/YYYYTHH:mm").replace("T", " ") }
+         {/*  {new Date(data.data.startDateAt).toLocaleDateString("fr-FR")} 
+          {new Date(data.data.endDateAt).toLocaleDateString("fr-FR")} */}
         </span>
         <span className="text-[14px]  text-gray-500  ">
         Agé(e) de {data.data.ageMin} ans à{" "}
@@ -87,6 +90,8 @@ const access = arrayCandidature.filter(word => word.competitionId == data.data.i
       <p className="text-[15px]">
         {parse(data.data?.content || "")}
       </p>
+
+      
     
      {access ?  <div className="flex items-end justify-end w-full my-4 ">
         {new Date(data.data.endDateAt) > new Date(Date.now())

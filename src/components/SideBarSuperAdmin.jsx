@@ -13,7 +13,7 @@ import {
   ArrowLeftIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
-import { ActivityIcon } from "lucide-react";
+import { ActivityIcon, ListIcon } from "lucide-react";
 const SideBarSuperAdmin = ({ show = true, handleClick = () => {
   useRouter().refresh();
 
@@ -64,6 +64,14 @@ const SideBarSuperAdmin = ({ show = true, handleClick = () => {
           href="/superadmin/profile"
           Icon={BookOpenIcon}
         />
+        <NavItem
+          key={3}
+          handleClick={handleClick}
+          name="Types de rejet"
+          href="/superadmin/rejet"
+          Icon={ListIcon}
+        />
+        
        {/*  <NavItem
           key={2}
           handleClick={handleClick}

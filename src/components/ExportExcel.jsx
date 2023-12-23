@@ -104,8 +104,13 @@ function ExportExcel({datas,inputs} ) {
         width: 40,
       },
       {
-        header: "MOTIF",
+        header: "COMMENTAIRE",
         key: "message",
+        width: 40,
+      },
+      {
+        header: "MOTIF DU REJET",
+        key: "motif",
         width: 40,
       },
     
@@ -166,6 +171,7 @@ function ExportExcel({datas,inputs} ) {
         number: item.number,
         statut: statutOptions[item.statut].label,
         message: item.message,
+        motif: item.motif,
         admin: item.admin,
         updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY"),
       };

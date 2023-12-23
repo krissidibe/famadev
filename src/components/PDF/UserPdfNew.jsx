@@ -150,7 +150,7 @@ const MyDocument = ({ data }) => (
           {InfoInput("N° ENREGISTREMENT", data?.numeroRef)}
           {InfoInput(
             "Date du dépôt",
-            `${dayjs(data?.createdAt).format("DD/MM/YYYYTHH:mm")}`
+            `${dayjs(data?.createdAt).format("DD/MM/YYYYTHH:mm").replace("T", " ") }`
           )}
         </View>
         <View

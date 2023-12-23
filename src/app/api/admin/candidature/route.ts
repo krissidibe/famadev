@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   return new Response(JSON.stringify("Data"));
 }
 export async function PATCH(req: NextRequest, res: NextResponse) {
-  const { id, statut, message, admin, updatedAt } = await req.json();
+  const { id, statut, message,motif, admin, updatedAt } = await req.json();
  
   const data = await prisma.candidature.update({
     where: {
@@ -24,6 +24,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     data: {
       statut: statut,
       message: message,
+      motif: motif,
       updatedAt: updatedAt,
       admin: admin,
      

@@ -19,12 +19,17 @@ async function page({
     `${process.env.BASE_URL}/api/admin/candidature?id=${params.applyId}`,
     { cache: "no-store" }
   );
-
+ 
   const data: any = await res.json();
+
+  const res2 = await fetch(`${process.env.BASE_URL}/api/superadmin/rejet`, {
+    cache: "no-store",
+  });
+ const dataRejects: any[] = await res2.json();
   return <div> 
    
  
-  <CandidatureItem datas={data} /> 
+  <CandidatureItem datas={data} rejets={dataRejects} /> 
   </div>;
 }
 
