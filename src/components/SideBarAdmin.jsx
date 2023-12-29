@@ -25,7 +25,7 @@ const SideBarAdmin = ({show=true,handleClick=()=>{
      
      <div className="flex items-center justify-center w-auto mt-10 space-x-4 ">
         <Image
-          src="/images/logo_fama.png"
+          src="/images/logo_fama.png?"
           alt="me"
           className="cursor-pointer rounded-xl "
           width={120}

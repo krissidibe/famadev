@@ -294,7 +294,7 @@ function page() {
         
         <a target="blank" href="/images/tutos.pdf">
         <Image
-          src="/images/logo_fama.png"
+          src="/images/logo_fama.png?3"
           alt="me"
           className="cursor-pointer rounded-xl "
           width={300}

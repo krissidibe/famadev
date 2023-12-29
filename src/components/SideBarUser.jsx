@@ -36,7 +36,7 @@ const SideBarUser = ({ show = true, handleClick = () => {
     >
      <div className="flex items-center justify-center w-auto space-x-4 md:mt-10 ">
         <Image
-          src="/images/logo_fama.png"
+          src="/images/logo_fama.png?2"
           alt="me"
           className="cursor-pointer rounded-xl "
           width={120}
