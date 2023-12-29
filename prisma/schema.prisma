@@ -58,6 +58,8 @@ model User {
   createdAt     DateTime?     @default(now()) @db.Timestamp(0)
   updatedAt     DateTime?     @db.Date
   emailVerified Boolean       @default(false)
+  resetPasswordLink        String? @unique
+  resetExpireAt        DateTime?     @default(now()) @db.Timestamp(0)
   role          UserRole      @default(USER)
   adminRole     String?       @db.LongText 
   accounts      Account[]

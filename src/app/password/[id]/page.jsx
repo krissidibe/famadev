@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import InputComponent from "../components/InputComponent";
-import ButtonComponent from "../components/ButtonComponent";
+import InputComponent from "../../../components/InputComponent";
+import ButtonComponent from "../../../components/ButtonComponent";
 import ParticulesBackground from "@/components/Particules/ParticulesBackground";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useModalInfoStore } from "../store/useModalInfoStore";
+import { useModalInfoStore } from "../../../store/useModalInfoStore";
 import ModalInfo from "@/components/ModalInfo";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { useRouter ,useSearchParams,usePathname} from "next/navigation";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -33,7 +33,8 @@ import AlertModalResponse from "@/components/Modals/AlertModalResponse";
 function page() {
   const [email, setEmail] = useState("");
 
-  const router = useRouter();
+  const router = useRouter(); 
+  const pathname = usePathname();
   const showDialogClick = useRef(null);
   const [modalTitle, setModalTitle] = useState("");
   const [password, setPassword] = useState("");
@@ -41,13 +42,15 @@ function page() {
   const [modalData, setModalData] = useState("");
   const [forgetPasswordOn, setForgetPasswordOn] = useState(false);
   const session = useSession();
+  
   const [data, setData] = useState({
-    email: "",
     password: "",
+    passwordConfirm: "",
   });
 
   useEffect(() => {
 
+   
     if (session.data?.user) {
       router.push(`/${session.data?.user.role.toString().toLowerCase()}`);
     }
@@ -60,127 +63,70 @@ function page() {
     e.preventDefault();
 
 
-    if(forgetPasswordOn){
-
-      if (  
-       data.email.length < 6 
-        
-       
-       ) {
-        
-        setModalTitle("Impossible");
-        setModalData(`Veuillez remplir les champs (minimum 6 characters)`);
-        showDialogClick.current.click();
-  
-        return
-      }
-       
-
-      const res = await fetch("api/password", {
-        body: JSON.stringify({
-          email: data.email
-         
-        }),
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-  
-      const dataNew = await res.json();
- 
-  
-      if (dataNew.user != null) {
-         setModalTitle("Succès");
-        setModalData(dataNew.message);
-        showDialogClick.current.click();
-  
-      }else{
-         setModalTitle("Impossible");
-        setModalData(dataNew.message);
-        showDialogClick.current.click();
-  
-      }
-
-      return;
-    }
-
+    
 
     if (  
-      data["email"].length < 10 ||
+      data["passwordConfirm"].length < 6 ||
       data["password"].length < 6 
-    /*   data["email"].length <= 2 ||  
-      data["password"].length < 6    */
+   
      ) {
       
       setModalTitle("Impossible");
-      setModalData(`Veuillez remplir les champs (minimum 2 characters) et le mot de passe (minimum 6 characters)`);
+      setModalData(`Veuillez remplir les champs (minimum 6 characters)`);
+      showDialogClick.current.click();
+
+      return
+    }
+    if (  
+      data["passwordConfirm"] !=  data["password"]
+   
+     ) {
+      
+      setModalTitle("Impossible");
+      setModalData(`Les mots de passe ne sont pas identiques`);
       showDialogClick.current.click();
 
       return
     }
 
-    signIn("credentials", { ...data, redirect: false }).then((callback) => {
-      if (callback?.error) {
-        toast.error(callback.error);
-      }
 
-      if (callback?.ok && !callback?.error) {
-       toast.success("Connecté avec succès");
-        
-        if (session.data?.user) {
-          router.push(`/${session.data?.user.role.toString().toLowerCase()}`);
-        }
-      }
-    });
-  };
 
-  const loginUser = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch("/author/user", {
+    console.log( data.password);
+    const res = await fetch("/api/password", {
       body: JSON.stringify({
-        email,
-        password,
-        firstName: "firstName",
-        lastName: "lastName",
-        number: "number",
-        sexe: "sexe",
-        type: "type",
+        resetPasswordLink:pathname.replace("/password/",""),
+       
+        password: data.password
+        
       }),
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
     });
 
-    const data = await res.json();
 
-    if (!data.user) {
-      modal.onOpen();
-      setModalData(data.message);
-    } else {
-      e.preventDefault();
+    const dataNew = await res.json();
+   
+ 
+  
+    if (dataNew.user != null) {
+       setModalTitle("Succès");
+      setModalData(dataNew.message);
+      showDialogClick.current.click();
 
-      signIn("credentials", { ...data, redirect: false }).then((callback) => {
-        if (callback?.error) {
-          toast.error(callback.error);
-        }
+    }else{
+       setModalTitle("Impossible");
+      setModalData(dataNew.message);
+      showDialogClick.current.click();
 
-        if (callback?.ok && !callback?.error) {
-          toast.success("Connecté avec succès");
-        }
-      });
-
-      console.log(data.user);
-      // sessionStorage.setItem("user", JSON.stringify(data.user));
-      // router.push("/user");
-
-      return;
     }
+
+    
   };
+
+   
   return (
     <div className="flex flex-1 w-screen h-screen overflow-y-scroll">
       {/* <ModalInfo title="Alert" body={modalData} /> */}
@@ -189,7 +135,7 @@ function page() {
           refModal={showDialogClick}
           message={modalData}
           handleClick={() => {
-            modalTitle == "Impossible" ? null : router.back()
+            modalTitle == "Impossible" ? null : router.push("/")
            // router.back();
           }}
         />
@@ -219,27 +165,16 @@ function page() {
         <Card className="md:w-[420px] w-full mt-4">
           <ParticulesBackground />
           <CardHeader>
-            <CardTitle>Connectez-vous à votre compte</CardTitle>
+            <CardTitle>Modifier votre Mot de passe</CardTitle>
             <CardDescription>
-              Pour déposer ou suivre votre candidature , veuillez vous connecter
-              avec vos identifiants email et mot de passe.
+              Veuillez remplir le formulaire ci-dessous
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={login2User}>
               <div className="grid items-center w-full gap-4">
-                <InputComponent
-                  key={1}
-                  label="Email"
-                  inputType="email"
-                  Icon={EnvelopeIcon}
-                  withIcon={true}
-                  value={data.email}
-                  handleChange={(e) =>
-                    setData({ ...data, email: e.target.value })
-                  }
-                />
-               {!forgetPasswordOn && <InputComponent
+                
+                 <InputComponent
                   key={2}
                   label="Mot de passe"
                   obscureInput={true}
@@ -250,31 +185,32 @@ function page() {
                   handleChange={(e) =>
                     setData({ ...data, password: e.target.value })
                   }
-                />}
+                />
+                 <InputComponent
+                  key={2}
+                  label="Mot de passe de confirmation"
+                  obscureInput={true}
+                  Icon={LockClosedIcon}
+                  withIcon={true}
+                  value={data.passwordConfirm}
+                  inputType="password"
+                  handleChange={(e) =>
+                    setData({ ...data, passwordConfirm: e.target.value })
+                  }
+                />
                 <div className="flex flex-col space-y-1.5">
                   <ButtonComponent
                     key={2}
                     type="submit"
-                    label={forgetPasswordOn ? "ENVOYER" : "SE CONNECTER"}
+                    label="MODIFIER"
                     full={true}
                   />
-                {!forgetPasswordOn &&  <ButtonComponent
-                    key={1}
-                    label="S'INSCRIRE"
-                    href={"/signin"}
-                  />}
+                
                 </div>
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Label> 
-<p onClick={()=>{
-  setForgetPasswordOn(x=> x = !x)
-}} className="underline cursor-pointer"> {forgetPasswordOn ? "Annuler" : "Mot de passe oublié ?"} </p>
-
-            </Label>
-          </CardFooter>
+          
         </Card>
         <div className="mt-4 text-black md:hidden text-md">Comment utiliser ce site</div>
 <div className="mb-0 text-black md:hidden text-md">Clique sur le lien pdf pour suivre les instructions</div>
@@ -314,50 +250,9 @@ function page() {
 <p>et de l'Informatique des Armées  (DTTIA)</p>
         </div>
 
-        {/*  <Image
-          className="object-cover w-full h-full"
-          // loader={myLoader}
-          src="/images/meilleure-universite-africaine1.jpg"
-          alt="Picture of the author"
-          width={500}
-          height={500}
-        /> */}
-      </div>
-      {/*  <div className="flex flex-col items-center relative justify-between hidden w-1/2 h-full md:block bg-[#274472]">
         
-        <div className="w-full pl-10 pr-4 bg-[#274472] gap-10  flex-col pt-10 flex text-white h-1/2">
-          <div className="flex items-center justify-between gap-6 mt-20">
-            <Image
-              src="/images/logo2.png"
-              alt="me"
-              className=""
-              width="200"
-              height="200"
-            />
-
-            <div className="flex-col text-sm text-center">
-              <p>REPUBLIQUE DU MALI</p>
-              <p>UN PEUPLE - UN BUT - UNE FOI</p>
-            </div>
-          </div>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis cumque nulla corrupti iusto repellat nam molestias error exercitationem, reiciendis deleniti eius vel voluptatem debitis architecto ab ratione sit, aperiam ducimus!
-            
-          </p>
+      </div>
       
-        </div>
-        <div className="relative flex items-center justify-center w-full h-1/2">
-        <Image
-            className="self-center object-cover w-full "
-            src="/images/aaa.png"
-            //   loader={myLoader}
-
-            alt="Picture of the author"
-            width={500}
-            height={500}
-          />
-        </div>
-      </div> */}
     </div>
   );
 }
