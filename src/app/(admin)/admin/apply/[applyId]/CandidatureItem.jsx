@@ -105,7 +105,7 @@ function CandidatureItem({ datas ,rejets}) {
       <AlertModalResponse
         title="Candidature modifier"
         refModal={showDialogClick}
-        message={"La candidature est modifier"}
+        message={"Candidature traitée  avec succès !"}
         handleClick={() => {
           router.refresh()
           const timer = setTimeout(() => {
@@ -532,7 +532,7 @@ function CandidatureItem({ datas ,rejets}) {
                  
                 return;
               }
-          }}  className="flex items-center justify-center gap-2 text-red-500 cursor-pointer hover:underline" >non correct {item.fileState==1 &&  <CheckCircle className="w-4 h-4" />}  </p>
+          }}  className="flex items-center justify-center gap-2 text-red-500 cursor-pointer hover:underline" >incorrect {item.fileState==1 &&  <CheckCircle className="w-4 h-4" />}  </p>
 
 <p onClick={()=>{
                    if (item) {

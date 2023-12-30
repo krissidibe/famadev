@@ -208,6 +208,8 @@ const handleChangeInputRequired = (item,e) => {
   const updateApply = async (e) => {
 
     e.preventDefault();
+
+  
     if(!checkEdit){
       return
       }
@@ -298,6 +300,7 @@ const handleChangeInputRequired = (item,e) => {
     formData.append("ninaFile", ninaFile);
     formData.append("infoCardFile", infoCardFile);
     formData.append("demandeFile", demandeFile);
+    formData.append("competitionId", result.id);
 
     
     dataFiles.map((item =>

@@ -128,7 +128,7 @@ function UserProfile({ data }) {
     if (dataNew.user) {
       showDialogClick.current.click();
       setShowModal((x) => (x = true));
-      setModalTitle("Votre profile est modifier")
+     // setModalTitle("Votre profile est modifier")
       setMessage(dataNew.message);
 
       useRouter.refresh();

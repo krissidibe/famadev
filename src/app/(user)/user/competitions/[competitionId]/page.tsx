@@ -117,10 +117,25 @@ const access = arrayCandidature.filter(word => word.competitionId == data.data.i
             full={true}
           /> */
         ) : (
-          <div className="flex w-full flex-col items-center justify-center p-4 my-4 border-[1px] border-orange-300   text-white bg-red-500">
-          {<p>La date du concours est dépassée où le concours n'est plus disponible</p>}
-         {!(currentAge >= data.data.ageMin && currentAge <= data.data.ageMax ) && <p> Ou Votre âge ne peut pas faire le concours</p>}
-          </div>
+         <div className="flex flex-col w-full">
+
+
+
+
+          {!(currentAge >= data.data.ageMin && currentAge <= data.data.ageMax ) && <div className="flex w-full flex-col items-center justify-center p-4  border-[1px]   text-white bg-red-500">
+         <p>Age non autorisé à ce concours</p>
+          
+          </div>}
+         
+
+
+        {new Date(data.data.endDateAt) < new Date(Date.now()) &&  <div className="flex w-full flex-col items-center justify-center p-4  border-[1px]   text-white bg-red-500">
+        
+        <p>La date du concours est dépassée où le concours n'est plus disponible</p>
+        </div>}
+
+
+         </div>
         )}
       </div> : <div className="flex items-center justify-center p-4 my-4 border-[1px] text-xl  text-white bg-red-500">
         Vous avez déja postulé

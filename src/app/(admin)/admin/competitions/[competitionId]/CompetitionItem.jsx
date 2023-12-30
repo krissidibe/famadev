@@ -142,7 +142,7 @@ function CompetitionItem({ params, data }) {
       
 
       showDialogClick.current.click()
-      setMessage("Le concours est modifier")
+      setMessage("Concours modifié avec succès !")
     }
   };
 

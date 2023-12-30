@@ -193,7 +193,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
   return new Response(
     JSON.stringify({
       user: dataNew,
-      message: `Votre profile est modifier`,
+      message: `Modification effectuée avec succès !`,
     })
   );
 

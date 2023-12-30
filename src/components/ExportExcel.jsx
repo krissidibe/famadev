@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";   
 import ExcelJS from "exceljs";
 import dayjs from "dayjs";
-function ExportExcel({datas,inputs} ) {
+function ExportExcel({datas,inputs,files} ) {
   
    
   const exportFile = () => {
@@ -57,11 +57,7 @@ function ExportExcel({datas,inputs} ) {
         key: "placeBirthDate",
         width: 50,
       },
-      {
-        header: "Information",
-        key: "diplome",
-        width: 50,
-      },
+      
 
       {
         header: "NIVEAU",
@@ -117,6 +113,7 @@ function ExportExcel({datas,inputs} ) {
     ];
 
     sheet.columns = sheet.columns.concat(inputs.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
+    sheet.columns = sheet.columns.concat(files.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
     /*       inputs.map((item) => ({
         header: item.name,
         key: item.name,
@@ -163,7 +160,7 @@ function ExportExcel({datas,inputs} ) {
         sexe: item.sexe,
         birthDate: dayjs(item.birthDate).format("DD/MM/YYYY"),
         placeBirthDate: item.placeBirthDate,
-        diplome: arrayInfo,
+       
         study: item.groupsRequired,
         id: dayjs(item.createdAt).format("DD/MM/YYYY"),
         createdAt: dayjs(item.createdAt).format("DD/MM/YYYYTHH:mm"),
@@ -185,6 +182,37 @@ function ExportExcel({datas,inputs} ) {
 
       arrayInfoTest.forEach(element => {
         Object.assign(newLocal,element)
+      });
+
+
+      function nameStateFile(params) {
+        let value = ""
+
+        switch (params) {
+       
+          case 1:
+            value =    "Incorrect"
+            break;
+          case 2:
+            value =  "Correct"
+            break;
+        
+          default:
+
+       
+            value =  "non vérifié"
+           
+            break;
+        }
+
+        return value
+        
+      }
+
+
+      const arrayInfoTest2 =  JSON.parse(item.filesRequired).map(item=>( { [item.id.replaceAll("-","")]: nameStateFile(item.fileState)}))
+      arrayInfoTest2.forEach(element2 => {
+        Object.assign(newLocal,element2)
       });
       
       console.log(newLocal)

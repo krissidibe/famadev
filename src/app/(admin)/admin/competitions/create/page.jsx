@@ -150,7 +150,7 @@ const CreateCompetition = ()=> {
 
     if (res.status == 200) {
       showDialogClick.current.click();
-      setMessage("Le concours est creer");
+      setMessage("Concours ajouté avec succès !");
     }
     /* 
        redirect("/admin") */
@@ -193,7 +193,7 @@ const CreateCompetition = ()=> {
         ) : (
         <>
           <Image
-          src="/images/logo_fama.png"
+          src="/images/logo_fama.png?33"
           alt="me"
           className="cursor-pointer rounded-xl "
           width={320}

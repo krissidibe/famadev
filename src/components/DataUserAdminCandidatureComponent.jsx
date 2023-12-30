@@ -49,7 +49,7 @@ const sexeOptions = [
 
 
  
-export default function DataUserAdminCandidatureComponent({ datas ,inputs}) {
+export default function DataUserAdminCandidatureComponent({ datas ,inputs,files}) {
 
 
 const columns = [
@@ -175,7 +175,7 @@ const columns = [
               </SelectTrigger>
             </Select>
           </div>
-          <ExportExcel datas={records} inputs={inputs}   />
+          <ExportExcel datas={records} inputs={inputs}  files={files} />
         </div>
         <DataTable
           pagination

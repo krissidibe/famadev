@@ -52,14 +52,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
  
   const formData = await req.formData();
 
+  
+
   const competition = await prisma.competition.findFirst({
     where: {
-      id: formData.get("competitionId")?.toString(),
+      id: formData.get("competitionId")!.toString(),
     },
     include :{ candidatures:true }
    
   });
 
+
+ 
 
 
   if (!competition) {
@@ -134,6 +138,7 @@ const dataFormat = new Date(Date.now())
 
 const candidatureCount =  await prisma.candidature.findMany({
   where:{
+     competitionId: competition!.id,
     NOT:{
       statut: "100"
     }
@@ -297,11 +302,13 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
 const competition = await prisma.competition.findFirst({
   where: {
-    id: formData.get("competitionId")?.toString(),
+    id: formData.get("competitionId")!.toString(),
   },
   include :{ candidatures:true }
  
 });
+
+
 
 const dataFormat = new Date(Date.now())
   .getFullYear()
@@ -310,6 +317,7 @@ const dataFormat = new Date(Date.now())
 
 const candidatureCount =  await prisma.candidature.findMany({
     where:{
+      competitionId: competition!.id,
       NOT:{
         statut: "100"
       }
@@ -318,6 +326,9 @@ const candidatureCount =  await prisma.candidature.findMany({
 
 //const strNumber = competition.candidatures.length + 1;
 const strNumber = candidatureCount.length + 1;
+console.log(competition!.letterNumber);
+console.log(competition);
+console.log(competition!.letterNumber);
 
  
   const data = await prisma.candidature.update({

@@ -606,6 +606,7 @@ data.data.filesRequired
                 )}
               </div>
             </CardContent>
+           
             <CardFooter className="flex justify-end">
               {isLoading ? (
                 <div className="flex flex-col w-full space-x-5 md:flex-row md:w-1/2">
