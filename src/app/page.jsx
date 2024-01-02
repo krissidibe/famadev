@@ -219,10 +219,10 @@ function page() {
         <Card className="md:w-[420px] w-full mt-4">
           <ParticulesBackground />
           <CardHeader>
-            <CardTitle>Connectez-vous à votre compte</CardTitle>
+            <CardTitle>{forgetPasswordOn ? "Demande de  réinitialisation de mot de passe " : "Connectez-vous à votre compte"} </CardTitle>
             <CardDescription>
-              Pour déposer ou suivre votre candidature , veuillez vous connecter
-              avec vos identifiants email et mot de passe.
+            {forgetPasswordOn ? "Veuillez renseigner l'adresse email  associée à votre compte. Un mail de réinitialisation de mot de passe vous sera envoyé." : " Pour déposer ou suivre votre candidature , veuillez vous connecter avec vos identifiants email et mot de passe."}
+             
             </CardDescription>
           </CardHeader>
           <CardContent>

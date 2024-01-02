@@ -205,6 +205,122 @@ const handleChangeInputRequired = (item,e) => {
     }, 60000);
   };
 
+  const updateApplyDraft = async (e) => {
+
+    e.preventDefault();
+
+  
+    if(!checkEdit){
+      return
+      }
+     
+
+     
+ /*      for (let index = 0; index < dataInputs.length; index++) {
+        const element = dataInputs[index];
+        
+      if(element.value.trim().length == 0){
+        clearInterval(interval);
+    
+        showDialogClick.current.click();
+    
+      setTitleModal((x) => (x = "Impossible"));
+      setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
+      return;
+      };
+
+        
+      } 
+     
+      
+      if (JSON.stringify(dataFiles).toString().includes("File not")) {
+ 
+        clearInterval(interval);
+    
+        showDialogClick.current.click();
+    
+      setTitleModal((x) => (x = "Impossible"));
+      setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
+    
+      return;
+    }
+    */
+    launchTimer();
+    setIsLoading(x => x = false)
+ 
+  
+
+
+    const formData = new FormData();
+    formData.append("candId", data.id);
+    formData.append("lastName", dataUser.lastName);
+    formData.append("firstName", dataUser.firstName);
+    formData.append("fatherName", dataUser.fatherName);
+    formData.append("motherName", dataUser.motherName);
+    formData.append("email", dataUser.email);
+    formData.append("number", dataUser.number);
+    formData.append("birthDate", dataUser.birthDate);
+    formData.append("placeBirthDate", dataUser.placeBirthDate);
+    formData.append("sexe", dataUser.sexe);
+    formData.append("address", dataUser.address);
+    formData.append("nina", dataUser.nina);
+
+    formData.append("diplome", dataUser.diplome);
+    formData.append("study", dataUser.study);
+    formData.append("speciality", dataUser.speciality);
+    formData.append("placeOfGraduation", dataUser.placeOfGraduation);
+    formData.append("countryOfGraduation", dataUser.countryOfGraduation);
+    formData.append("diplomeNumber", dataUser.diplomeNumber);
+    formData.append("orderOfMagistrates", dataUser.orderOfMagistrates);
+
+
+    formData.append("certificate", certificate);
+    formData.append("birthDateFile", birthDateFile);
+    formData.append("cassierFile", cassierFile);
+    formData.append("certificatVie", certificatVie);
+    formData.append("certificatVisite", certificatVisite);
+    formData.append("diplomeFile", diplomeFile);
+    formData.append("equivalenceFile", equivalenceFile);
+    formData.append("ninaFile", ninaFile);
+    formData.append("infoCardFile", infoCardFile);
+    formData.append("demandeFile", demandeFile);
+    formData.append("competitionId", result.id);
+
+    
+    dataFiles.map((item =>
+
+      formData.append(item.id, item.value)
+      
+      
+      ))
+
+   
+      formData.append("dataFilesArray", JSON.stringify(dataFiles));
+      formData.append("dataInputsArray", JSON.stringify(dataInputs));
+      formData.append("selectDataGroups", selectDataGroups);
+
+    const res = await fetch(`/api/user/candidature`, {
+      body: formData,
+      method: "PATCH",
+    });
+    const dataNew = await res.json();
+    console.log(dataNew);
+
+    setModalData((x) => (x = dataNew.message));
+
+    if (dataNew) {
+      setTitleModal(
+        (x) =>
+          (x =
+            dataNew.data == "error"
+              ? "Impossible"
+              : "Candidature enregistrée avec succès")
+      );
+      clearInterval(interval);
+
+      showDialogClick.current.click();
+    }
+  };
   const updateApply = async (e) => {
 
     e.preventDefault();
@@ -247,24 +363,7 @@ const handleChangeInputRequired = (item,e) => {
     launchTimer();
     setIsLoading(x => x = false)
  
-    
-/* 
-    if (
-      
-      dataUser.lastName.length <= 1 || 
-      dataUser.firstName.length <= 1 |
   
-      ) {
-     
-        clearInterval(interval);
-
-        showDialogClick.current.click();
-
-      setTitleModal((x) => (x = "Impossible"));
-      setModalData((x) => (x = "Veuillez renseigner les champs obligatoires (*)"));
-   
-      return;
-    } */
 
 
     const formData = new FormData();
@@ -731,6 +830,20 @@ label={item.value == "File not" && item.name}
  
 {isLoading  ?  
 <>
+{new Date(result.endDateAt) > new Date(Date.now()) && 
+
+<ButtonComponent
+key={7}
+handleClick={updateApplyDraft}
+label="Enregistrer comme brouillon"
+full={true}
+type="button"
+className="self-end w-full mt-4 text-xs md:w-[400px] bg-yellow-600"
+/>
+
+ 
+              
+              }
 {new Date(result.endDateAt) > new Date(Date.now()) && <ButtonComponent
                 key={8}
                 label="Postuler"

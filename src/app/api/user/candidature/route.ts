@@ -419,3 +419,149 @@ console.log(competition!.letterNumber);
 
    */
 }
+export async function PATCH(req: NextRequest, res: NextResponse) {
+  
+  const formData = await req.formData();
+
+
+
+  const user = await prisma.user.findFirst({
+    where: {
+      email: formData.get("email")?.toString(),
+    },
+  });
+  if (!user) {
+    return new Response(
+      JSON.stringify({ data: "error", message: `Utilisateur non trouvé` })
+    );
+  }
+    
+
+  
+  const dataFilesArray = formData.get("dataFilesArray")!.toString();
+  const dataInputsArray = formData.get("dataInputsArray")!.toString();
+  const selectDataGroups = formData.get("selectDataGroups")!.toString();
+
+ 
+  let dataFilesArrayConvert:any[] =  JSON.parse(dataFilesArray)  
+
+ 
+  let dataFilesArrayUser:any[] =  [];
+  
+
+  let dataInputsArrayUser:any[] =  JSON.parse(dataInputsArray);
+
+ 
+
+  
+
+
+/* return new Response(
+  JSON.stringify({ data: "error", message: `error ${user}` })
+); */
+
+const competition = await prisma.competition.findFirst({
+  where: {
+    id: formData.get("competitionId")!.toString(),
+  },
+  include :{ candidatures:true }
+ 
+});
+
+
+
+const dataFormat = new Date(Date.now())
+  .getFullYear()
+  .toString()
+  .substring(2, 4);
+
+ 
+ 
+  const data = await prisma.candidature.update({
+    where:{
+      id:parseInt(formData.get("candId")!.toString()),
+      
+    }
+    ,
+    data: {
+     
+      
+      
+ 
+      number: formData.get("number")?.toString() ?? ""  ,
+      address: formData.get("address")?.toString() ?? ""  ,
+      firstName: formData.get("firstName")?.toString() ?? ""  ,
+      lastName: formData.get("lastName")?.toString() ?? ""  ,
+      fatherName: user?.fatherName ?? "",
+      motherName: user?.motherName ?? "",
+      birthDate: new Date( formData.get("birthDate")!.toString() ),
+      placeBirthDate: formData.get("placeBirthDate")?.toString() ?? ""  ,
+      sexe: formData.get("sexe")?.toString() ?? ""  ,
+      nina: formData.get("nina")?.toString() ?? ""  ,
+
+      diplome: formData.get("diplome")?.toString() ?? ""  ,
+      study: formData.get("study")?.toString() ?? ""  ,
+      speciality: formData.get("speciality")?.toString() ?? ""  ,
+      placeOfGraduation: formData.get("placeOfGraduation")?.toString() ?? ""  ,
+      countryOfGraduation: formData.get("countryOfGraduation")?.toString() ?? ""  ,
+      diplomeNumber: formData.get("diplomeNumber")?.toString() ?? ""  ,
+      orderOfMagistrates: formData.get("orderOfMagistrates")?.toString() ?? ""  ,
+     
+      //file
+      filesRequired: JSON.stringify(dataFilesArrayUser),
+      inputsRequired: JSON.stringify(dataInputsArrayUser),
+      groupsRequired:selectDataGroups,
+     
+     
+     //
+     canEdit:true
+    },
+  });
+
+
+ 
+  storeImageRename(competition!.id,`${data.id}`,data.id!.toString())
+
+
+
+  for await (const item of dataFilesArrayConvert) {
+  
+
+    if(typeof item.value == "string"){
+   
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value:item.value.replace(data.id,data.numeroRef!)})
+    }  else{
+   
+      dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,competition!.id,`${data.numeroRef}`,item.name)})
+    }
+   
+  }
+
+ 
+
+  const dataNew = await prisma.candidature.update({
+    where:{
+      id: data.id,
+      
+    }
+    ,
+    data: { 
+     
+      filesRequired: JSON.stringify(dataFilesArrayUser), 
+    
+    },
+  });
+ 
+
+ 
+
+  
+  return new Response(
+    JSON.stringify({ data: data, message: "La candidature est modifiée" })
+  );
+ 
+  /* 
+   
+
+   */
+}

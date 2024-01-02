@@ -113,7 +113,7 @@ function page() {
   
     if (dataNew.user != null) {
        setModalTitle("Succès");
-      setModalData(dataNew.message);
+      setModalData("Votre mot de  passe  a été modifié avec succès");
       showDialogClick.current.click();
 
     }else{

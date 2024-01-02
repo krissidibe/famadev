@@ -366,7 +366,7 @@ JSON.parse(data?.inputsRequired).map(item=>(
 
 JSON.parse(data?.filesRequired).map(item=>(
 
-  InfoInputFile(item?.name, item?.value)
+  InfoInputFile(item?.name, item?.fileState)
 ))
           
           
@@ -400,6 +400,30 @@ function InfoInput(label, value) {
     </View>
   );
 }
+
+function nameStateFile(params) {
+  let value = ""
+
+  switch (params) {
+ 
+    case 1:
+      value =    "Incorrect"
+      break;
+    case 2:
+      value =  "Correct"
+      break;
+  
+    default:
+
+ 
+      value =  "non vérifié"
+     
+      break;
+  }
+
+  return value
+  
+}
 function InfoInputFile(label, value = false) {
   return (
     <View
@@ -412,7 +436,7 @@ function InfoInputFile(label, value = false) {
       }}
     >
       <Text>{label} :</Text>
-      <Text>{value.toString().includes("files/") ? "Oui" : "Non"}</Text>
+      <Text> {nameStateFile(value)}   </Text>
     </View>
   );
 }
