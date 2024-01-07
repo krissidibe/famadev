@@ -67,6 +67,13 @@ const SideBarSuperAdmin = ({ show = true, handleClick = () => {
         <NavItem
           key={3}
           handleClick={handleClick}
+          name="Types de publication"
+          href="/superadmin/posttype"
+          Icon={ListIcon}
+        />
+        <NavItem
+          key={3}
+          handleClick={handleClick}
           name="Types de rejet"
           href="/superadmin/rejet"
           Icon={ListIcon}

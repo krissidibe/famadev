@@ -79,6 +79,7 @@ model Roles {
   createdAt    DateTime?     @default(now()) @db.Timestamp(0)
   updatedAt    DateTime?     @default(now()) @db.Timestamp(0)
   competition Competition[]
+  posts  Post[]
  
 }
 model TypeOfMessage {
@@ -87,6 +88,31 @@ model TypeOfMessage {
   createdAt    DateTime?     @default(now()) @db.Timestamp(0)
   updatedAt    DateTime?     @default(now()) @db.Timestamp(0)
   
+ 
+}
+model TypeOfPost {
+  id           String        @id @default(cuid())
+  name        String 
+  createdAt    DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime?     @default(now()) @db.Timestamp(0)
+  posts  Post[]
+}
+
+
+model Post {
+  id           String        @id @default(cuid())
+  title        String
+  content      String?       @db.LongText 
+   files        String?
+  public          Boolean?      @default(false)
+ 
+  createdAt    DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime     @updatedAt 
+  
+  typeOfPost  TypeOfPost? @relation(fields: [typeOfPostId], references: [id],onDelete: SetNull)
+  typeOfPostId       String?
+  roles  Roles? @relation(fields: [roleId], references: [id],onDelete: SetNull)
+  roleId       String?
  
 }
 

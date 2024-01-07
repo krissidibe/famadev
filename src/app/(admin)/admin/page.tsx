@@ -54,8 +54,8 @@ const Home = async () => {
   return (
     <div className="flex">
      
-      <div className="grid w-full gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="grid w-full gap-4">
+        <Card className="">
           <CardHeader>
             <CardTitle>Aperçu</CardTitle>
           </CardHeader>
@@ -67,7 +67,7 @@ const Home = async () => {
  
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        {/* <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Liste des utilisateurs</CardTitle>
             <CardDescription>
@@ -77,7 +77,7 @@ const Home = async () => {
           <CardContent>
             <RecentUser datas={data} />
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

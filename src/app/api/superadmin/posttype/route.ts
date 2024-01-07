@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../utils/prisma";
 export async function GET(req: NextRequest, res: NextResponse) {
-  const messages = await prisma.typeOfMessage.findMany({
+  const messages = await prisma.typeOfPost.findMany({
     orderBy:{
       name:"asc"
     }
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 export async function POST(req: NextRequest, res: NextResponse) {
   const { name } = await req.json();
 
-  const messages = await prisma.typeOfMessage.create({
+  const messages = await prisma.typeOfPost.create({
     data: {
       name: name,
     },
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function DELETE(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url);
 
-  const message = await prisma.typeOfMessage.delete({
+  const message = await prisma.typeOfPost.delete({
     where: {
       id: searchParams.get("id")!.toString(),
     },
