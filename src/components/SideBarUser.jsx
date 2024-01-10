@@ -68,6 +68,13 @@ const SideBarUser = ({ show = true, handleClick = () => {
         <NavItem
           key={2}
           handleClick={handleClick}
+          name="Publications"
+          href="/user/post"
+          Icon={ListIcon}
+        />
+        <NavItem
+          key={2}
+          handleClick={handleClick}
           name="Concours"
           href="/user/competitions"
           Icon={BookOpenIcon}
