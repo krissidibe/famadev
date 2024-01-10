@@ -121,6 +121,31 @@ const columns = [
   const [statut, setStatut] = useState("");
   const [search, setSearch] = useState("");
   useEffect(() => {
+ 
+    const newData = datas.filter(item=> item.statut != "100" ).filter((row) => {
+      if (statut == "") {
+        return (
+          (row.numeroRef.toLowerCase().includes(dataStrore.search)) ||
+          (row.lastName.toLowerCase().includes(dataStrore.search)) ||
+          (row.firstName.toLowerCase().includes(dataStrore.search)) ||
+          (row.number.toLowerCase().includes(dataStrore.search)) ||
+          (row.sexe.toLowerCase().includes(dataStrore.search))
+        );
+      }
+
+      return (
+        (row.lastName.toLowerCase().includes(dataStrore.search) &&
+          row.statut == statut) ||
+        (row.firstName.toLowerCase().includes(dataStrore.search) &&
+          row.statut == statut) ||
+        (row.number.toLowerCase().includes(dataStrore.search) &&
+          row.statut == statut) ||
+        (row.sexe.toLowerCase().includes(dataStrore.search) &&
+          row.statut == statut)
+      );
+    });
+    
+    setRecords(newData);
     CustomerService.getCustomersMedium().then((data) => setCustomers(data));
   }, []);
 
