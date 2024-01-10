@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCompetitionStore } from "@/store/useCompetitionStore";
 
 
 
@@ -124,6 +125,7 @@ const columns = [
   }, []);
 
   function handleFilter(e,statut) {
+    dataStrore.setSearch(e.trim())
  
     const newData = datas.filter(item=> item.statut != "100" ).filter((row) => {
       if (statut == "") {
@@ -152,16 +154,19 @@ const columns = [
   }
   /*   <div className="hidden md:block" >   <DataUserCandidatureComponent isMobileScreen={false} /></div>
   <div className="md:hidden" >   <DataUserCandidatureComponent isMobileScreen={true} /></div> */
+  const dataStrore = useCompetitionStore()
   return (
     <div>
       <div className="hidden md:block">
         {" "}
+        
         <div className="flex items-center gap-4">
-          <Input className="my-4" onChange={(e) =>handleFilter(e.target.value.toLowerCase(),statut)} />
+          <Input className="my-4" value={dataStrore.search} onChange={(e) =>handleFilter(e.target.value.toLowerCase(),statut)} />
           <div className="flex flex-col space-y-1.5 w-[300px]">
             
             <Select defaultValue={statut} onValueChange={(e) => {
               setStatut(e);
+              
            handleFilter("",e)
               }}>
               <SelectTrigger>
