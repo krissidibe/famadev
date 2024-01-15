@@ -123,19 +123,28 @@ function CandidatureItem({ data }) {
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.filesRequired))));
   const [dataInputs, setDataInputs] = useState(JSON.parse(JSON.parse(JSON.stringify(data.inputsRequired))));
   const [selectDataGroups, setSelectDataGroups] =  useState(data.groupsRequired);
+  const [dataGroupsParent, setDataGroupsParent] =  useState(data.groupsRequired);
+  const [dataGroupsOld, setDataGroupsOld] =  useState(JSON.parse(result.groupsRequired));
+  
   const [dataGroups, setDataGroups] = useState([]);
 
   const groups = data.groupsRequired;
+  
+  const groupsParent = data.groupsRequired;
   const inputs = data.inputsRequired;
 useEffect(() => {
   
-  setDataGroups(JSON.parse(result.groupsRequired));
+setDataGroups(JSON.parse(result.groupsRequired));
  setDataInputs(JSON.parse(inputs))
+ 
+ setDataGroupsParent(JSON.parse(groupsParent));
 
  if(data.canEdit){
 
    setCheckEdit(true)
  }
+
+ setIsLoading(x => x = false)
 
   return () => {
     
@@ -297,7 +306,7 @@ const handleChangeInputRequired = (item,e) => {
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
       formData.append("dataInputsArray", JSON.stringify(dataInputs));
-      formData.append("selectDataGroups", selectDataGroups);
+      formData.append("selectDataGroups", JSON.stringify(selectDataGroups));
 
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
@@ -412,7 +421,7 @@ const handleChangeInputRequired = (item,e) => {
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
       formData.append("dataInputsArray", JSON.stringify(dataInputs));
-      formData.append("selectDataGroups", selectDataGroups);
+      formData.append("selectDataGroups", JSON.stringify(selectDataGroups));
 
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
@@ -716,12 +725,95 @@ const handleChangeInputRequired = (item,e) => {
                 Informations à propos du concours
               </CardTitle>
  
+            {!isLoading && <>
+             {(checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
+                 <div>
+                 <Label className="text-black">{itemParent.name}</Label>
+                 <select defaultValue={"---"}  onChange={(e)=>{
+                
+const value =e.target.value.trim()
+                
+             
+                  const nextShapes = dataGroupsParent.map((shape) => {
+                    if (shape.id != JSON.parse(value).parentElement) {
+                      // No change
+                      console.log(shape.id);
+                      return shape;
+                    } else {
+                      
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        value: JSON.parse(value).name,
+                        
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setDataGroupsParent(nextShapes);
+
+                  setSelectDataGroups(nextShapes)
+                  
+                
+
+                  
+                 }}  className="w-full p-[10px] mt-1 mb-4 border rounded-md">
+                   {dataGroups.filter(item => item.parentElement == itemParent.id).map((item) => 
+                  
+                  <optgroup defaultValue={"----"}   key={item.id} label={`${item.name}`}>
+                     <option
+                    value={"----"}
+                     
+                     
+                    >
+                    ----
+                    </option>
+                  {item?.children.map((itemSub) => (
+                    <option
+                    defaultValue={JSON.stringify(Object.assign(itemSub,{parentElement:itemParent.id}) )}
+                      key={itemSub.id}
+                      value={JSON.stringify(Object.assign(itemSub,{parentElement:itemParent.id}) )}
+                     
+                    >
+                      {itemSub.name}
+                    </option>
+                  ))}
+                </optgroup>
+              
+                  
+                )}
+                 </select>
+               </div>
+              ))}
+               
+
+
+               {(!checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
+                 <div>
+                 <Label className="text-black">{itemParent.name}</Label>
+                 <InputComponent
+                    
+              value={itemParent.value} 
+                             
+                             
+                              
+                              
+                              
+                            />
+               </div>
+              ))}
+             </>}
+
+            
+
+{/* 
               {checkEdit ? dataGroups.length > 0 &&   <div>
                   <Label className="text-black">Le niveau</Label>
                   <select defaultValue={selectDataGroups} onChange={(e)=>{
                     setSelectDataGroups(x=> x = e.target.value.trim())
                    
                   }}  className="w-full p-[10px] mt-1 mb-3 border rounded-md">
+                          
                     {  dataGroups.map((item) => (
                       <optgroup key={item.id} label={`${item.name}`}>
                         {item?.children.map((itemSub) => (
@@ -734,7 +826,7 @@ const handleChangeInputRequired = (item,e) => {
                           </option>
                         ))}
                       </optgroup>
-                    ))}
+                    ))} 
                   </select>
                 </div>
               :  <InputComponent
@@ -746,7 +838,7 @@ const handleChangeInputRequired = (item,e) => {
                               
                               
                             />
-              }
+              } */}
  
               
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
@@ -796,7 +888,7 @@ const handleChangeInputRequired = (item,e) => {
 
 {item.value != "File not" && <div className="flex-1">
  {fileFunctionCutom(item.name,item.value)}
- </div>}
+ </div>} 
 <div className="mt-4 max-w-2">
 <InputComponent
 label={item.value == "File not" && item.name}

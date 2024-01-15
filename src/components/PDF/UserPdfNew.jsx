@@ -302,7 +302,7 @@ const MyDocument = ({ data }) => (
           }}
         >
 
-{ data?.groupsRequired.length > 0 && <View
+{/* { data?.groupsRequired.length > 0 && <View
    style={{
   minWidth:"48%"
 
@@ -310,9 +310,36 @@ const MyDocument = ({ data }) => (
    
    >
    {InfoInput("Niveau", data?.groupsRequired)}
-   </View>}
+   </View>} */}
+
+
+   { 
+
+
+
+data?.groupsRequired.length > 0 &&
+JSON.parse(data?.groupsRequired).map(item=>(
+
+   <View
+   style={{
+  minWidth:"48%"
+
+  }}
+   
+   >
+   {  InfoInput(item?.name, item?.value)}
+   </View>
+
+))
+          
+          
+          }
+
 
 { 
+
+
+
 
 JSON.parse(data?.inputsRequired).map(item=>(
 

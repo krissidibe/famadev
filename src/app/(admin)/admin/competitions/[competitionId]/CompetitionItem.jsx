@@ -29,6 +29,7 @@ import { convertFromHTML, convertToHTML } from "draft-convert";
 import { redirect, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import AlertModalResponse from "@/components/Modals/AlertModalResponse";
+import { set } from "date-fns";
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
   {
@@ -86,6 +87,12 @@ function CompetitionItem({ params, data }) {
   const [inputsRequired, setInputsRequired] = useState(JSON.parse(data.inputsRequired));
   const [inputNameRequired, setInputNameRequired] = useState("");
   const [groupsRequired, setGroupsRequired] = useState(JSON.parse(data.groupsRequired)); 
+
+  const [groupsRequiredParent, setGroupsRequiredParent] =useState(JSON.parse(data.groupsRequiredParent)); 
+  const [groupNameRequiredParent, setGroupNameRequiredParent] = useState("");
+  const [groupNameRequiredParentElement, setGroupNameRequiredParentElement] = useState(null);
+
+
   const [groupNameRequired, setGroupNameRequired] = useState("");
   const [curentGroupItem, setCurentGroupItem] = useState();
 
@@ -130,6 +137,7 @@ function CompetitionItem({ params, data }) {
     formData.append("filesRequired", JSON.stringify(filesRequired));
     formData.append("inputsRequired", JSON.stringify(inputsRequired));
     formData.append("groupsRequired", JSON.stringify(groupsRequired));
+    formData.append("groupsRequiredParent", JSON.stringify(groupsRequiredParent));
     formData.append("id", params.competitionId);
     const res = await fetch(`/api/admin/competition`, {
       body: formData,
@@ -343,268 +351,331 @@ function CompetitionItem({ params, data }) {
 
       <hr />
 
-<p className="mt-4 font-bold ">Les niveaux</p>
-<div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
-  <div className="flex items-end justify-between mb-4 font-bold text-md">
-    <InputComponent
-      key={219}
-      label={"Nom du champ"}
-      value={groupNameRequired}
-      inputType="text"
-      handleChange={(e) => {
-        setGroupNameRequired((x) => (x = e.target.value));
-      }}
-    />
-
-    <div className="flex flex-row items-end justify-end flex-1 mb-1">
-      <div
-        onClick={(e) => {
-          if (curentGroupItem) {
-            const nextShapes = groupsRequired.map((shape) => {
-              if (shape.id != curentGroupItem.id) {
-                // No change
-                return shape;
-              } else {
-                // Return a new circle 50px below
-                return {
-                  ...shape,
-                  name: groupNameRequired,
-                  
-                };
-              }
-            });
-            // Re-render with the new array
-            setGroupsRequired(nextShapes);
-            setGroupNameRequired((x) => (x = ""));
-            setCurentGroupItem((x) => (x = null));
-            return;
-          }
-
-          setGroupsRequired((prev) => [
-            ...prev,
-            {
-              id: uuidv4(),
-              name: groupNameRequired,
-              type: "select",
-              children: [],
-            },
-          ]);
-          setGroupNameRequired((x) => (x = ""));
-        }}
-        className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm"
-      >
-        {curentGroupItem ? "Modifier" : "Ajouter"}{" "}
-      </div>
-      {curentGroupItem   && (
-        <div
-          onClick={() => {
-            setGroupNameRequired((x) => (x = ""));
-            setCurentGroupItem((x) => (x = null));
+      <div className="flex flex-col p-4 border rounded-md bg-white/10">
+<div className="flex items-center justify-between gap-10">
+<p>Type de niveau</p>
+        <input type="text" value={groupNameRequiredParent}
+          onChange={(e)=>{
+            setGroupNameRequiredParent((x) => (x = e.target.value));
           }}
-          className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
-        >
-          X
+              className="h-[45px] flex-1 border-2 p-4" />
+        <button 
+        type="button"
+    onClick={()=>{
+
+      setGroupsRequiredParent((prev) => [
+        ...prev,
+        {
+          id: uuidv4(),
+          name: groupNameRequiredParent,
+          value:""
+         
+        },
+      ]);
+
+      setGroupNameRequiredParent((x) => (x = ""));
+    }}
+        className="p-2 bg-white rounded-md cursor-pointer ">Ajouter</button>
+</div>
+        <div className="flex gap-4 pt-6 mt-4 border-t border-black">
+
+      {groupsRequiredParent.map(item =>(
+        <div onClick={()=>{
+          setGroupNameRequiredParentElement(x=> x = item)
+        }} className="flex gap-4 p-3 rounded-md cursor-pointer bg-zinc-200">
+          <p className="font-bold">{item.name}</p> <div className="flex items-center gap-2 ml-10">
+            <DeleteIcon
+            onClick={()=>{
+              
+              setGroupsRequiredParent((current) =>
+                current.filter((fruit) => fruit.id !== item.id)
+              );
+
+           
+
+              setGroupsRequired((current) =>
+              current.filter((fruit) => fruit.parentElement !== item.id)
+            );
+
+            setTimeout(() => {
+              setGroupNameRequiredParentElement(x=> x = null)
+            }, 500);
+              
+           
+            }}
+            className="cursor-pointer "/>
+            <EditIcon className="w-5 h-5 cursor-pointer"/>
+          </div>
         </div>
-      )}
-    </div>
-  </div>
+      ))}
+        </div>
+        
+   { groupNameRequiredParentElement != null &&    <div className="flex gap-4 pt-6 mt-4 border-t border-black">
 
+        <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
+        <div className="flex items-end justify-between mb-4 font-bold text-md">
+          <InputComponent
+            key={219}
+            label={"Nom du champ"}
+            value={groupNameRequired}
+            inputType="text"
+            handleChange={(e) => {
+              setGroupNameRequired((x) => (x = e.target.value));
+            }}
+          />
 
+          <div className="flex flex-row items-end justify-end flex-1 mb-1">
+            <div
+              onClick={(e) => {
+                if (curentGroupItem) {
+                  const nextShapes = groupsRequired.map((shape) => {
+                    if (shape.id != curentGroupItem.id) {
+                      // No change
+                      return shape;
+                    } else {
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        name: groupNameRequired,
+                        
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setGroupsRequired(nextShapes);
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                  return;
+                }
 
-  {groupsRequired.map((item) => (
+                setGroupsRequired((prev) => [
+                  ...prev,
+                  {
+                    id: uuidv4(),
+                    name: groupNameRequired,
+                    parentElement: groupNameRequiredParentElement.id,
+                    type: "select",
+                    children: [],
+                  },
+                ]);
+                setGroupNameRequired((x) => (x = ""));
+              }}
+              className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm"
+            >
+              {curentGroupItem ? "Modifier" : "Ajouter"}{" "}
+            </div>
+            {curentGroupItem   && (
+              <div
+                onClick={() => {
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            )}
+          </div>
+        </div>
+
+ 
+
+        {groupsRequired.map((item) => 
 
 
 <Accordion key={item.id}  type="single" collapsible>
-<AccordionItem value="item-1">
-<AccordionTrigger className="">
-<div
-onClick={()=>{
-  setCurentGroupItem((x) => (x = item));
-}}
-className="flex items-center justify-center w-full p-2 border">
-      <p className="flex-1 text-left">{item.name}</p> 
-      <div className="flex items-center justify-center">
-        <PlusCircleIcon
-          className="z-50 cursor-pointer"
-          onClick={(e) => {
-           e.stopPropagation()
+  
+{item.parentElement == groupNameRequiredParentElement?.id && <AccordionItem value="item-1">
+    <AccordionTrigger className="">
+      <div
+      onClick={()=>{
+        setCurentGroupItem((x) => (x = item));
+      }}
+      className="flex items-center justify-center w-full p-2 border">
+            <p className="flex-1 text-left">{item.name}</p> 
+            <div className="flex items-center justify-center">
+              <PlusCircleIcon
+                className="z-50 cursor-pointer"
+                onClick={(e) => {
+                 e.stopPropagation()
 
-           const childrenArray = item.children;
-          
-           childrenArray.push({
-            id: uuidv4(),
-            name: "",
-            value: "",
-            type: "text",
-            isCheck: false,
-            
-          })
-        
-        
+                 const childrenArray = item.children;
+                
+                 childrenArray.push({
+                  id: uuidv4(),
+                  name: "",
+                  value: "",
+                  type: "text",
+                  isCheck : false
+                  
+                })
+              
+              
 
 //                  setCurentGroupItem((x) => (x = item));
-   
+         
+ 
+                  if (item) {
+                    const nextShapes = groupsRequired.map((shape) => {
+                      if (shape.id != item.id) {
+                        // No change
+                        return shape;
+                      } else {
+                        // Return a new circle 50px below
+                        return {
+                          ...shape,
+                         children: childrenArray
+                          
+                        };
+                      }
+                    });
+                    // Re-render with the new array
+                    setGroupsRequired(nextShapes);
+                   // setSubGroupsRequired(x=> x = [])
+                  //  setGroupNameRequired((x) => (x = ""));
+                  //  setCurentGroupItem((x) => (x = null));
+                  console.log(nextShapes);
+                    return;
+                  }
 
-            if (item) {
-              const nextShapes = groupsRequired.map((shape) => {
-                if (shape.id != item.id) {
-                  // No change
-                  return shape;
-                } else {
-                  // Return a new circle 50px below
-                  return {
-                    ...shape,
-                   children: childrenArray
-                    
-                  };
-                }
-              });
-              // Re-render with the new array
-              setGroupsRequired(nextShapes);
-             // setSubGroupsRequired(x=> x = [])
-            //  setGroupNameRequired((x) => (x = ""));
-            //  setCurentGroupItem((x) => (x = null));
-            console.log(nextShapes);
-              return;
+
+                  
+        
+
+                  
+                  
+                }}
+              />
+
+              <div
+                onClick={() => {
+                  setGroupNameRequired((x) => (x = item.name));
+                  setCurentGroupItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
+
+              <div
+                onClick={() => {
+                  setGroupsRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
+
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            </div>{" "}
+          </div></AccordionTrigger>
+    <AccordionContent asChild >
+     
+   
+    {item?.children.map(itemSub=>(
+       <div key={itemSub.id} className="flex items-center justify-center gap-3 px-2 py-1">
+       
+       <Input value={itemSub.name}
+       onChange={(e)=>{
+        console.log(e.target.value);
+        const childrenArray = item.children ;
+ 
+        /*   return {
+                        ...shape,
+                        name: inputNameRequired,
+                      };
+                       */
+   
+        if (item) {
+          const subNewValue = childrenArray.map((shape) => {
+            if (shape.id != itemSub.id) {
+              // No change
+              return shape;
+            } else {
+              // Return a new circle 50px below
+              return {
+                ...shape,
+                name: e.target.value,
+                
+              };
             }
+          });
 
 
-            
-  
-
-            
-            
-          }}
-        />
-
-        <div
-          onClick={() => {
-            setGroupNameRequired((x) => (x = item.name));
-            setCurentGroupItem((x) => (x = item));
-          }}
-          className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
-        >
-          Modifier
-        </div>
-
-        <div
-          onClick={() => {
-            setGroupsRequired((current) =>
-              current.filter((fruit) => fruit.id !== item.id)
-            );
-
-            setGroupNameRequired((x) => (x = ""));
-            setCurentGroupItem((x) => (x = null));
-          }}
-          className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
-        >
-          X
-        </div>
-      </div>{" "}
-    </div></AccordionTrigger>
-<AccordionContent asChild >
-
-
-{item?.children.map(itemSub=>(
- <div key={itemSub.id} className="flex items-center justify-center gap-3 px-2 py-1">
- 
- <Input value={itemSub.name}
- onChange={(e)=>{
-  console.log(e.target.value);
-  const childrenArray = item.children ;
-
-  /*   return {
-                  ...shape,
-                  name: inputNameRequired,
-                };
-                 */
-
-  if (item) {
-    const subNewValue = childrenArray.map((shape) => {
-      if (shape.id != itemSub.id) {
-        // No change
-        return shape;
-      } else {
-        // Return a new circle 50px below
-        return {
-          ...shape,
-          name: e.target.value,
-          
-        };
-      }
-    });
-
-
-    const nextShapes = groupsRequired.map((shape) => {
-      if (shape.id != item.id) {
-        // No change
-        return shape;
-      } else {
-        // Return a new circle 50px below
-        return {
-          ...shape,
-         children: subNewValue
-          
-        };
-      }
-    });
-    // Re-render with the new array
-    setGroupsRequired(nextShapes);
-  
-
-  
-    return;
-  }
-
-
-
-    
- }}
- />
- <SaveIcon className="cursor-pointer" />
- <DeleteIcon
- onClick={()=>{
-
-  const childrenArray = item.children ;
-
-const arrayNew =   childrenArray.filter((fruit) => fruit.id !== itemSub.id)
-
-
-
-   if (item) {
-     const nextShapes = groupsRequired.map((shape) => {
-       if (shape.id != item.id) {
-         // No change
-         return shape;
-       } else {
-         // Return a new circle 50px below
-         return {
-           ...shape,
-          children: arrayNew
-           
-         };
-       }
-     });
-     // Re-render with the new array
-     setGroupsRequired(nextShapes);
- 
+          const nextShapes = groupsRequired.map((shape) => {
+            if (shape.id != item.id) {
+              // No change
+              return shape;
+            } else {
+              // Return a new circle 50px below
+              return {
+                ...shape,
+               children: subNewValue
+                
+              };
+            }
+          });
+          // Re-render with the new array
+          setGroupsRequired(nextShapes);
+        
+      
+        
+          return;
+        }
    
-     return;
-   }
+  
+   
+          
+       }}
+       />
+       <SaveIcon className="cursor-pointer" />
+       <DeleteIcon
+       onClick={()=>{
 
- }}
- className="text-red-500 cursor-pointer hover:text-red-700" />
+        const childrenArray = item.children ;
  
- </div>
-))}  
-</AccordionContent>
-</AccordionItem>
+      const arrayNew =   childrenArray.filter((fruit) => fruit.id !== itemSub.id)
+ 
+
+ 
+         if (item) {
+           const nextShapes = groupsRequired.map((shape) => {
+             if (shape.id != item.id) {
+               // No change
+               return shape;
+             } else {
+               // Return a new circle 50px below
+               return {
+                 ...shape,
+                children: arrayNew
+                 
+               };
+             }
+           });
+           // Re-render with the new array
+           setGroupsRequired(nextShapes);
+       
+         
+           return;
+         }
+      
+       }}
+       className="text-red-500 cursor-pointer hover:text-red-700" />
+       
+       </div>
+    ))}  
+    </AccordionContent>
+  </AccordionItem>}
 
 </Accordion>
-   
-  ))}
-</div>
-
+         
+        )}
+      </div>
+        </div>}
+      </div>
       <hr />
      
      <p className="mt-4 font-bold ">Les champs</p>

@@ -79,9 +79,6 @@ const CreateCompetition = ()=> {
   const [filesRequired, setFilesRequired] = useState([]);
   const [inputsRequired, setInputsRequired] = useState([]);
   const [groupsRequired, setGroupsRequired] = useState([]); 
-  const [groupsRequiredParent, setGroupsRequiredParent] = useState([]); 
-  const [groupNameRequiredParent, setGroupNameRequiredParent] = useState("");
-  const [groupNameRequiredParentElement, setGroupNameRequiredParentElement] = useState(null);
   const [groupNameRequired, setGroupNameRequired] = useState("");
   const [fileNameRequired, setFileNameRequired] = useState("");
   const [inputNameRequired, setInputNameRequired] = useState("");
@@ -136,7 +133,6 @@ const CreateCompetition = ()=> {
     formData.append("filesRequired", JSON.stringify(filesRequired));
     formData.append("inputsRequired", JSON.stringify(inputsRequired));
     formData.append("groupsRequired", JSON.stringify(groupsRequired));
-    formData.append("groupsRequiredParent", JSON.stringify(groupsRequiredParent));
     formData.append("def", def);
     formData.append("bac", bac);
     formData.append("licence", licence);
@@ -336,65 +332,15 @@ const CreateCompetition = ()=> {
         <EditorComponent value={content} handleChange={(v) => setContent(v)} />
       </p>
       <hr />
-{/* {JSON.stringify(groupsRequired)} */}
-      <div className="flex flex-col p-4 border rounded-md bg-white/10">
-<div className="flex items-center justify-between gap-10">
-<p>Type de niveau</p>
-        <input type="text" value={groupNameRequiredParent}
-          onChange={(e)=>{
-            setGroupNameRequiredParent((x) => (x = e.target.value));
-          }}
-              className="h-[45px] flex-1 border-2 p-4" />
-        <button 
-        type="button"
-    onClick={()=>{
 
-      setGroupsRequiredParent((prev) => [
-        ...prev,
-        {
-          id: uuidv4(),
-          name: groupNameRequiredParent,
-          value:""
-         
-        },
-      ]);
+      {JSON.stringify(groupsRequired)}
 
-      setGroupNameRequiredParent((x) => (x = ""));
-    }}
-        className="p-2 bg-white rounded-md cursor-pointer ">Ajouter</button>
-</div>
-        <div className="flex gap-4 pt-6 mt-4 border-t border-black">
-
-      {groupsRequiredParent.map(item =>(
-        <div onClick={()=>{
-          setGroupNameRequiredParentElement(x=> x = item)
-        }} className="flex gap-4 p-3 rounded-md cursor-pointer bg-zinc-200">
-          <p className="font-bold">{item.name}</p> <div className="flex items-center gap-2 ml-10">
-            <DeleteIcon
-            onClick={()=>{
-              setGroupsRequiredParent((current) =>
-                current.filter((fruit) => fruit.id !== item.id)
-              );
-              
-
-              setGroupsRequired((current) =>
-              current.filter((fruit) => fruit.parentElement !== item.id)
-            );
-
-            setTimeout(() => {
-              setGroupNameRequiredParentElement(x=> x = null)
-            }, 500);
-
-            }}
-            className="cursor-pointer "/>
-            <EditIcon className="w-5 h-5 cursor-pointer"/>
-          </div>
-        </div>
-      ))}
-        </div>
-        <div className="flex gap-4 pt-6 mt-4 border-t border-black">
-
-        <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
+     <div className="flex justify-between mt-4">
+     <p className="font-bold ">Les niveaux</p>
+     
+     
+     </div>
+      <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
         <div className="flex items-end justify-between mb-4 font-bold text-md">
           <InputComponent
             key={219}
@@ -418,7 +364,7 @@ const CreateCompetition = ()=> {
                       // Return a new circle 50px below
                       return {
                         ...shape,
-                        name: groupNameRequired,
+                        nameParent: groupNameRequired,
                         
                       };
                     }
@@ -434,10 +380,9 @@ const CreateCompetition = ()=> {
                   ...prev,
                   {
                     id: uuidv4(),
-                    name: groupNameRequired,
-                    parentElement: groupNameRequiredParentElement.id,
-                    type: "select",
-                    children: [],
+                    nameParent: groupNameRequired,
+                    type: "selectParent",
+                    childrens: [],
                   },
                 ]);
                 setGroupNameRequired((x) => (x = ""));
@@ -462,33 +407,31 @@ const CreateCompetition = ()=> {
 
  
 
-        {groupsRequired.map((item) => 
+        {groupsRequired.map((item) => (
 
 
 <Accordion key={item.id}  type="single" collapsible>
-  
-{item.parentElement == groupNameRequiredParentElement?.id && <AccordionItem value="item-1">
+<AccordionItem value="item-1">
     <AccordionTrigger className="">
       <div
       onClick={()=>{
         setCurentGroupItem((x) => (x = item));
       }}
       className="flex items-center justify-center w-full p-2 border">
-            <p className="flex-1 text-left">{item.name}</p> 
+            <p className="flex-1 text-left">{item.nameParent}</p> 
             <div className="flex items-center justify-center">
               <PlusCircleIcon
                 className="z-50 cursor-pointer"
                 onClick={(e) => {
                  e.stopPropagation()
 
-                 const childrenArray = item.children;
+                 const childrenArray = item.childrens;
                 
                  childrenArray.push({
                   id: uuidv4(),
-                  name: "",
-                  value: "",
-                  type: "text",
-                  isCheck : false
+                  name: groupNameRequired,
+                  type: "select",
+                  
                   
                 })
               
@@ -506,7 +449,7 @@ const CreateCompetition = ()=> {
                         // Return a new circle 50px below
                         return {
                           ...shape,
-                         children: childrenArray
+                         childrens: childrenArray
                           
                         };
                       }
@@ -531,8 +474,215 @@ const CreateCompetition = ()=> {
 
               <div
                 onClick={() => {
-                  setGroupNameRequired((x) => (x = item.name));
+                  setGroupNameRequired((x) => (x = item.nameParent));
                   setCurentGroupItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
+
+              <div
+                onClick={() => {
+                  setGroupsRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
+
+                  setGroupNameRequired((x) => (x = ""));
+                  setCurentGroupItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            </div>{" "}
+          </div></AccordionTrigger>
+    <AccordionContent asChild >
+     {JSON.stringify(item?.childrens)}
+   
+    {item?.childrens?.map(itemSub=>(
+  
+  <Accordion key={item.id}  type="single" collapsible>
+<AccordionItem value="item-1">
+    <AccordionTrigger className="border-none">
+      <div
+      onClick={()=>{
+        setCurentGroupItem((x) => (x = item));
+      }}
+      className="flex items-center justify-center w-full p-0 border">
+            
+
+            <input type="text" value={itemSub.name} 
+            onChange={(e)=>{
+              
+               
+
+             const data = groupsRequired.map((shape) => {
+              return   shape.childrens.map((fruit) => {
+
+                
+                if (fruit.id != itemSub.id) {
+                  const obj ={
+                    
+                    ...fruit
+                    
+                    
+                    
+                    
+                   }
+
+                   
+                 return obj
+                  
+                } else {
+                  const obj ={
+                    
+                    ...fruit, name: e.target.value
+                    
+                    
+                   }
+                 
+                  return obj
+                  // Return a new circle 50px below
+                  return {
+                    ...shape,
+                    
+                    
+                    fruit,
+                    
+                  
+                    
+                  };
+                }
+              })
+            /*   if(!dataFound){
+                
+                console.log("dataFound not");
+                return 10
+                 
+              }else{
+                console.log("dataFound");
+               const obj ={...dataFound[0], name: e.target.value}
+                console.log({...shape, childrens:obj});
+
+                return obj
+              } */
+                
+           /*  return  shape.childrens.map((fruit)=>{
+              if (fruit.id != itemSub.id) {
+                // No change
+                return fruit;
+              } else {
+
+                console.log("dataFound");
+                 
+                // Return a new circle 50px below
+                return {
+                  
+                  ...shape,
+                  childrens: [
+                  
+                    {
+                      ...fruit,
+                      name: e.target.value,
+                    },
+                  ],  
+                  
+                };
+              }
+            }) */
+            })
+
+
+            
+            
+            
+            //console.log(groupsRequired);
+         //   console.log(data);
+         console.log(groupsRequired);
+
+         /* ["childrens"]: [...data] */
+       
+         const objtest =   groupsRequired.map((shape) => {
+          return {
+            ...shape,
+            childrens: [...data[0]]
+          }
+         })
+     
+          
+        
+            console.log(objtest);
+           // setGroupsRequired({...groupsRequired,childrens:[...data]})
+      setGroupsRequired(x=> x =objtest)
+ 
+                 
+                 
+              //  setGroupsRequired(nextShapes);
+             
+           //   console.log(groupsRequired);
+                
+             
+              
+            }}
+            className="w-full h-[40px] p-4 bg-black/10" />
+            <div className="flex items-center justify-center">
+              <PlusCircleIcon
+                className="z-50 cursor-pointer"
+                onClick={(e) => {
+                 e.stopPropagation()
+
+                 const childrenArray = itemSub.children;
+                
+                 childrenArray.push({
+                  id: uuidv4(),
+                  name: groupNameRequired,
+                  type: "select",
+                  children: [],
+                  
+                })
+              
+              
+
+//                  setCurentGroupItem((x) => (x = item));
+         
+ 
+                  if (itemSub) {
+                    const nextShapes = groupsRequired.map((shape) => {
+                      if (shape.id != itemSub.id) {
+                        // No change
+                        return shape;
+                      } else {
+                        // Return a new circle 50px below
+                        return {
+                          ...shape,
+                         childrens: childrenArray
+                          
+                        };
+                      }
+                    });
+                    // Re-render with the new array
+                    setGroupsRequired(nextShapes);
+                   // setSubGroupsRequired(x=> x = [])
+                  //  setGroupNameRequired((x) => (x = ""));
+                  //  setCurentGroupItem((x) => (x = null));
+                  console.log(nextShapes);
+                    return;
+                  }
+
+
+                  
+        
+
+                  
+                  
+                }}
+              />
+
+              <div
+                onClick={() => {
+                  setGroupNameRequired((x) => (x = itemSub.name));
+                  setCurentGroupItem((x) => (x = itemSub));
                 }}
                 className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
               >
@@ -557,7 +707,7 @@ const CreateCompetition = ()=> {
     <AccordionContent asChild >
      
    
-    {item?.children.map(itemSub=>(
+    {item?.childrens?.map(itemSub=>(
        <div key={itemSub.id} className="flex items-center justify-center gap-3 px-2 py-1">
        
        <Input value={itemSub.name}
@@ -650,18 +800,18 @@ const CreateCompetition = ()=> {
        </div>
     ))}  
     </AccordionContent>
-  </AccordionItem>}
+  </AccordionItem>
+
+</Accordion>
+  
+  ))}  
+    </AccordionContent>
+  </AccordionItem>
 
 </Accordion>
          
-        )}
+        ))}
       </div>
-        </div>
-      </div>
-      
- 
-      
-    
 
       <hr />
 

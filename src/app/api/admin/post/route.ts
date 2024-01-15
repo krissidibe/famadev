@@ -22,6 +22,9 @@ export async function GET(req: NextRequest) {
           title: "desc",
         },
       ],
+      include:{
+        typeOfPost:true,
+      }
     });
 
     //  console.log(searchParams.get("name"));
@@ -86,6 +89,60 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
  
    const datasPrisma = await prisma.post.create({
+    data:{
+      title:formData.get("title")!.toString(),
+      content:formData.get("content")?.toString(),
+      public:true,
+      roleId:formData.get("roleId")!.toString(),
+      typeOfPostId:formData.get("typeOfPostId")!.toString(),
+      files:fileImage
+    }
+  }) 
+  return new Response(
+    JSON.stringify({ user: datasPrisma, message: "Le concours est modifier" })
+  );
+ 
+}
+export async function PATCH(req: NextRequest, res: NextResponse) {
+    const formData = await req.formData();
+ //console.log(formData.get("uid")!.toString());
+ const user = await prisma.user.findFirst({
+  where: {
+    id: formData.get("uid")!.toString(),
+  },
+});
+ 
+
+ 
+ let fileImage = formData.get("file")?.toString();
+
+  let imageUpdate = formData.get("imageUpdate");
+
+   
+
+
+
+  if (imageUpdate === "true") {
+    const file = formData.get("file") as Blob | null;
+
+    try {
+      fileImage = await storeImageNormal(file);
+    } catch (error) {
+      fileImage = "bad";
+    }
+  }
+
+
+
+  
+  
+
+ 
+   const datasPrisma = await prisma.post.update({
+
+    where:{
+      id:formData.get("id")!.toString(),
+    },
     data:{
       title:formData.get("title")!.toString(),
       content:formData.get("content")?.toString(),

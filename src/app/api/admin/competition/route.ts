@@ -132,6 +132,7 @@ master2 */
       filesRequired : formData.get("filesRequired")?.toString(), 
       inputsRequired : formData.get("inputsRequired")?.toString(), 
       groupsRequired : formData.get("groupsRequired")?.toString(), 
+      groupsRequiredParent : formData.get("groupsRequiredParent")?.toString(), 
       
       roleId : formData.get("adminRoleId")!.toString() 
       
@@ -187,6 +188,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       filesRequired : formData.get("filesRequired")?.toString()   , 
       inputsRequired : formData.get("inputsRequired")?.toString(), 
       groupsRequired : formData.get("groupsRequired")?.toString(), 
+      groupsRequiredParent : formData.get("groupsRequiredParent")?.toString(), 
       
      /*  def: formData.get("def") === "true",
       bac: formData.get("bac") === "true",

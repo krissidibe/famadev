@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";   
 import ExcelJS from "exceljs";
 import dayjs from "dayjs";
-function ExportExcel({datas,inputs,files} ) {
+function ExportExcel({datas,inputs,files,groups} ) {
   
    
   const exportFile = () => {
@@ -114,6 +114,7 @@ function ExportExcel({datas,inputs,files} ) {
 
     sheet.columns = sheet.columns.concat(inputs.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
     sheet.columns = sheet.columns.concat(files.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
+    sheet.columns = sheet.columns.concat(groups.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
     /*       inputs.map((item) => ({
         header: item.name,
         key: item.name,
@@ -177,6 +178,7 @@ function ExportExcel({datas,inputs,files} ) {
       const  test2 = arrayInfoTest
       const  test = { "9bb6ae27f81a4e6a832f154538637000": item.lastName}
       console.log("======");
+      console.log(groups);
       //console.log(arrayInfoTest.length)
     //  console.log(Object.assign(newLocal,arrayInfoTest));
 
@@ -213,6 +215,10 @@ function ExportExcel({datas,inputs,files} ) {
       const arrayInfoTest2 =  JSON.parse(item.filesRequired).map(item=>( { [item.id.replaceAll("-","")]: nameStateFile(item.fileState)}))
       arrayInfoTest2.forEach(element2 => {
         Object.assign(newLocal,element2)
+      });
+      const arrayInfoTest3 =  JSON.parse(item.groupsRequired).map(item=>( { [item.id.replaceAll("-","")]: item.value}))
+      arrayInfoTest3.forEach(element3 => {
+        Object.assign(newLocal,element3)
       });
       
       console.log(newLocal)

@@ -125,16 +125,19 @@ export default function ApplyItem(
   const [master2File, setMaster2File] = useState("");
 
   const [dataFiles, setDataFiles] = useState(
-    JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired)))
+    JSON.parse(JSON.parse(JSON.stringify(data.data.filesRequired))) 
   );
   const [dataInputs, setDataInputs] = useState([]);
   const [dataGroups, setDataGroups] = useState([]);
+  const [dataGroupsParent, setDataGroupsParent] = useState([]);
   const [selectDataGroups, setSelectDataGroups] = useState("");
   const groups = data.data.groupsRequired;
+  const groupsParent = data.data.groupsRequiredParent;
   const inputs = data.data.inputsRequired;
   useEffect(() => {
     setDataInputs(JSON.parse(inputs));
     setDataGroups(JSON.parse(groups));
+    setDataGroupsParent(JSON.parse(groupsParent));
 
     return () => {};
   }, []);
@@ -243,7 +246,7 @@ export default function ApplyItem(
     formData.append("infoCardFile", infoCardFile);
     formData.append("demandeFile", demandeFile);
     formData.append("orderOfMagistratesType", orderOfMagistratesType);
-    formData.append("selectDataGroups", selectDataGroups);
+    formData.append("selectDataGroups", JSON.stringify(selectDataGroups));
 
  
     const res = await fetch(`/api/user/candidatureDraft`, {
@@ -521,28 +524,65 @@ export default function ApplyItem(
             </CardHeader>
             <CardContent>
               <CardDescription>
+                {JSON.stringify(selectDataGroups)}
                
-             {dataGroups.length > 0 &&   <div>
-                  <Label className="text-black">Le niveau</Label>
-                  <select onChange={(e)=>{
-                    setSelectDataGroups(x=> x = e.target.value.trim())
-                   
-                  }}  className="w-full p-[10px] mt-1 mb-4 border rounded-md">
-                    {dataGroups.map((item) => (
-                      <optgroup key={item.id} label={`${item.name}`}>
-                        {item?.children.map((itemSub) => (
-                          <option
-                            key={itemSub.id}
-                            value={itemSub.name}
-                           
-                          >
-                            {itemSub.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
-                </div>}
+
+              {dataGroupsParent.length > 0 &&  dataGroupsParent.map(itemParent =>(
+                 <div>
+                 <Label className="text-black">{itemParent.name}</Label>
+                 <select onChange={(e)=>{
+                 //  setSelectDataGroups(x=> x = e.target.value.trim())
+const value =e.target.value.trim()
+                 console.log(JSON.parse(value));
+                 console.log(JSON.parse(value).id);
+                 console.log(JSON.parse(value).name);
+
+             
+                  const nextShapes = dataGroupsParent.map((shape) => {
+                    if (shape.id != JSON.parse(value).parentElement) {
+                      // No change
+                      console.log(shape.id);
+                      return shape;
+                    } else {
+                      
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        value: JSON.parse(value).name,
+                        
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setDataGroupsParent(nextShapes);
+
+                  setSelectDataGroups(nextShapes)
+                  
+                
+
+                  
+                 }}  className="w-full p-[10px] mt-1 mb-4 border rounded-md">
+                   {dataGroups.filter(item => item.parentElement == itemParent.id).map((item) => 
+                  
+                  <optgroup key={item.id} label={`${item.name}`}>
+                  {item?.children.map((itemSub) => (
+                    <option
+                      key={itemSub.id}
+                      value={JSON.stringify(Object.assign(itemSub,{parentElement:itemParent.id}) )}
+                     
+                    >
+                      {itemSub.name}
+                    </option>
+                  ))}
+                </optgroup>
+              
+                  
+                )}
+                 </select>
+               </div>
+              ))}
+               
+            
               </CardDescription>
 
               <div className="grid items-center w-full gap-4">

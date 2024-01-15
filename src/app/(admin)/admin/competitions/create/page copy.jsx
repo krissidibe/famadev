@@ -79,9 +79,6 @@ const CreateCompetition = ()=> {
   const [filesRequired, setFilesRequired] = useState([]);
   const [inputsRequired, setInputsRequired] = useState([]);
   const [groupsRequired, setGroupsRequired] = useState([]); 
-  const [groupsRequiredParent, setGroupsRequiredParent] = useState([]); 
-  const [groupNameRequiredParent, setGroupNameRequiredParent] = useState("");
-  const [groupNameRequiredParentElement, setGroupNameRequiredParentElement] = useState(null);
   const [groupNameRequired, setGroupNameRequired] = useState("");
   const [fileNameRequired, setFileNameRequired] = useState("");
   const [inputNameRequired, setInputNameRequired] = useState("");
@@ -136,7 +133,6 @@ const CreateCompetition = ()=> {
     formData.append("filesRequired", JSON.stringify(filesRequired));
     formData.append("inputsRequired", JSON.stringify(inputsRequired));
     formData.append("groupsRequired", JSON.stringify(groupsRequired));
-    formData.append("groupsRequiredParent", JSON.stringify(groupsRequiredParent));
     formData.append("def", def);
     formData.append("bac", bac);
     formData.append("licence", licence);
@@ -336,65 +332,40 @@ const CreateCompetition = ()=> {
         <EditorComponent value={content} handleChange={(v) => setContent(v)} />
       </p>
       <hr />
-{/* {JSON.stringify(groupsRequired)} */}
-      <div className="flex flex-col p-4 border rounded-md bg-white/10">
-<div className="flex items-center justify-between gap-10">
-<p>Type de niveau</p>
-        <input type="text" value={groupNameRequiredParent}
-          onChange={(e)=>{
-            setGroupNameRequiredParent((x) => (x = e.target.value));
-          }}
-              className="h-[45px] flex-1 border-2 p-4" />
-        <button 
-        type="button"
-    onClick={()=>{
 
-      setGroupsRequiredParent((prev) => [
-        ...prev,
-        {
-          id: uuidv4(),
-          name: groupNameRequiredParent,
-          value:""
-         
-        },
-      ]);
+      {JSON.stringify(groupsRequired)}
 
-      setGroupNameRequiredParent((x) => (x = ""));
-    }}
-        className="p-2 bg-white rounded-md cursor-pointer ">Ajouter</button>
-</div>
-        <div className="flex gap-4 pt-6 mt-4 border-t border-black">
-
-      {groupsRequiredParent.map(item =>(
-        <div onClick={()=>{
-          setGroupNameRequiredParentElement(x=> x = item)
-        }} className="flex gap-4 p-3 rounded-md cursor-pointer bg-zinc-200">
-          <p className="font-bold">{item.name}</p> <div className="flex items-center gap-2 ml-10">
-            <DeleteIcon
-            onClick={()=>{
-              setGroupsRequiredParent((current) =>
-                current.filter((fruit) => fruit.id !== item.id)
-              );
-              
-
-              setGroupsRequired((current) =>
-              current.filter((fruit) => fruit.parentElement !== item.id)
-            );
-
-            setTimeout(() => {
-              setGroupNameRequiredParentElement(x=> x = null)
-            }, 500);
-
+     <div className="flex justify-between mt-4">
+     <p className="font-bold ">Les niveaux</p>
+    <div className="flex w-[300px] gap-4">
+    <InputComponent
+            key={319}
+            
+          
+            value={groupNameRequired}
+            inputType="text"
+            handleChange={(e) => {
+              setGroupNameRequired((x) => (x = e.target.value));
             }}
-            className="cursor-pointer "/>
-            <EditIcon className="w-5 h-5 cursor-pointer"/>
-          </div>
-        </div>
-      ))}
-        </div>
-        <div className="flex gap-4 pt-6 mt-4 border-t border-black">
-
-        <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
+          />
+           <p
+      onClick={()=>{
+        setGroupsRequired((prev) => [
+          ...prev,
+          {
+            id: uuidv4(),
+           
+            name: "inputNameRequired",
+            type: "selectParent",
+            isCheck : false
+          },
+        ]);
+      }}
+      className="p-2 text-white bg-black rounded-md cursor-pointer ">Ajouter</p>
+    </div>
+     
+     </div>
+      <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
         <div className="flex items-end justify-between mb-4 font-bold text-md">
           <InputComponent
             key={219}
@@ -435,7 +406,6 @@ const CreateCompetition = ()=> {
                   {
                     id: uuidv4(),
                     name: groupNameRequired,
-                    parentElement: groupNameRequiredParentElement.id,
                     type: "select",
                     children: [],
                   },
@@ -462,12 +432,11 @@ const CreateCompetition = ()=> {
 
  
 
-        {groupsRequired.map((item) => 
+        {groupsRequired.map((item) => (
 
 
 <Accordion key={item.id}  type="single" collapsible>
-  
-{item.parentElement == groupNameRequiredParentElement?.id && <AccordionItem value="item-1">
+<AccordionItem value="item-1">
     <AccordionTrigger className="">
       <div
       onClick={()=>{
@@ -557,7 +526,7 @@ const CreateCompetition = ()=> {
     <AccordionContent asChild >
      
    
-    {item?.children.map(itemSub=>(
+    {item?.children?.map(itemSub=>(
        <div key={itemSub.id} className="flex items-center justify-center gap-3 px-2 py-1">
        
        <Input value={itemSub.name}
@@ -650,18 +619,12 @@ const CreateCompetition = ()=> {
        </div>
     ))}  
     </AccordionContent>
-  </AccordionItem>}
+  </AccordionItem>
 
 </Accordion>
          
-        )}
+        ))}
       </div>
-        </div>
-      </div>
-      
- 
-      
-    
 
       <hr />
 

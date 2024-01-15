@@ -154,6 +154,7 @@ model Competition {
    filesRequired      String?       @db.LongText
    inputsRequired      String?       @db.LongText 
    groupsRequired      String?       @db.LongText
+   groupsRequiredParent      String?       @db.LongText
   candidatures Candidature[]
 
   roleId       String
@@ -192,6 +193,7 @@ email         String?
   filesRequired      String?       @db.LongText
   inputsRequired      String?       @db.LongText
   groupsRequired      String?       @db.LongText
+     groupsRequiredParent      String?       @db.LongText
   certificate         String?
 
   ninaFile            String?

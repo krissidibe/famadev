@@ -235,19 +235,32 @@ function CandidatureItem({ datas ,rejets}) {
                 Les informations à renseigner pour le concours
               </CardTitle>
 
-                {result.groupsRequired.length > 0 &&  
-              
-              <InputComponent
+
+
+
+
+
+              {( JSON.parse(result.groupsRequired).length > 0 )&&  JSON.parse(result.groupsRequired).map(itemParent =>(
+                 <div>
+                 <Label className="text-black">{itemParent.name}</Label>
+                 <InputComponent
                     
-              value={result.groupsRequired}
-             
+              value={itemParent.value} 
                              
-                              label={"Niveau"}
-                               
+                             
                               
-                          
+                              
+                              
                             />
-                }
+               </div>
+              ))}
+
+
+
+
+
+
+               
             {/*   <CardDescription>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
                 at tincidunt neque. Pellentesque vitae commodo justo. Integer
