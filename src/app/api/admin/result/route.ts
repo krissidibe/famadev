@@ -11,6 +11,9 @@ export async function GET(req: NextRequest) {
  
   if (searchParams.get("id") == null) {
     const datasPrisma = await prisma.results.findMany({
+      where: {
+        roleId : searchParams.get("roleId")!.toString() ,
+      },
       orderBy: [
         {
           createdAt: "desc",
@@ -56,48 +59,109 @@ export async function GET(req: NextRequest) {
   return new Response(JSON.stringify(datasPrisma));
 }
 
+ 
+
+
+
 export async function POST(req: NextRequest, res: NextResponse) {
-    const formData = await req.formData();
- //console.log(formData.get("uid")!.toString());
- const user = await prisma.user.findFirst({
-  where: {
-    id: formData.get("uid")!.toString(),
-  },
+  const formData = await req.formData();
+//console.log(formData.get("uid")!.toString());
+const user = await prisma.user.findFirst({
+where: {
+  id: formData.get("uid")!.toString(),
+},
 });
- 
+
+
+
+let fileImage = formData.get("file")?.toString();
+
+let imageUpdate = formData.get("imageUpdate");
 
  
- let fileImage = formData.get("file")?.toString();
+  const file = formData.get("file") as Blob | null;
 
-  let imageUpdate = formData.get("imageUpdate");
+  try {
+    fileImage = await storeImageNormal(file);
+  } catch (error) {
+    fileImage = "bad";
+  }
 
-   
-    const file = formData.get("file") as Blob | null;
 
-    try {
-      fileImage = await storeImageNormal(file);
-    } catch (error) {
-      fileImage = "bad";
-    }
-  
+
+ const datasPrisma = await prisma.results.create({
+  data:{
+    title:formData.get("title")!.toString(),
+    content:formData.get("content")?.toString(),
+    public:true,
+    roleId:formData.get("roleId")!.toString(),
+    authorId:user!.id,
+    files:fileImage
+  }
+}) 
+return new Response(
+  JSON.stringify({ user: datasPrisma, message: "Le concours est modifier" })
+);
+
+}
+ 
+
+export async function PATCH(req: NextRequest, res: NextResponse) {
+  const formData = await req.formData();
+//console.log(formData.get("uid")!.toString());
+const user = await prisma.user.findFirst({
+where: {
+  id: formData.get("uid")!.toString(),
+},
+});
+
+
+
+let fileImage = formData.get("file")?.toString();
+
+let imageUpdate = formData.get("imageUpdate");
 
  
-   const datasPrisma = await prisma.results.create({
-    data:{
-      title:formData.get("title")!.toString(),
-      content:formData.get("content")?.toString(),
-      public:true,
-      authorId:user!.id,
-      files:fileImage
-    }
-  }) 
-  return new Response(
-    JSON.stringify({ user: datasPrisma, message: "Le concours est modifier" })
-  );
- 
+
+
+
+if (imageUpdate === "true") {
+  const file = formData.get("file") as Blob | null;
+
+  try {
+    fileImage = await storeImageNormal(file);
+  } catch (error) {
+    fileImage = "bad";
+  }
 }
 
- 
+
+
+
+
+
+
+ const datasPrisma = await prisma.results.update({
+
+  where:{
+    id:formData.get("id")!.toString(),
+  },
+  data:{
+    title:formData.get("title")!.toString(),
+    content:formData.get("content")?.toString(),
+    public:true,
+    roleId:formData.get("roleId")!.toString(),
+    files:fileImage
+  }
+}) 
+return new Response(
+  JSON.stringify({ user: datasPrisma, message: "Le concours est modifier" })
+);
+
+}
+
+
+
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
    

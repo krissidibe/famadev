@@ -434,10 +434,10 @@ function nameStateFile(params) {
   switch (params) {
  
     case 1:
-      value =    "Incorrect"
+      value =    "Incorrect(e)"
       break;
     case 2:
-      value =  "Correct"
+      value =  "Correct(e)"
       break;
   
     default:

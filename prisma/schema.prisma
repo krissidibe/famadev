@@ -80,6 +80,7 @@ model Roles {
   updatedAt    DateTime?     @default(now()) @db.Timestamp(0)
   competition Competition[]
   posts  Post[]
+  results  Results[]
  
 }
 model TypeOfMessage {
@@ -128,6 +129,10 @@ model Results {
   updatedAt    DateTime?     @db.Date 
   authorId            String
   author              User        @relation(fields: [authorId], references: [id]) 
+
+
+   roles  Roles? @relation(fields: [roleId], references: [id],onDelete: SetNull)
+  roleId       String?
  
 }
 

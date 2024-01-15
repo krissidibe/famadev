@@ -13,7 +13,7 @@ function  ShowPost({data})  {
   >
     <div className="flex flex-col">
       <div className="px-3 pt-2 text-base font-bold">{data.title}</div>
-      <div className="px-3 text-xs ">{data.typeOfPost.name}</div>
+      
     </div>
     <div className="flex-1 p-3 pb-2 overflow-hidden text-xs opacity-60">
       {data.content}

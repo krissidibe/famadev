@@ -59,12 +59,7 @@ function ExportExcel({datas,inputs,files,groups} ) {
       },
       
 
-      {
-        header: "NIVEAU",
-        key: "study",
-        width: 50,
-      },
-
+      
 
       {
         header: "CONTACT",
@@ -162,7 +157,7 @@ function ExportExcel({datas,inputs,files,groups} ) {
         birthDate: dayjs(item.birthDate).format("DD/MM/YYYY"),
         placeBirthDate: item.placeBirthDate,
        
-        study: item.groupsRequired,
+        
         id: dayjs(item.createdAt).format("DD/MM/YYYY"),
         createdAt: dayjs(item.createdAt).format("DD/MM/YYYYTHH:mm"),
         id: item.numeroRef,
@@ -193,10 +188,10 @@ function ExportExcel({datas,inputs,files,groups} ) {
         switch (params) {
        
           case 1:
-            value =    "Incorrect"
+            value =    "Incorrect(e)"
             break;
           case 2:
-            value =  "Correct"
+            value =  "Correct(e)"
             break;
         
           default:
