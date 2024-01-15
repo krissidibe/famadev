@@ -4,6 +4,7 @@ import React from "react";
 import DeleteBtn from "./deleteBtn";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOption";
+import PostItemUser from "./PostItemUser";
 async function ResultsPage() {
   const session = await getServerSession(authOptions)
   const res = await fetch(`${process.env.BASE_URL}/api/user/post`, {
@@ -29,30 +30,7 @@ async function ResultsPage() {
       <div className="grid w-full gap-5 xl:grid-cols-2 ">
         
         {datas.map((data) => (
-          <div
-            key={data.id}
-           
-            className="flex max-h-[300px] relative overflow-hidden flex-col w-full gap-1 p-2 border rounded-md "
-          >
-          <div className="flex flex-col">
-          <div className="px-3 pt-2 text-base font-bold">{data.title}</div>
-          <div className="px-3 text-xs ">{data.typeOfPost.name}</div>
-          </div>
-            <div className="flex-1 p-3 max-h-[190px] pb-2  overflow-hidden text-xs  opacity-60">
-              {data.content}  
-            </div>
-            <div className="flex self-end gap-3">
-            
-            <a 
-             target="_blank"
-             href={`${process.env.BASE_URL}${data.files}`}
-            className="p-2 px-4 text-xs text-white bg-green-700 rounded-lg opacity-100 cursor-pointer">
-            Télécharger{" "}
-            
-            </a>
-            
-            </div>
-          </div>
+        <PostItemUser data={data} />
         ))}
       </div>
     </div>

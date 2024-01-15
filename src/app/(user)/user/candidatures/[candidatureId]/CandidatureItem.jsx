@@ -55,6 +55,7 @@ function CandidatureItem({ data }) {
     { name: "Suspendu", code: "3", color: "text-red-500" },
   ];
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingData, setIsLoadingData] = useState(true);
   const statutOptions = [
     {
       label: "En attente de traitement",
@@ -144,7 +145,7 @@ setDataGroups(JSON.parse(result.groupsRequired));
    setCheckEdit(true)
  }
 
- setIsLoading(x => x = false)
+ setIsLoadingData(x => x = false)
 
   return () => {
     
@@ -725,7 +726,7 @@ const handleChangeInputRequired = (item,e) => {
                 Informations à propos du concours
               </CardTitle>
  
-            {!isLoading && <>
+            {!isLoadingData && <>
              {(checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
                  <div>
                  <Label className="text-black">{itemParent.name}</Label>

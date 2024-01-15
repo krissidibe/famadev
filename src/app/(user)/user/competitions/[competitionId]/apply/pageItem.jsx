@@ -308,7 +308,7 @@ export default function ApplyItem(
     formData.append("infoCardFile", infoCardFile);
     formData.append("demandeFile", demandeFile);
     formData.append("orderOfMagistratesType", orderOfMagistratesType);
-    formData.append("selectDataGroups", selectDataGroups);
+    formData.append("selectDataGroups", JSON.stringify(selectDataGroups));
 
     const url = data.filesRequired != null ? "candidature" : "candidatureold";
     const res = await fetch(`/api/user/candidature`, {
@@ -524,7 +524,7 @@ export default function ApplyItem(
             </CardHeader>
             <CardContent>
               <CardDescription>
-                {JSON.stringify(selectDataGroups)}
+              
                
 
               {dataGroupsParent.length > 0 &&  dataGroupsParent.map(itemParent =>(

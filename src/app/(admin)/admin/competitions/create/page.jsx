@@ -349,6 +349,33 @@ const CreateCompetition = ()=> {
         type="button"
     onClick={()=>{
 
+
+      if (groupNameRequiredParentElement) {
+        const nextShapes = groupsRequiredParent.map((shape) => {
+          if (shape.id != groupNameRequiredParentElement.id) {
+            // No change
+            return shape;
+          } else {
+            // Return a new circle 50px below
+            return {
+              ...shape,
+              name: groupNameRequiredParent,
+              
+            };
+          }
+        });
+        // Re-render with the new array
+        setGroupsRequiredParent(nextShapes);
+        setGroupNameRequiredParent((x) => (x = ""));
+        setGroupNameRequiredParentElement((x) => (x = null));
+        return;
+      }
+
+
+
+
+
+
       setGroupsRequiredParent((prev) => [
         ...prev,
         {
@@ -359,16 +386,18 @@ const CreateCompetition = ()=> {
         },
       ]);
 
-      setGroupNameRequiredParent((x) => (x = ""));
+       setGroupNameRequiredParent((x) => (x = ""));
+      setGroupNameRequiredParentElement((x) => (x = null));
     }}
-        className="p-2 bg-white rounded-md cursor-pointer ">Ajouter</button>
+        className="p-2 bg-white border rounded-md cursor-pointer">{groupNameRequiredParentElement ? "Modifier" : "Ajouter"}</button>
 </div>
         <div className="flex gap-4 pt-6 mt-4 border-t border-black">
 
       {groupsRequiredParent.map(item =>(
         <div onClick={()=>{
+          setGroupNameRequiredParent(x=> x = item.name)
           setGroupNameRequiredParentElement(x=> x = item)
-        }} className="flex gap-4 p-3 rounded-md cursor-pointer bg-zinc-200">
+        }} className={`flex gap-4 p-3 rounded-md cursor-pointer ${groupNameRequiredParentElement == item ? "bg-green-200" :"bg-zinc-200"}  `}>
           <p className="font-bold">{item.name}</p> <div className="flex items-center gap-2 ml-10">
             <DeleteIcon
             onClick={()=>{
@@ -392,6 +421,7 @@ const CreateCompetition = ()=> {
         </div>
       ))}
         </div>
+       {groupNameRequiredParentElement != null && 
         <div className="flex gap-4 pt-6 mt-4 border-t border-black">
 
         <div className="flex flex-col self-end w-full p-4 mt-4 mb-4 space-y-2 border-2">
@@ -657,6 +687,7 @@ const CreateCompetition = ()=> {
         )}
       </div>
         </div>
+       }
       </div>
       
  
