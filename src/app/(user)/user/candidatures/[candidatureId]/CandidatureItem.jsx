@@ -123,7 +123,7 @@ function CandidatureItem({ data }) {
 
   const [dataFiles, setDataFiles] = useState(JSON.parse(JSON.parse(JSON.stringify(data.filesRequired))));
   const [dataInputs, setDataInputs] = useState(JSON.parse(JSON.parse(JSON.stringify(data.inputsRequired))));
-  const [selectDataGroups, setSelectDataGroups] =  useState(data.groupsRequired);
+  const [selectDataGroups, setSelectDataGroups] =  useState("");
   const [dataGroupsParent, setDataGroupsParent] =  useState(data.groupsRequired);
   const [dataGroupsOld, setDataGroupsOld] =  useState(JSON.parse(result.groupsRequired));
   
@@ -138,6 +138,7 @@ useEffect(() => {
 setDataGroups(JSON.parse(result.groupsRequired));
  setDataInputs(JSON.parse(inputs))
  
+ setSelectDataGroups(JSON.parse(groupsParent));
  setDataGroupsParent(JSON.parse(groupsParent));
 
  if(data.canEdit){
@@ -307,7 +308,7 @@ const handleChangeInputRequired = (item,e) => {
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
       formData.append("dataInputsArray", JSON.stringify(dataInputs));
-      formData.append("selectDataGroups", JSON.stringify(selectDataGroups));
+      formData.append("selectDataGroups",  JSON.stringify(selectDataGroups));
 
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
@@ -422,7 +423,7 @@ const handleChangeInputRequired = (item,e) => {
    
       formData.append("dataFilesArray", JSON.stringify(dataFiles));
       formData.append("dataInputsArray", JSON.stringify(dataInputs));
-      formData.append("selectDataGroups", JSON.stringify(selectDataGroups));
+      formData.append("selectDataGroups",  JSON.stringify(selectDataGroups));
 
     const res = await fetch(`/api/user/candidature`, {
       body: formData,
@@ -725,8 +726,7 @@ const handleChangeInputRequired = (item,e) => {
               <CardTitle className="mt-4 mb-6">
                 Informations à propos du concours
               </CardTitle>
-              {JSON.stringify(typeof dataGroupsParent)}
-              {JSON.stringify(dataGroupsParent)}
+              
             {!isLoadingData && <>
              {(checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
                  <div>
