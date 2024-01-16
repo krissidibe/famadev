@@ -76,13 +76,13 @@ const CreateCompetition = ()=> {
   const [orderOfMagistrates, setOrderOfMagistrates] = useState(false);
   const [def, setDef] = useState(false);
   const [bac, setBac] = useState(false);
-  const [filesRequired, setFilesRequired] = useState([]);
   const [inputsRequired, setInputsRequired] = useState([]);
   const [groupsRequired, setGroupsRequired] = useState([]); 
   const [groupsRequiredParent, setGroupsRequiredParent] = useState([]); 
   const [groupNameRequiredParent, setGroupNameRequiredParent] = useState("");
   const [groupNameRequiredParentElement, setGroupNameRequiredParentElement] = useState(null);
   const [groupNameRequired, setGroupNameRequired] = useState("");
+  const [filesRequired, setFilesRequired] = useState([]);
   const [fileNameRequired, setFileNameRequired] = useState("");
   const [inputNameRequired, setInputNameRequired] = useState("");
   const [curentFileItem, setCurentFileItem] = useState();

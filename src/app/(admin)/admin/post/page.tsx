@@ -10,7 +10,7 @@ async function ResultsPage() {
   const res = await fetch(`${process.env.BASE_URL}/api/admin/post?roleId=${JSON.parse(session!.user.adminRole).id}`, {
     cache: "no-store",
   });
-  const datas: any[] = await res.json();
+  const datas: any[] = await res.json(); 
   const resType = await fetch(`${process.env.BASE_URL}/api/superadmin/posttype`, {
     cache: "no-store",
   });

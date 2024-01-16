@@ -12,7 +12,7 @@ import { Calendar ,CalendarChangeEvent} from "primereact/calendar";
 import { convertToHTML } from 'draft-convert';
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-   
+import { v4 as uuidv4 } from "uuid";
 import {
   Select,
   SelectContent,
@@ -25,6 +25,10 @@ function CreatePost({datasType}) {
 
   const [visible, setVisible] = useState(false);
   const [file, setfile] = useState(null);
+  const [filesRequired, setFilesRequired] = useState([]);
+  const [fileNameRequired, setFileNameRequired] = useState("");
+  const [inputNameRequired, setInputNameRequired] = useState("");
+  const [curentFileItem, setCurentFileItem] = useState();
   const [title, setTitle] = useState("");
   const [datasTypeChoose, setDatasTypeChoose] = useState("");
   const [content, setContent] = useState("");
@@ -36,6 +40,27 @@ function CreatePost({datasType}) {
     { name: "Oui", code: "1" },
     
   ];
+
+  const handleChangeFileRequired = (item,e) => {
+    
+    
+    const nextShapes = dataFiles.map(shape => {
+      if (shape.id != item.id) {
+        // No change
+        return shape;
+      } else {
+        // Return a new circle 50px below
+        return {
+          ...shape,
+          value:   e.files[0],
+        };
+      }
+    });
+    // Re-render with the new array
+    setDataFiles(nextShapes);
+ 
+    
+  };
 
   const createData = async (e) => {
     
@@ -139,13 +164,126 @@ function CreatePost({datasType}) {
       </div> */}
       
  
+
+      <p className="mt-4 font-bold ">Les pièces à fournir</p>
+      <div className="flex flex-col self-end w-full p-4 mt-4 space-y-2 border-2">
+        <div className="flex items-end justify-between mb-4 font-bold text-md">
+          <InputComponent
+            key={10}
+            label={"Les pièces à fournir"}
+            value={fileNameRequired}
+            inputType="text"
+            handleChange={(e) => {
+              setFileNameRequired((x) => (x = e.target.value));
+            }}
+          />
+
+          <div className="flex flex-row items-end justify-end flex-1 mb-1">
+            <div
+              onClick={(e) => {
+                if (curentFileItem) {
+                  const nextShapes = filesRequired.map((shape) => {
+                    if (shape.id != curentFileItem.id) {
+                      // No change
+                      return shape;
+                    } else {
+                      // Return a new circle 50px below
+                      return {
+                        ...shape,
+                        name: fileNameRequired,
+                      };
+                    }
+                  });
+                  // Re-render with the new array
+                  setFilesRequired(nextShapes);
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                  return;
+                }
+
+                setFilesRequired((prev) => [
+                  ...prev,
+                  {
+                    id: uuidv4(),
+                    value: "",
+                    name: fileNameRequired,
+                    type: "file",
+                    isCheck : false
+                  },
+                ]);
+                setFileNameRequired((x) => (x = ""));
+              }}
+              className="self-end p-2 ml-2 text-xs text-white bg-green-500 rounded-sm"
+            >
+              {curentFileItem ? "Modifier" : "Ajouter"}{" "}
+            </div>
+            {curentFileItem && (
+              <div
+                onClick={() => {
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            )}
+          </div>
+        </div>
+
+    {/*     {JSON.stringify(filesRequired)}
+
+        {filesRequired.map((item) => (
+          <div key={item.id} className="flex items-center justify-center p-2 border">
+            {" "}
+            <p className="flex-1">{item.name}</p>
+            <InputComponent
+label={item.value == "File not" && item.name}
+                
+                name = {item.name}
+                handleChange={(e) => {
+                  handleChangeFileRequired(item,e.target);
+                }}
+                key={item.name}
+                inputType="file" 
+              
+                
+              />
+            <div className="flex">
+              <div
+                onClick={() => {
+                  setFileNameRequired((x) => (x = item.name));
+                  setCurentFileItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
+
+              <div
+                onClick={() => {
+                  setFilesRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
+
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            </div>{" "}
+          </div>
+        ))} */}
+      </div>
    
  
       <div className="flex items-end justify-end w-full my-4">
         {!visible ? (
           <ButtonComponent
             key={4}
-            label="Enregistré"
+            label="Enregistrer"
             className="max-w-[130px]  "
            type="submit"
             full={true}

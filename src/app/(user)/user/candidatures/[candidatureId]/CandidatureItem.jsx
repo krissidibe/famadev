@@ -725,7 +725,8 @@ const handleChangeInputRequired = (item,e) => {
               <CardTitle className="mt-4 mb-6">
                 Informations à propos du concours
               </CardTitle>
- 
+              {JSON.stringify(typeof dataGroupsParent)}
+              {JSON.stringify(dataGroupsParent)}
             {!isLoadingData && <>
              {(checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
                  <div>
