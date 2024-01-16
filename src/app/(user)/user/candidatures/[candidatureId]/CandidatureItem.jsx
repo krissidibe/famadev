@@ -759,7 +759,7 @@ const value =e.target.value.trim()
 
                   
                  }}  className="w-full p-[10px] mt-1 mb-4 border rounded-md">
-                   {dataGroups.filter(item => item.parentElement == itemParent.id).map((item) => 
+                   { result && dataGroups.filter(item => item.parentElement == itemParent.id).map((item) => 
                   
                   <optgroup defaultValue={"----"}   key={item.id} label={`${item.name}`}>
                      <option
@@ -789,7 +789,7 @@ const value =e.target.value.trim()
                
 
 
-               {(!checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
+               { result && (!checkEdit && dataGroupsParent.length > 0 )&&  dataGroupsParent.map(itemParent =>(
                  <div>
                  <Label className="text-black">{itemParent.name}</Label>
                  <InputComponent

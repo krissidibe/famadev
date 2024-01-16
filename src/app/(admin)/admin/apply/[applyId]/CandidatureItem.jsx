@@ -240,7 +240,7 @@ function CandidatureItem({ datas ,rejets}) {
 
 
 
-              {( JSON.parse(result.groupsRequired).length > 0 )&&  JSON.parse(result.groupsRequired).map(itemParent =>(
+              {result && ( JSON.parse(result.groupsRequired).length > 0 )&&  JSON.parse(result.groupsRequired).map(itemParent =>(
                  <div>
                  <Label className="text-black">{itemParent.name}</Label>
                  <InputComponent
@@ -268,7 +268,7 @@ function CandidatureItem({ datas ,rejets}) {
               </CardDescription> */}
               <div className="grid gap-6 mt-4 min-[1720px]:grid-cols-2">
              
-                 { JSON.parse(result.inputsRequired).map(item => ( 
+                 { result && JSON.parse(result.inputsRequired).map(item => ( 
     
     <InputComponent
                     
