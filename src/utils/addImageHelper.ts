@@ -13,7 +13,9 @@ export  async function storeImageRename(idCompetition:string,refCandidature:stri
   
    const file = join(process.cwd(), `public/files/${idCompetition}/${refCandidature}`);
    const fileNew = join(process.cwd(), `public/files/${idCompetition}/${newFolder}`);
-   const fileRename = rename(file,fileNew)
+   if(fileNew){
+    const fileRename = rename(file,fileNew)
+   }
 
 
 
@@ -21,7 +23,7 @@ export  async function storeImageRename(idCompetition:string,refCandidature:stri
     console.log("======");
     console.log(refCandidature);
     console.log(newFolder); 
-    console.log(fileRename);
+   // console.log(fileRename);
     console.log("======");
     
 }
@@ -60,6 +62,8 @@ const buffer = Buffer.from(await file.arrayBuffer());
 }
 
 
+
+
 export default async function storeImage(fileBlob:Blob | null,idCompetition:string,refCandidature:string,relativeUploadDirName:string): Promise<string>{
    
     let filename ="";
@@ -95,6 +99,17 @@ export default async function storeImage(fileBlob:Blob | null,idCompetition:stri
 }
 
 
+
+export  async function storeImageCreateTemp( idCompetition:string,refCandidature:string) {
+   
+ 
+  if (!fs.existsSync(join(process.cwd(), `public/files/${idCompetition}`, refCandidature))){
+    fs.mkdirSync(join(process.cwd(), `public/files/${idCompetition}`, refCandidature), { recursive: true });
+ 
+ }
+    
+    
+}
 
 
 

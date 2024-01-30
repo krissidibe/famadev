@@ -462,7 +462,9 @@ function InfoInputFile(label, value = false) {
         justifyContent: "space-between",
       }}
     >
-      <Text>{label} :</Text>
+      <Text
+      style={{flex:1, paddingRight: 15 }}
+      >{label} :</Text>
       <Text> {nameStateFile(value)}   </Text>
     </View>
   );

@@ -163,7 +163,7 @@ function CreatePost({datasType}) {
       
       </div> */}
       
- 
+ {JSON.stringify(filesRequired)}
 
       <p className="mt-4 font-bold ">Les pièces à fournir</p>
       <div className="flex flex-col self-end w-full p-4 mt-4 space-y-2 border-2">
@@ -277,6 +277,40 @@ label={item.value == "File not" && item.name}
           </div>
         ))} */}
       </div>
+
+      {filesRequired.map((item) => (
+          <div key={item.id} className="flex items-center justify-center p-2 pl-4 border">
+            {" "}
+            <p className="flex-1">{item.name}</p>{" "}
+
+            <input type="file" />
+            <div className="flex">
+              <div
+                onClick={() => {
+                  setFileNameRequired((x) => (x = item.name));
+                  setCurentFileItem((x) => (x = item));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-blue-500 rounded-sm"
+              >
+                Modifier
+              </div>
+
+              <div
+                onClick={() => {
+                  setFilesRequired((current) =>
+                    current.filter((fruit) => fruit.id !== item.id)
+                  );
+
+                  setFileNameRequired((x) => (x = ""));
+                  setCurentFileItem((x) => (x = null));
+                }}
+                className="self-end p-2 ml-2 text-xs text-white bg-red-500 rounded-sm"
+              >
+                X
+              </div>
+            </div>{" "}
+          </div>
+        ))}
    
  
       <div className="flex items-end justify-end w-full my-4">

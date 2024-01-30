@@ -9,7 +9,7 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "dbprismamig": "prisma migrate dev",
-    "dbprismastudio": "prisma studio",
+    "dbprismastudio": "prisma studio --port 3000",
     "dbpush": "prisma db push"
   },
   "dependencies": {

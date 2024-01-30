@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../utils/prisma";
 import bcrypt from "bcryptjs";
-import storeImage from "@/utils/addImageHelper";
+import storeImage, { storeImageCreateTemp } from "@/utils/addImageHelper";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url);
@@ -154,6 +154,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
   });
 
 
+  await storeImageCreateTemp( formData.get("competitionId")!.toString(),`${data.id}`)
+ 
+
   for await (const item of dataFilesArrayConvert) {
   
     /* 
@@ -168,6 +171,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
       dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null,formData.get("competitionId")!.toString(),`${data.id}`,item.name)})
      // dataFilesArrayUser.push({  type : item.type, name:item.name, id:item.id,value: await storeImage( formData.get(item.id)  as Blob | null)})
     }
+
+
+ 
+    
 
     
   
