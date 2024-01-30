@@ -74,19 +74,25 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
  
  let fileImage = formData.get("file")?.toString();
+ let fileSize = formData.get("fileSize")?.toString();
 
   let imageUpdate = formData.get("imageUpdate");
 
-   
-    const file = formData.get("file") as Blob | null;
-
-    try {
-      fileImage = await storeImageNormal(file);
-    } catch (error) {
-      fileImage = "bad";
-    }
+  let dataFilesArrayUser:any[] =  [];
+for (let index = 0; index <  parseInt(fileSize == null ? "0" : fileSize) ; index++) {
   
+  //const file = formData.get(`file${index+1}`) as Blob | null;
 
+  try {
+    fileImage = await storeImageNormal(formData.get(`file${index+1}`) as Blob | null);
+    dataFilesArrayUser.push(`${fileImage}`)
+  } catch (error) {
+    fileImage = "bad";
+  }
+
+}
+
+ 
  
    const datasPrisma = await prisma.post.create({
     data:{
@@ -95,7 +101,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       public:true,
       roleId:formData.get("roleId")!.toString(),
       typeOfPostId:formData.get("typeOfPostId")!.toString(),
-      files:fileImage
+      files:JSON.stringify(dataFilesArrayUser)
     }
   }) 
   return new Response(
@@ -114,22 +120,32 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
  
 
  
- let fileImage = formData.get("file")?.toString();
 
-  let imageUpdate = formData.get("imageUpdate");
+ 
+let fileImage = formData.get("file")?.toString();
+let fileSize = formData.get("fileSize")?.toString();
 
-   
+ let imageUpdate = formData.get("imageUpdate");
+
+ let dataFilesArrayUser:any[] =  [];
+
 
 
 
   if (imageUpdate === "true") {
-    const file = formData.get("file") as Blob | null;
-
-    try {
-      fileImage = await storeImageNormal(file);
-    } catch (error) {
-      fileImage = "bad";
-    }
+    for (let index = 0; index <  parseInt(fileSize == null ? "0" : fileSize) ; index++) {
+ 
+      //const file = formData.get(`file${index+1}`) as Blob | null;
+     
+      try {
+        fileImage = await storeImageNormal(formData.get(`file${index+1}`) as Blob | null);
+        dataFilesArrayUser.push(`${fileImage}`)
+      } catch (error) {
+        fileImage = "bad";
+      }
+     
+     }
+     
   }
 
 
@@ -149,7 +165,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
       public:true,
       roleId:formData.get("roleId")!.toString(),
       typeOfPostId:formData.get("typeOfPostId")!.toString(),
-      files:fileImage
+      files:JSON.stringify(dataFilesArrayUser)
     }
   }) 
   return new Response(

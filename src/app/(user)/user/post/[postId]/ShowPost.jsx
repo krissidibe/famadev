@@ -18,17 +18,25 @@ function  ShowPost({data})  {
     <div className="flex-1 p-3 pb-2 overflow-hidden text-xs opacity-60">
       {data.content}
     </div>
-    <div className="flex self-end gap-3">
 
-         {(data.files != null && data.files != "bad")&& <a
-           target="_blank"
-           href={`${process.env.BASE_URL}${data.files}`}
-          className="p-2 px-4 text-xs text-white bg-green-700 rounded-lg opacity-100 cursor-pointer">
-          Télécharger{" "}
+    {JSON.parse(data.files).length > 0 && JSON.parse(data.files).map((result) => (<div className="flex items-center space-x-4">
+        <div className="flex items-center flex-1 mt-2 cursor-pointer justify-end p-4 h-[38px] border-[1px] rounded-sm">
           
-          </a>}
-           
-    </div>
+          <a
+            target="_blank"
+            href={`${process.env.BASE_URL}${result}`}
+            className="flex items-center justify-between flex-1 space-x-2 text-xs"
+            >
+            {result.replace("/files/","").substring(0, result.length-36)}
+            <p className="text-sm">Télécharger </p>
+         {/*    <FaDownload className="h-12 mr-4" /> */}
+          </a>
+        </div>
+      </div>)
+        
+     
+      )}
+    
   </div>;
 }
 

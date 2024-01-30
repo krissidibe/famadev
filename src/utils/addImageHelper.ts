@@ -40,8 +40,11 @@ export  async function storeImageNormal(fileBlob:Blob | null): Promise<string>{
   const file = fileBlob;
 
 if (!file) {
+  console.log("File notxx");
+  
   return  "File not" ;
 }
+console.log("File yes");
 //rename(  const uploadDir = join(process.cwd(), `public/files/${idCompetition}`, refCandidature))
 const buffer = Buffer.from(await file.arrayBuffer());
       //const relativeUploadDir = `/uploads/${dateFn.format(Date.now(), "dd-MM-Y")}`;

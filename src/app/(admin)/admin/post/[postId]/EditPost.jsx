@@ -54,6 +54,15 @@ function EditPost({datasType,data}) {
     formData.append("content", content);
     formData.append("statut", statut);
     formData.append("file", file);
+
+    for (let index = 0; index < file.length; index++) {
+      const element = file[index];
+
+      formData.append(`file${index+1}`, element);
+      
+    }
+
+    formData.append("fileSize", file.length);
     formData.append("roleId",JSON.parse(session.user.adminRole).id);
     formData.append("typeOfPostId",datasTypeChoose);
     formData.append("uid", session.user.id);
@@ -119,15 +128,16 @@ function EditPost({datasType,data}) {
       className="h-[140px] border  rounded-md p-4 mb-10"></textarea>
     
  
-    {(file !=null && file !="bad"  ) && fileFunctionCutom("Fichier pdf",file)}
+ 
+    {JSON.parse(datas)?.length > 0 && fileFunctionCutom(`Fichier(s) ${JSON.parse(datas).length}`,file)}
 
-     
+      
 
-      {(file ==null || file =="bad"  ) && <input type="file" name="" id="" className="my-4 mt-6"
+      {datas == 0 && <input type="file" multiple name="" id="" className="my-4 mt-6"
        onChange={(e) => {
       //  if (!e.target.files[0].type.startsWith("image/")) return;
-      console.log(e.target.files[0]);
-      setfile(x =>  x = e.target.files[0]);
+      console.log(e.target.files);
+      setfile(x =>  x = e.target.files);
       }}
       />}
 
@@ -180,14 +190,17 @@ function fileFunctionCutom(label,   result) {
         <p className="text-red-500 cursor-pointer"
         onClick={()=>{
           setfile(x=> x = null)
+          setDatas(x=> x = 0)
+          
         }}
         
         >Supprimer</p>
         </div>
         {/*  { <span className="text-[13px] text-gray-400">{subLabel}</span>} */}
       </div>
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center flex-1 cursor-pointer justify-end p-4 h-[38px] border-[1px] rounded-sm">
+
+      {JSON.parse(datas).length > 0 && JSON.parse(datas).map((result) => (<div className="flex items-center space-x-4">
+        <div className="flex items-center flex-1 mt-2 cursor-pointer justify-end p-4 h-[38px] border-[1px] rounded-sm">
           <a
             target="_blank"
             href={`${process.env.BASE_URL}${result}`}
@@ -197,7 +210,10 @@ function fileFunctionCutom(label,   result) {
          {/*    <FaDownload className="h-12 mr-4" /> */}
           </a>
         </div>
-      </div>
+      </div>)
+        
+     
+      )}
     </div>
   );
 }
