@@ -17,9 +17,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCompetitionStore } from "@/store/useCompetitionStore";
-
-
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea" 
 const statutOptions = [
   {
     label: "En attente de traitement",
@@ -182,6 +192,13 @@ const columns = [
   const dataStrore = useCompetitionStore()
   return (
     <div>
+
+     
+
+
+
+
+
       <div className="hidden md:block">
         {" "}
         
@@ -206,6 +223,9 @@ const columns = [
             </Select>
           </div>
           <ExportExcel datas={records} inputs={inputs}  files={files} groups={groups} />
+
+          <ModalEmail/>
+           
         </div>
         <DataTable
           pagination
@@ -244,4 +264,50 @@ const columns = [
       </div>
     </div>
   );
+
+  function ModalEmail() {
+
+   const [allMail, setAllMail] = useState(records.map((e)=> (e.email)))
+   const [messageData, setMessageData] = useState({
+    title: "",
+    content: "",
+   })
+    return <AlertDialog>
+      <AlertDialogTrigger className="w-[300px]"  asChild>
+        <Button variant="outline">Envoyer un email</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Votre message</AlertDialogTitle>
+       
+        </AlertDialogHeader>
+       <p>Nombre d'email :  {allMail.length}</p>
+        <Input placeholder="Titre de l'email" value={messageData.title} onChange={(e) => setMessageData({ ...messageData, title: e.target.value })} />
+          <Textarea value={messageData.content} onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} className="h-[200px]" placeholder="Contenu du message" />
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          {allMail.length > 0  && <AlertDialogAction onClick={async () => {
+            
+           
+            const res = await fetch(`/api/sendmailmulti`, {
+              body: JSON.stringify({
+                data:allMail,
+                title: messageData.title,
+                content: messageData.content
+              }),
+              headers: {
+                "Content-type": "application/json",
+              },
+              method: "POST",
+            });
+            const data = await res.json();
+            console.log(data);
+            if (res.status == 200) {
+              alert(data.message)
+            }
+          }} >Envoyer</AlertDialogAction>}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>;
+  }
 }
