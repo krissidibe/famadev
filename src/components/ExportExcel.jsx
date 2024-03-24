@@ -6,9 +6,12 @@ function ExportExcel({datas,inputs,files,groups} ) {
   
    
   const exportFile = () => {
+    
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("Candidatures");
     sheet.properties.defaultRowHeight = 20;
+
+  
     sheet.columns = [
      /*  {
         header: "Id",
@@ -40,6 +43,11 @@ function ExportExcel({datas,inputs,files,groups} ) {
       {
         header: "Nom & prénom de la mère",
         key: "motherName",
+        width: 40,
+      },
+      {
+        header: "EMAIL",
+        key: "email",
         width: 40,
       },
       {
@@ -107,12 +115,13 @@ function ExportExcel({datas,inputs,files,groups} ) {
     
     ];
 
-    sheet.columns = sheet.columns.concat(inputs.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
-    sheet.columns = sheet.columns.concat(files.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
-    sheet.columns = sheet.columns.concat(groups.map((item) => ({ header: item.name, key: item.id.replaceAll("-",""), width: 50, })));
+    
+    sheet.columns = sheet.columns.concat(inputs.map((item) => ({ header: item?.name, key: item?.id.replaceAll("-",""), width: 50, })));
+    sheet.columns = sheet.columns.concat(files.map((item) => ({ header: item?.name, key: item?.id.replaceAll("-",""), width: 50, })));
+    sheet.columns = sheet.columns.concat(groups.map((item) => ({ header: item?.name, key: item?.id.replaceAll("-",""), width: 50, })));
     /*       inputs.map((item) => ({
-        header: item.name,
-        key: item.name,
+        header: item?.name,
+        key: item?.name,
         width: 50,
       })); */
     const statutOptions = [
@@ -144,39 +153,42 @@ function ExportExcel({datas,inputs,files,groups} ) {
     
 
     datas.map((item) => {
-      const arrayInfo =  JSON.parse(item.inputsRequired).map(i=>(i.name +" : " +i.value))
+      const arrayInfo =  JSON.parse(item?.inputsRequired).map(i=>(i.name +" : " +i.value))
      
      
        
       const newLocal = {
-        lastName: item.lastName,
-        firstName: item.firstName,
-        fatherName: item.fatherName,
-        motherName: item.motherName,
-        sexe: item.sexe,
-        birthDate: dayjs(item.birthDate).format("DD/MM/YYYY"),
-        placeBirthDate: item.placeBirthDate,
+        lastName: item?.lastName,
+        firstName: item?.firstName,
+        fatherName: item?.fatherName,
+        motherName: item?.motherName,
+        sexe: item?.sexe,
+        email: item?.email,
+        birthDate: dayjs(item?.birthDate).format("DD/MM/YYYY"),
+        placeBirthDate: item?.placeBirthDate,
        
         
-        id: dayjs(item.createdAt).format("DD/MM/YYYY"),
-        createdAt: dayjs(item.createdAt).format("DD/MM/YYYYTHH:mm"),
-        id: item.numeroRef,
-        number: item.number,
-        statut: statutOptions[item.statut].label,
-        message: item.message,
-        motif: item.motif,
-        admin: item.admin,
-        updatedAt: dayjs(item.updatedAt).format("DD/MM/YYYY"),
+        id: dayjs(item?.createdAt).format("DD/MM/YYYY"),
+        createdAt: dayjs(item?.createdAt).format("DD/MM/YYYYTHH:mm"),
+        id: item?.numeroRef,
+        number: item?.number,
+        statut: statutOptions[item?.statut].label,
+        message: item?.message,
+        motif: item?.motif,
+        admin: item?.admin,
+        updatedAt: dayjs(item?.updatedAt).format("DD/MM/YYYY"),
       };
 
-      const arrayInfoTest =  JSON.parse(item.inputsRequired).map(item=>( { [item.id.replaceAll("-","")]: item.value}))
-      const  test2 = arrayInfoTest
-      const  test = { "9bb6ae27f81a4e6a832f154538637000": item.lastName}
+
+      
+      const arrayInfoTest =  JSON.parse(item?.inputsRequired).map(item=>( { [item?.id.replaceAll("-","")]: item?.value}))
+     /*  const  test2 = arrayInfoTest
+      const  test = { "9bb6ae27f81a4e6a832f154538637000": item?.lastName}
       console.log("======");
       console.log(groups);
-      //console.log(arrayInfoTest.length)
+      */ //console.log(arrayInfoTest.length)
     //  console.log(Object.assign(newLocal,arrayInfoTest));
-
+  
       arrayInfoTest.forEach(element => {
         Object.assign(newLocal,element)
       });
@@ -207,15 +219,36 @@ function ExportExcel({datas,inputs,files,groups} ) {
       }
 
 
-      const arrayInfoTest2 =  JSON.parse(item.filesRequired).map(item=>( { [item.id.replaceAll("-","")]: nameStateFile(item.fileState)}))
-      arrayInfoTest2.forEach(element2 => {
-        Object.assign(newLocal,element2)
-      });
-      const arrayInfoTest3 =  JSON.parse(item.groupsRequired).map(item=>( { [item.id.replaceAll("-","")]: item.value}))
+      if(JSON.parse(item?.filesRequired)){
+        const arrayInfoTest2 =  JSON.parse(item?.filesRequired).map(item=>( { [item?.id.replaceAll("-","")]: nameStateFile(item?.fileState)}))
+        arrayInfoTest2.forEach(element2 => {
+          Object.assign(newLocal,element2)
+        });
+      }else{
+        const arrayInfoTest2 = []
+        arrayInfoTest2.forEach(element2 => {
+          Object.assign(newLocal,element2)
+        });
+      }
+
+    
+      
+    if(JSON.parse(item?.groupsRequired)){
+      const arrayInfoTest3 =  JSON.parse(item?.groupsRequired).map(item=>( { [item?.id?.replaceAll("-","")]: item?.value ?? "Non defini"}))
       arrayInfoTest3.forEach(element3 => {
         Object.assign(newLocal,element3)
       });
+    }else{
+      const arrayInfoTest3 = []
+      arrayInfoTest3.forEach(element3 => {
+        Object.assign(newLocal,element3)
+      });
+    }
+
+
+  
       
+     
       console.log(newLocal)
       console.log("======");
       sheet.addRow(newLocal);

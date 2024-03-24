@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import XLSX from "xlsx";
+import * as XLSX from "xlsx";
 import ExcelJS from "exceljs";
 import ExportExcel from "./ExportExcel";
 import { CustomerService } from "../Services/Candidature";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
+
 import parse from "html-react-parser";
 import DataTable from "react-data-table-component";
 import { useRouter } from "next/navigation";
@@ -267,7 +268,10 @@ const columns = [
 
   function ModalEmail() {
 
+    const [file, setFile] = useState(null)
+
    const [allMail, setAllMail] = useState(records.map((e)=> (e.email)))
+   const [allMailFile, setAllMailFile] = useState([])
    const [messageData, setMessageData] = useState({
     title: "",
     content: "",
@@ -281,7 +285,53 @@ const columns = [
           <AlertDialogTitle>Votre message</AlertDialogTitle>
        
         </AlertDialogHeader>
-       <p>Nombre d'email :  {allMail.length}</p>
+       <p>Nombre d'email :  {file == null ? allMail.length : allMailFile.length - 1 }</p>
+   
+      <div className="flex gap-4">
+         <Input type="file" onChange={ async (e) =>
+        {
+
+        setFile(e.target.files[0])
+ 
+        // const workbook = XLSX.read(e.target.files[0],{type: 'buffer'});
+
+         const workbook = new ExcelJS.Workbook();
+      // const values =   await workbook.xlsx.load(e.target.files[0]);
+         /* const worksheetName = workbook.SheetNames[0];
+         const worksheet = workbook.Sheets[worksheetName];
+         const data = XLSX.utils.sheet_to_json(worksheet); */
+         await workbook.xlsx.load(e.target.files[0])
+         .then(() => {
+             const worksheet = workbook.getWorksheet(1);
+            
+             // rest of the code goes here
+             const json = [];
+
+worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+    const rowObject = {};
+
+    row.eachCell({ includeEmpty: true }, function(cell, colNumber) {
+       if(colNumber ==6){
+        rowObject[`col${colNumber}`] = cell.value["text"] == null ? cell.value : cell.value["text"];
+       }
+    });
+
+    json.push(rowObject);
+     
+    setAllMailFile(json.map((e)=> (e.col6)))
+});
+console.log(json);
+         })
+         .catch((error) => {
+             console.log('Error: ', error);
+         });
+        
+        }
+        } />
+      {file != null &&  <Button onClick={()=>{
+        setFile(null)
+      }}>Annuler</Button>}
+      </div>
         <Input placeholder="Titre de l'email" value={messageData.title} onChange={(e) => setMessageData({ ...messageData, title: e.target.value })} />
           <Textarea value={messageData.content} onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} className="h-[200px]" placeholder="Contenu du message" />
         <AlertDialogFooter>
@@ -291,7 +341,7 @@ const columns = [
            
             const res = await fetch(`/api/sendmailmulti`, {
               body: JSON.stringify({
-                data:allMail,
+                data:file == null ? allMail : allMailFile,
                 title: messageData.title,
                 content: messageData.content
               }),
@@ -304,6 +354,9 @@ const columns = [
             console.log(data);
             if (res.status == 200) {
               alert(data.message)
+              setFile(null)
+               setMessageData((x) => (x = { title: "", content: "" }));
+              setAllMailFile([])
             }
           }} >Envoyer</AlertDialogAction>}
         </AlertDialogFooter>

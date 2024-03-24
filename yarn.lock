@@ -2450,6 +2450,11 @@
     "@webassemblyjs/ast" "1.11.6"
     "@xtuc/long" "4.2.2"
 
+"@xmldom/xmldom@^0.8.2":
+  version "0.8.10"
+  resolved "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.8.10.tgz"
+  integrity sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@xtuc/ieee754/-/ieee754-1.2.0.tgz"
@@ -3590,6 +3595,11 @@ fbjs@^2.0.0:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
+
+fflate@^0.7.3:
+  version "0.7.4"
+  resolved "https://registry.npmjs.org/fflate/-/fflate-0.7.4.tgz"
+  integrity sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw==
 
 file-saver@^2.0.5:
   version "2.0.5"
@@ -5320,6 +5330,15 @@ read-cache@^1.0.0:
   integrity sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==
   dependencies:
     pify "^2.3.0"
+
+read-excel-file@^5.7.1:
+  version "5.7.1"
+  resolved "https://registry.npmjs.org/read-excel-file/-/read-excel-file-5.7.1.tgz"
+  integrity sha512-cEX+y7A0TmUESjaVqDTVts3iY2YbySG5ew2TlP0qJN+H7PY+b9MqiK3pl/vNPhx112AuyLtmhfqQc5n6+U2vQw==
+  dependencies:
+    "@xmldom/xmldom" "^0.8.2"
+    fflate "^0.7.3"
+    unzipper "^0.10.11"
 
 readable-stream@^2.0.0:
   version "2.3.8"
